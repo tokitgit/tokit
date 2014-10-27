@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="dotaequipcfgs">
+  <xs:complexType>
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="dotaequipcfg">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:attribute name="id" type="xs:unsignedInt"/>
+            <xs:attribute name="name" type="xs:string"/>
+            <xs:attribute name="desc" type="xs:string"/>
+            <xs:attribute name="price" type="xs:unsignedInt"/>
+            <xs:attribute name="isdrop" type="xs:byte"/>
+            <xs:attribute name="attack" type="xs:unsignedInt"/>
+            <xs:attribute name="bornlist" type="xs:unsignedInt"/>
+            <xs:attribute name="bornnum" type="xs:unsignedByte"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+</xs:schema>

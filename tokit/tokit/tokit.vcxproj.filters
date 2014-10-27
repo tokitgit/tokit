@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="util">
+      <UniqueIdentifier>{69159387-9674-4a5c-9016-25efb0c6531a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="def">
+      <UniqueIdentifier>{2e1ab35f-d369-409b-a367-144ba6268dcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="parser">
+      <UniqueIdentifier>{dc78020b-01e7-4e8b-8f79-939ddce158e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="version">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="generator">
+      <UniqueIdentifier>{a87337af-0b30-444b-8259-b19df5528a85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="generator\language">
+      <UniqueIdentifier>{2bbfc3b1-530e-44d4-9dea-6c9de41bbd0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="generator\language\xsd">
+      <UniqueIdentifier>{41dce698-2ad0-4fbc-83c7-1411938b7bd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="generator\language\c++">
+      <UniqueIdentifier>{c7822b7e-2b95-41bb-9ad0-012ddb788f2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="generator\language\go">
+      <UniqueIdentifier>{dcc52ca2-f089-435c-9852-9bfbf3fbe31a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="generator\language\xml">
+      <UniqueIdentifier>{4a34ce3b-3ac7-4d9d-b325-ea10639f0cf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util\excel_api">
+      <UniqueIdentifier>{933265b7-728a-4656-af62-2e6172ae3c84}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="type.h">
+      <Filter>def</Filter>
+    </ClInclude>
+    <ClInclude Include="parser.h">
+      <Filter>parser</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>version</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>version</Filter>
+    </ClInclude>
+    <ClInclude Include="excel\CApplication.h">
+      <Filter>util\excel_api</Filter>
+    </ClInclude>
+    <ClInclude Include="excel\CRange.h">
+      <Filter>util\excel_api</Filter>
+    </ClInclude>
+    <ClInclude Include="excel\CRanges.h">
+      <Filter>util\excel_api</Filter>
+    </ClInclude>
+    <ClInclude Include="excel\CWorkbook.h">
+      <Filter>util\excel_api</Filter>
+    </ClInclude>
+    <ClInclude Include="excel\CWorkbooks.h">
+      <Filter>util\excel_api</Filter>
+    </ClInclude>
+    <ClInclude Include="excel\CWorksheet.h">
+      <Filter>util\excel_api</Filter>
+    </ClInclude>
+    <ClInclude Include="excel\CWorksheets.h">
+      <Filter>util\excel_api</Filter>
+    </ClInclude>
+    <ClInclude Include="cfg.h">
+      <Filter>def</Filter>
+    </ClInclude>
+    <ClInclude Include="cfgdef.h">
+      <Filter>def</Filter>
+    </ClInclude>
+    <ClInclude Include="generator.h">
+      <Filter>generator</Filter>
+    </ClInclude>
+    <ClInclude Include="language\c++\c++_generator.h">
+      <Filter>generator\language\c++</Filter>
+    </ClInclude>
+    <ClInclude Include="language\xml\xml_generator.h">
+      <Filter>generator\language\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="language\xsd\xsd_generator.h">
+      <Filter>generator\language\xsd</Filter>
+    </ClInclude>
+    <ClInclude Include="util\echoutil.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\excel_util.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\file_util.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\str_util.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\tickutil.h">
+      <Filter>util</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="parser.cpp">
+      <Filter>parser</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="cfg.cpp">
+      <Filter>def</Filter>
+    </ClCompile>
+    <ClCompile Include="language\c++\gen_cpp.cpp">
+      <Filter>generator\language\c++</Filter>
+    </ClCompile>
+    <ClCompile Include="language\c++\gen_h.cpp">
+      <Filter>generator\language\c++</Filter>
+    </ClCompile>
+    <ClCompile Include="generator.cpp">
+      <Filter>generator</Filter>
+    </ClCompile>
+    <ClCompile Include="language\c++\c++_generator.cpp">
+      <Filter>generator\language\c++</Filter>
+    </ClCompile>
+    <ClCompile Include="language\xml\xml_generator.cpp">
+      <Filter>generator\language\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="language\xsd\xsd_generator.cpp">
+      <Filter>generator\language\xsd</Filter>
+    </ClCompile>
+    <ClCompile Include="util\echoutil.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\excel_util.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\file_util.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\str_util.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\tickutil.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

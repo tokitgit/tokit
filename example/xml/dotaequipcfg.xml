@@ -1,0 +1,9 @@
+<dotaequipcfg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <row id="1" name="圣者遗物" desc="" price="1000" isdrop="0" attack="80" bornlist="" bornnum=""/>
+    <row id="2" name="恶魔刀锋" desc="" price="1050" isdrop="0" attack="60" bornlist="" bornnum=""/>
+    <row id="3" name="圣剑" desc="圣剑在法师之战中由神亲自交予反叛军之手，死亡后掉落" price="1100" isdrop="0" attack="300" bornlist="1,2" bornnum="1,1"/>
+    <row id="4" name="希梅斯特的掠夺" desc="" price="" isdrop="0" attack="32" bornlist="" bornnum=""/>
+    <row id="5" name="活力之球" desc="" price="" isdrop="0" attack="10" bornlist="" bornnum=""/>
+    <row id="6" name="魔龙之心合成书" desc="" price="" isdrop="0" attack="-100" bornlist="" bornnum=""/>
+    <row id="7" name="魔龙之心" desc="每秒恢复最大生命值的%2" price="" isdrop="1" attack="100" bornlist="4,5,6" bornnum="1,1,1"/>
+</dotaequipcfg>

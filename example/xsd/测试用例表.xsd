@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="testcfgs">
+  <xs:complexType>
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="testcfg">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:attribute name="stringfield" type="xs:string"/>
+            <xs:attribute name="boolfield" type="xs:byte"/>
+            <xs:attribute name="charfield" type="xs:unsignedByte"/>
+            <xs:attribute name="int16field" type="xs:unsignedShort"/>
+            <xs:attribute name="intfield" type="xs:unsignedInt"/>
+            <xs:attribute name="int64field" type="xs:unsignedLong"/>
+            <xs:attribute name="uint8field" type="xs:unsignedByte"/>
+            <xs:attribute name="uint16field" type="xs:unsignedShort"/>
+            <xs:attribute name="uintfield" type="xs:unsignedInt"/>
+            <xs:attribute name="uint64field" type="xs:unsignedLong"/>
+            <xs:attribute name="floatfield" type="xs:float"/>
+            <xs:attribute name="doublefield" type="xs:double"/>
+            <xs:attribute name="stringfieldprimary" type="xs:string"/>
+            <xs:attribute name="boolfieldprimary" type="xs:byte"/>
+            <xs:attribute name="charfieldprimary" type="xs:unsignedByte"/>
+            <xs:attribute name="int16fieldprimary" type="xs:unsignedShort"/>
+            <xs:attribute name="intfieldprimary" type="xs:unsignedInt"/>
+            <xs:attribute name="int64fieldprimary" type="xs:unsignedLong"/>
+            <xs:attribute name="uint8fieldprimary" type="xs:unsignedByte"/>
+            <xs:attribute name="uint16fieldprimary" type="xs:unsignedShort"/>
+            <xs:attribute name="uintfieldprimary" type="xs:unsignedInt"/>
+            <xs:attribute name="uint64fieldprimary" type="xs:unsignedLong"/>
+            <xs:attribute name="floatfieldprimary" type="xs:float"/>
+            <xs:attribute name="doublefieldprimary" type="xs:double"/>
+            <xs:attribute name="stringfieldunique" type="xs:string"/>
+            <xs:attribute name="boolfieldunique" type="xs:byte"/>
+            <xs:attribute name="charfieldunique" type="xs:unsignedByte"/>
+            <xs:attribute name="int16fieldunique" type="xs:unsignedShort"/>
+            <xs:attribute name="intfieldunique" type="xs:unsignedInt"/>
+            <xs:attribute name="int64fieldunique" type="xs:unsignedLong"/>
+            <xs:attribute name="uint8fieldunique" type="xs:unsignedByte"/>
+            <xs:attribute name="uint16fieldunique" type="xs:unsignedShort"/>
+            <xs:attribute name="uintfieldunique" type="xs:unsignedInt"/>
+            <xs:attribute name="uint64fieldunique" type="xs:unsignedLong"/>
+            <xs:attribute name="floatfieldunique" type="xs:float"/>
+            <xs:attribute name="doublefieldunique" type="xs:double"/>
+            <xs:attribute name="stringfieldarray" type="xs:string"/>
+            <xs:attribute name="boolfieldarray" type="xs:byte"/>
+            <xs:attribute name="charfieldarray" type="xs:unsignedByte"/>
+            <xs:attribute name="int16fieldarray" type="xs:unsignedShort"/>
+            <xs:attribute name="intfieldarray" type="xs:unsignedInt"/>
+            <xs:attribute name="int64fieldarray" type="xs:unsignedLong"/>
+            <xs:attribute name="uint8fieldarray" type="xs:unsignedByte"/>
+            <xs:attribute name="uint16fieldarray" type="xs:unsignedShort"/>
+            <xs:attribute name="uintfieldarray" type="xs:unsignedInt"/>
+            <xs:attribute name="uint64fieldarray" type="xs:unsignedLong"/>
+            <xs:attribute name="floatfieldarray" type="xs:float"/>
+            <xs:attribute name="doublefieldarray" type="xs:double"/>
+            <xs:attribute name="stringfieldset" type="xs:string"/>
+            <xs:attribute name="boolfieldset" type="xs:byte"/>
+            <xs:attribute name="charfieldset" type="xs:unsignedByte"/>
+            <xs:attribute name="int16fieldset" type="xs:unsignedShort"/>
+            <xs:attribute name="intfieldset" type="xs:unsignedInt"/>
+            <xs:attribute name="int64fieldset" type="xs:unsignedLong"/>
+            <xs:attribute name="uint8fieldset" type="xs:unsignedByte"/>
+            <xs:attribute name="uint16fieldset" type="xs:unsignedShort"/>
+            <xs:attribute name="uintfieldset" type="xs:unsignedInt"/>
+            <xs:attribute name="uint64fieldset" type="xs:unsignedLong"/>
+            <xs:attribute name="floatfieldset" type="xs:float"/>
+            <xs:attribute name="doublefieldset" type="xs:double"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+</xs:schema>
