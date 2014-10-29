@@ -33,19 +33,14 @@ namespace xmlutil{
         xml_text.reserve(cfg.table.size() * fields.size() * 15);
 
         string row_text;
-        // row_text.reserve(fields.size() * 15);
-
         for(size_t r = 0; r < cfg.table.size(); r++){
             const row_t &row = table[r];
 
-            // row_text.clear();
             row_text = "    <row";
-
             for(size_t c = 0; c < fields.size(); c++){
                 escape_xml(row[c]);
                 row_text += " " + cfg.fields[c].en_name + "=\"" + row[c] + "\"";
             }
-
             row_text += "/>\n";
             xml_text += row_text;
         }
@@ -66,6 +61,8 @@ bool xml_generator::generate()
 
 bool xml_generator::save_as_xml()
 {
+    //Tick tick_now = tickutil::get_tick();
+
     size_t n_cfg = m_cfgbase.cfgs.size();
     for(size_t n = 0; n < n_cfg; ++n){
         const cfg_t &cfg = m_cfgbase.cfgs[n];
@@ -80,5 +77,8 @@ bool xml_generator::save_as_xml()
         ECHO_OK("导出[%s] -> [%s]成功", cfg.cn_name.c_str(), xml.c_str());
     }
 
+//     uint32_t passed_ms = tickutil::tick_diff(tick_now);
+//     double passed_sec = (double)passed_ms / 1000;
+//     ECHO_WARN("导出xml完毕, 共耗时<%0.3f>秒", passed_sec);
     return true;
 }

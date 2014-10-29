@@ -24,8 +24,6 @@ public:
     virtual bool generate() = 0;
 
 protected:
-    bool parse_excel(enum_parse_option parse_option = parse_option_skip_data);
-
     void echo_errs();
 
 protected:

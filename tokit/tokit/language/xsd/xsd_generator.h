@@ -14,11 +14,6 @@
 
 using std::string;
 
-namespace xsdutil
-{
-	bool gen_xsds(string &excel, string &xsd_dir);
-};
-
 class xsd_generator : public generator
 {
 public:
@@ -33,7 +28,7 @@ public:
     bool generate();
 
 public:
-    static string& raw_type_2_xsd_type(enum_tokit_field_type);
+    static string& tokit_type_2_xsd_type(enum_tokit_field_type);
 
 private:
     bool gen_xsds();

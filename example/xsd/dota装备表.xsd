@@ -10,8 +10,8 @@
             <xs:attribute name="name" type="xs:string"/>
             <xs:attribute name="desc" type="xs:string"/>
             <xs:attribute name="price" type="xs:unsignedInt"/>
-            <xs:attribute name="isdrop" type="xs:byte"/>
-            <xs:attribute name="attack" type="xs:unsignedInt"/>
+            <xs:attribute name="isdrop" type="xs:unsignedByte"/>
+            <xs:attribute name="attack" type="xs:int"/>
             <xs:attribute name="bornlist" type="xs:unsignedInt"/>
             <xs:attribute name="bornnum" type="xs:unsignedByte"/>
           </xs:sequence>

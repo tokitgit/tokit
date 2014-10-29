@@ -41,7 +41,8 @@ namespace xsdutil{
 
         for(size_t n = 0; n < cfg.fields.size(); n++){
 		    const field_t &field = cfg.fields[n];
-		    string& xsd_type = xsd_generator::raw_type_2_xsd_type(field.fieldtype);
+
+		    string& xsd_type = xsd_generator::tokit_type_2_xsd_type(field.fieldtype);
 		    o << "            <xs:attribute name=\"" << field.en_name << "\" type=\"" << xsd_type << "\"/>" << endl;
 	    }
 
@@ -60,7 +61,7 @@ namespace xsdutil{
 	    o << "</xs:schema>" << endl;
     }
 
-    void gen_xsd(const cfg_t &cfg, string &xsd)
+    void gen_xsd(const cfg_t &cfg, const string &xsd)
     {
 	    ofstream o(xsd);
 
@@ -87,24 +88,23 @@ bool xsd_generator::gen_xsds()
     size_t n_cfg = m_cfgbase.cfgs.size();
     for(size_t n = 0; n < n_cfg; ++n){
         const cfg_t &cfg = m_cfgbase.cfgs[n];
-        string xsd = m_xsd_dir + "\\" + strip_ext(strip_dir(cfg.cn_name)) + ".xsd";
-
+        const string xsd = m_xsd_dir + "\\" + strip_ext(strip_dir(cfg.cn_name)) + ".xsd";
         xsdutil::gen_xsd(cfg, xsd);
     }
 
     return true;
 }
 
-string& xsd_generator::raw_type_2_xsd_type(enum_tokit_field_type fieldtype)
+string& xsd_generator::tokit_type_2_xsd_type(enum_tokit_field_type fieldtype)
 {
     static string static_xsd_types[fieldtype_max] = {
         "",
         "xs:string",
-        "xs:byte",
         "xs:unsignedByte",
-        "xs:unsignedShort",
-        "xs:unsignedInt",
-        "xs:unsignedLong",
+        "xs:byte",
+        "xs:short",
+        "xs:int",
+        "xs:long",
         "xs:unsignedByte",
         "xs:unsignedShort",
         "xs:unsignedInt",

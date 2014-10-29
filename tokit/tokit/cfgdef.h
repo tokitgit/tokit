@@ -53,14 +53,14 @@ enum enum_tokit_field_type
     fieldtype_none   = 0, 
     fieldtype_string = 1,  // 字符串
     fieldtype_bool   = 2,  // bool类型
-    fieldtype_int8   = 3,  // 单字节整数
-    fieldtype_int16  = 4,  // 双字节整数
-    fieldtype_int32  = 5,  // 四字节整数
-    fieldtype_int64  = 6,  // 八字节整数
-    fieldtype_uint8  = 7,  // 单字节无符号整数
-    fieldtype_uint16 = 8,  // 双字节无符号整数
-    fieldtype_uint32 = 9,  // 四字节无符号整数
-    fieldtype_uint64 = 10, // 八字节无符号整数
+    fieldtype_int8   = 3,  // 8位整数
+    fieldtype_int16  = 4,  // 16位整数
+    fieldtype_int32  = 5,  // 32位整数
+    fieldtype_int64  = 6,  // 64位整数
+    fieldtype_uint8  = 7,  // 无符号的8位整数
+    fieldtype_uint16 = 8,  // 无符号的16位整数
+    fieldtype_uint32 = 9,  // 无符号的32位整数
+    fieldtype_uint64 = 10, // 无符号的64位整数
     fieldtype_float  = 11, // 浮点数
     fieldtype_double = 12, // 双精度浮点数
     fieldtype_max,
