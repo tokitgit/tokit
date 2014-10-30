@@ -8,6 +8,9 @@
 
 #include <afxwin.h>
 
+#include <sstream>
+#include <limits>
+
 #include "excel_util.h"
 
 #include "file_util.h"
@@ -158,37 +161,51 @@ namespace excelutil
         //字符串
         static long read_address[2];
         static VARIANT val;
+
+        static const int prec=std::numeric_limits<long long>::digits10; // 18
+
+
         read_address[0] = row;
         read_address[1] = col;
         ole_safe_array.GetElement(read_address, &val);
         vResult = val;
 
+        val.bstrVal;
+
         switch(vResult.vt){
         case VT_BSTR:
+        {
             str = vResult.bstrVal;
             result = str.GetString();
             break;
+        }
 
+        //单元格空的
         case VT_EMPTY:
-            //单元格空的
+            
             result = "";
             break;
 
+        //整数
         case VT_INT:
-            //整数
+            
             str.Format("%d",vResult.pintVal);
             result = str.GetString();
             break;
 
+        //8字节的数字 
         case VT_R8:
-            //8字节的数字 
-            str.Format("%0.0f",vResult.dblVal);
-            result = str.GetString();
-            break;
+        {
+            std::ostringstream oss;
+            oss.precision(prec);//覆盖默认精度
 
+            oss << vResult.dblVal;
+            result = oss.str();
+            break;
+        }
+        //时间格式
         case VT_DATE:
         {
-            //时间格式
             SYSTEMTIME st;
             VariantTimeToSystemTime(vResult.date, &st);
             CTime tm(st); 
