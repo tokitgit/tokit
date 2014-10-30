@@ -16,13 +16,13 @@
 
 #include "type.h"
 
-%structs_part%
+%structs%
 
 // %cfg_member%
 class %mgr%
 {
 public:
-%mgr_typedefs_part%
+%typedefs%
 
 public:
 	%mgr%(){}
@@ -41,7 +41,7 @@ public:
 	// @impl 获取本配置类名称
 	std::string mgr_name(){ return "%cfg%"; }
 
-    // 获取本配置所在路径
+    // 获取xml文件路径
     std::string get_path(std::string xml){ return "../../xml/" + xml;}
 
 public:
@@ -51,25 +51,17 @@ public:
     // 清空%cfg_member%
     virtual void clear();
 
-// 载入方法
 public:
-%mgr_load_funcs_part%
+%load_funcs%
 
-// 清空方法
 public:
-%mgr_clear_funcs_part%
+%clear_funcs%
 
-// 查找方法
 public:
-%mgr_find_funcs_part%
+%get_funcs%
 
-// 获取成员方法
 public:
-%mgr_get_funcs_part%
-
-// 成员变量区
-public:
-%mgr_members_part%
+%members%
 };
 
 #endif // _%cfg%_h_

@@ -21,39 +21,39 @@
 
 namespace keyutil
 {
-    uint64_t Get16161616Key(uint16_t w, uint16_t x, uint16_t y, uint16_t z)
+    uint64 Get16161616Key(uint16 w, uint16 x, uint16 y, uint16 z)
     {
-        uint64_t key_w = w;
+        uint64 key_w = w;
         key_w <<= 32;
 
-        uint64_t key_x = x;
+        uint64 key_x = x;
         key_x <<= 32;
 
-        uint64_t key_y = y;
+        uint64 key_y = y;
         key_y <<= 32;
 
-        uint64_t key = key_w + key_x + key_y + z;
+        uint64 key = key_w + key_x + key_y + z;
         return key;
     }
 
-    uint64_t Get161616Key(uint16_t x, uint16_t y, uint16_t z)
+    uint64 Get161616Key(uint16 x, uint16 y, uint16 z)
     {
-        uint64_t key_x = x;
+        uint64 key_x = x;
         key_x <<= 32;
 
-        uint64_t key_y = y;
+        uint64 key_y = y;
         key_y <<= 32;
 
-        uint64_t key = key_x + key_y + z;
+        uint64 key = key_x + key_y + z;
         return key;
     }
 
-    uint64_t Get3232Key(uint32 x, uint32 y)
+    uint64 Get3232Key(uint32 x, uint32 y)
     {
-        uint64_t key_x = x;
+        uint64 key_x = x;
         key_x <<= 32;
 
-        uint64_t key = key_x + y;
+        uint64 key = key_x + y;
         return key;
     }
 }
@@ -88,14 +88,14 @@ namespace tickutil
 #endif
     }
 
-    uint32_t tick_diff(Tick old_tick)
+    uint32 tick_diff(Tick old_tick)
     {
         Tick tick_now = get_tick();
 
 #ifdef WIN32
-        uint32_t ms = (uint32_t)((tick_now - old_tick) * 1000 / GetTickFrequency());
+        uint32 ms = (uint32)((tick_now - old_tick) * 1000 / GetTickFrequency());
 #else
-        uint32_t ms = (tick_now - old_tick) / 1000000;
+        uint32 ms = (tick_now - old_tick) / 1000000;
 #endif
 
         return ms;
@@ -150,7 +150,7 @@ namespace strutil
 
     // 将无符号64位整数转换为字符串
     // 例如：tostr(100123) = "100123"
-    string tostr(uint64_t n)
+    string tostr(uint64 n)
     {
         char buf[64] = {0};
 

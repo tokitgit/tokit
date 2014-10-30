@@ -57,8 +57,8 @@ class cpp_generator : public generator
 public:
     cpp_generator(cfgbase_t &cfgbase, const string &to_dir, const string &h_templet, const string &cpp_templet)
         : generator(cfgbase)
-        , m_h_templet(h_templet)
-        , m_cpp_templet(cpp_templet)
+        , m_h_templet_path(h_templet)
+        , m_cpp_templet_path(cpp_templet)
         , m_to_dir(to_dir)
     {
     }
@@ -76,8 +76,8 @@ private:
 	bool gen_cpp_file(const string &cpp_file);
 
 private:
-    std::string m_h_templet;   /* 用于生成.h的模板文件 */
-    std::string m_cpp_templet; /* 用于生成.cpp的模板文件 */
+    std::string m_h_templet_path;   /* 用于生成.h的模板文件 */
+    std::string m_cpp_templet_path; /* 用于生成.cpp的模板文件 */
     std::string m_to_dir;
 };
 

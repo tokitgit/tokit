@@ -167,7 +167,7 @@ public:
 	// @impl 获取本配置类名称
 	std::string mgr_name(){ return "testcfg"; }
 
-    // 获取本配置所在路径
+    // 获取xml文件路径
     std::string get_path(std::string xml){ return "../../xml/" + xml;}
 
 public:
@@ -177,34 +177,27 @@ public:
     // 清空测试用例表
     virtual void clear();
 
-// 载入方法
 public:
     bool load_testcfg();
 
-// 清空方法
 public:
     void clear_testcfg();
 
-// 查找方法
 public:
     // 测试用例表
-    testcfg_t* get_testcfg(const char* stringfieldprimary, testcfg_t::boolfieldprimary_t boolfieldprimary, testcfg_t::charfieldprimary_t charfieldprimary, testcfg_t::int16fieldprimary_t int16fieldprimary, testcfg_t::intfieldprimary_t intfieldprimary, testcfg_t::int64fieldprimary_t int64fieldprimary, testcfg_t::uint8fieldprimary_t uint8fieldprimary, testcfg_t::uint16fieldprimary_t uint16fieldprimary, testcfg_t::uintfieldprimary_t uintfieldprimary, testcfg_t::uint64fieldprimary_t uint64fieldprimary);
-    testcfg_t* get_testcfg_by_stringfieldunique(const char* stringfieldunique);
-    testcfg_t* get_testcfg_by_boolfieldunique(testcfg_t::boolfieldunique_t boolfieldunique);
-    testcfg_t* get_testcfg_by_charfieldunique(testcfg_t::charfieldunique_t charfieldunique);
-    testcfg_t* get_testcfg_by_int16fieldunique(testcfg_t::int16fieldunique_t int16fieldunique);
-    testcfg_t* get_testcfg_by_intfieldunique(testcfg_t::intfieldunique_t intfieldunique);
-    testcfg_t* get_testcfg_by_int64fieldunique(testcfg_t::int64fieldunique_t int64fieldunique);
-    testcfg_t* get_testcfg_by_uint8fieldunique(testcfg_t::uint8fieldunique_t uint8fieldunique);
-    testcfg_t* get_testcfg_by_uint16fieldunique(testcfg_t::uint16fieldunique_t uint16fieldunique);
-    testcfg_t* get_testcfg_by_uintfieldunique(testcfg_t::uintfieldunique_t uintfieldunique);
-    testcfg_t* get_testcfg_by_uint64fieldunique(testcfg_t::uint64fieldunique_t uint64fieldunique);
-    testcfg_t* get_testcfg_by_floatfieldunique(testcfg_t::floatfieldunique_t floatfieldunique);
-    testcfg_t* get_testcfg_by_doublefieldunique(testcfg_t::doublefieldunique_t doublefieldunique);
-
-// 获取成员方法
-public:
-    // 测试用例表
+    const testcfg_t* get_testcfg(const char* stringfieldprimary, testcfg_t::boolfieldprimary_t boolfieldprimary, testcfg_t::charfieldprimary_t charfieldprimary, testcfg_t::int16fieldprimary_t int16fieldprimary, testcfg_t::intfieldprimary_t intfieldprimary, testcfg_t::int64fieldprimary_t int64fieldprimary, testcfg_t::uint8fieldprimary_t uint8fieldprimary, testcfg_t::uint16fieldprimary_t uint16fieldprimary, testcfg_t::uintfieldprimary_t uintfieldprimary, testcfg_t::uint64fieldprimary_t uint64fieldprimary);
+    const testcfg_t* get_testcfg_by_stringfieldunique(const char* stringfieldunique);
+    const testcfg_t* get_testcfg_by_boolfieldunique(testcfg_t::boolfieldunique_t boolfieldunique);
+    const testcfg_t* get_testcfg_by_charfieldunique(testcfg_t::charfieldunique_t charfieldunique);
+    const testcfg_t* get_testcfg_by_int16fieldunique(testcfg_t::int16fieldunique_t int16fieldunique);
+    const testcfg_t* get_testcfg_by_intfieldunique(testcfg_t::intfieldunique_t intfieldunique);
+    const testcfg_t* get_testcfg_by_int64fieldunique(testcfg_t::int64fieldunique_t int64fieldunique);
+    const testcfg_t* get_testcfg_by_uint8fieldunique(testcfg_t::uint8fieldunique_t uint8fieldunique);
+    const testcfg_t* get_testcfg_by_uint16fieldunique(testcfg_t::uint16fieldunique_t uint16fieldunique);
+    const testcfg_t* get_testcfg_by_uintfieldunique(testcfg_t::uintfieldunique_t uintfieldunique);
+    const testcfg_t* get_testcfg_by_uint64fieldunique(testcfg_t::uint64fieldunique_t uint64fieldunique);
+    const testcfg_t* get_testcfg_by_floatfieldunique(testcfg_t::floatfieldunique_t floatfieldunique);
+    const testcfg_t* get_testcfg_by_doublefieldunique(testcfg_t::doublefieldunique_t doublefieldunique);
     const testcfgmap& get_testcfgmap(){ return m_testcfgmap; }
     const stringfieldunique2testcfgmap& get_stringfieldunique2testcfgmap(){ return m_stringfieldunique2testcfgmap; }
     const boolfieldunique2testcfgmap& get_boolfieldunique2testcfgmap(){ return m_boolfieldunique2testcfgmap; }
@@ -220,22 +213,21 @@ public:
     const doublefieldunique2testcfgmap& get_doublefieldunique2testcfgmap(){ return m_doublefieldunique2testcfgmap; }
     const testcfgvec& get_testcfgvec(){ return m_testcfgvec; }
 
-// 成员变量区
 public:
     // 测试用例表
     testcfgmap m_testcfgmap;
-    stringfieldunique2testcfgmap m_stringfieldunique2testcfgmap;
-    boolfieldunique2testcfgmap m_boolfieldunique2testcfgmap;
-    charfieldunique2testcfgmap m_charfieldunique2testcfgmap;
-    int16fieldunique2testcfgmap m_int16fieldunique2testcfgmap;
-    intfieldunique2testcfgmap m_intfieldunique2testcfgmap;
-    int64fieldunique2testcfgmap m_int64fieldunique2testcfgmap;
-    uint8fieldunique2testcfgmap m_uint8fieldunique2testcfgmap;
-    uint16fieldunique2testcfgmap m_uint16fieldunique2testcfgmap;
-    uintfieldunique2testcfgmap m_uintfieldunique2testcfgmap;
-    uint64fieldunique2testcfgmap m_uint64fieldunique2testcfgmap;
-    floatfieldunique2testcfgmap m_floatfieldunique2testcfgmap;
-    doublefieldunique2testcfgmap m_doublefieldunique2testcfgmap;
+    stringfieldunique2testcfgmap m_stringfieldunique2testcfgmap; // 字符串唯一 -> testcfg
+    boolfieldunique2testcfgmap m_boolfieldunique2testcfgmap; // bool型唯一 -> testcfg
+    charfieldunique2testcfgmap m_charfieldunique2testcfgmap; // 字符唯一 -> testcfg
+    int16fieldunique2testcfgmap m_int16fieldunique2testcfgmap; // 16位整数唯一 -> testcfg
+    intfieldunique2testcfgmap m_intfieldunique2testcfgmap; // 32位整数唯一 -> testcfg
+    int64fieldunique2testcfgmap m_int64fieldunique2testcfgmap; // 64位整数唯一 -> testcfg
+    uint8fieldunique2testcfgmap m_uint8fieldunique2testcfgmap; // 8位无符号整数唯一 -> testcfg
+    uint16fieldunique2testcfgmap m_uint16fieldunique2testcfgmap; // 16位无符号整数唯一 -> testcfg
+    uintfieldunique2testcfgmap m_uintfieldunique2testcfgmap; // 32位无符号整数唯一 -> testcfg
+    uint64fieldunique2testcfgmap m_uint64fieldunique2testcfgmap; // 64位无符号整数唯一 -> testcfg
+    floatfieldunique2testcfgmap m_floatfieldunique2testcfgmap; // 浮点数唯一 -> testcfg
+    doublefieldunique2testcfgmap m_doublefieldunique2testcfgmap; // 双精度浮点数唯一 -> testcfg
     testcfgvec m_testcfgvec;
 };
 

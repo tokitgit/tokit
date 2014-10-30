@@ -81,7 +81,7 @@ public:
 	// @impl 获取本配置类名称
 	std::string mgr_name(){ return "dotaequipcfg"; }
 
-    // 获取本配置所在路径
+    // 获取xml文件路径
     std::string get_path(std::string xml){ return "../../xml/" + xml;}
 
 public:
@@ -91,48 +91,38 @@ public:
     // 清空dota装备表, dota英雄表
     virtual void clear();
 
-// 载入方法
 public:
     bool load_dotaequipcfg();
     bool load_dotaherocfg();
 
-// 清空方法
 public:
     void clear_dotaequipcfg();
     void clear_dotaherocfg();
 
-// 查找方法
 public:
     // dota装备表
-    dotaequipcfg_t* get_dotaequipcfg_by_id(dotaequipcfg_t::id_t id);
-    dotaequipcfg_t* get_dotaequipcfg_by_name(const char* name);
-
-    // dota英雄表
-    dotaherocfg_t* get_dotaherocfg_by_id(dotaherocfg_t::id_t id);
-    dotaherocfg_t* get_dotaherocfg_by_name(const char* name);
-
-// 获取成员方法
-public:
-    // dota装备表
+    const dotaequipcfg_t* get_dotaequipcfg_by_id(dotaequipcfg_t::id_t id);
+    const dotaequipcfg_t* get_dotaequipcfg_by_name(const char* name);
     const id2dotaequipcfgmap& get_id2dotaequipcfgmap(){ return m_id2dotaequipcfgmap; }
     const name2dotaequipcfgmap& get_name2dotaequipcfgmap(){ return m_name2dotaequipcfgmap; }
     const dotaequipcfgvec& get_dotaequipcfgvec(){ return m_dotaequipcfgvec; }
 
     // dota英雄表
+    const dotaherocfg_t* get_dotaherocfg_by_id(dotaherocfg_t::id_t id);
+    const dotaherocfg_t* get_dotaherocfg_by_name(const char* name);
     const id2dotaherocfgmap& get_id2dotaherocfgmap(){ return m_id2dotaherocfgmap; }
     const name2dotaherocfgmap& get_name2dotaherocfgmap(){ return m_name2dotaherocfgmap; }
     const dotaherocfgvec& get_dotaherocfgvec(){ return m_dotaherocfgvec; }
 
-// 成员变量区
 public:
     // dota装备表
-    id2dotaequipcfgmap m_id2dotaequipcfgmap;
-    name2dotaequipcfgmap m_name2dotaequipcfgmap;
+    id2dotaequipcfgmap m_id2dotaequipcfgmap; // 物品ID -> dotaequipcfg
+    name2dotaequipcfgmap m_name2dotaequipcfgmap; // 物品名称 -> dotaequipcfg
     dotaequipcfgvec m_dotaequipcfgvec;
 
     // dota英雄表
-    id2dotaherocfgmap m_id2dotaherocfgmap;
-    name2dotaherocfgmap m_name2dotaherocfgmap;
+    id2dotaherocfgmap m_id2dotaherocfgmap; // 英雄ID -> dotaherocfg
+    name2dotaherocfgmap m_name2dotaherocfgmap; // 英雄名称 -> dotaherocfg
     dotaherocfgvec m_dotaherocfgvec;
 };
 

@@ -73,7 +73,7 @@ bool testcfgmgr::load_testcfg()
     rapidxml::file<> fdoc(this->get_path("testcfg.xml").c_str());
     rapidxml::xml_document<> doc;
     if(!fdoc.data()){
-        std::cout << "err: load <testcfg.xml> failed, please check the file path" << std::endl;
+        std::cout << "err: load " << this->get_path("testcfg.xml") << " failed, please check the file path" << std::endl;
         return false;
     }
 
@@ -177,7 +177,7 @@ bool testcfgmgr::load_testcfg()
         m_doublefieldunique2testcfgmap[cfg.doublefieldunique] = curcfg;
     }
 
-    uint32_t passed_ms = tickutil::tick_diff(tick_now);
+    uint32 passed_ms = tickutil::tick_diff(tick_now);
     double passed_sec = (double)passed_ms / 1000;
 
     printf("load <%-20s> success, cost time = <%-6f>s\n", "testcfg.xml", passed_sec);
@@ -204,7 +204,7 @@ void testcfgmgr::clear_testcfg()
 }
 
 // ≤‚ ‘”√¿˝±Ì
-testcfg_t* testcfgmgr::get_testcfg(const char* stringfieldprimary, testcfg_t::boolfieldprimary_t boolfieldprimary, testcfg_t::charfieldprimary_t charfieldprimary, testcfg_t::int16fieldprimary_t int16fieldprimary, testcfg_t::intfieldprimary_t intfieldprimary, testcfg_t::int64fieldprimary_t int64fieldprimary, testcfg_t::uint8fieldprimary_t uint8fieldprimary, testcfg_t::uint16fieldprimary_t uint16fieldprimary, testcfg_t::uintfieldprimary_t uintfieldprimary, testcfg_t::uint64fieldprimary_t uint64fieldprimary)
+const testcfg_t* testcfgmgr::get_testcfg(const char* stringfieldprimary, testcfg_t::boolfieldprimary_t boolfieldprimary, testcfg_t::charfieldprimary_t charfieldprimary, testcfg_t::int16fieldprimary_t int16fieldprimary, testcfg_t::intfieldprimary_t intfieldprimary, testcfg_t::int64fieldprimary_t int64fieldprimary, testcfg_t::uint8fieldprimary_t uint8fieldprimary, testcfg_t::uint16fieldprimary_t uint16fieldprimary, testcfg_t::uintfieldprimary_t uintfieldprimary, testcfg_t::uint64fieldprimary_t uint64fieldprimary)
 {
     std::string key = stringfieldprimary + strutil::tostr(boolfieldprimary) + strutil::tostr(charfieldprimary) + strutil::tostr(int16fieldprimary) + strutil::tostr(intfieldprimary) + strutil::tostr(int64fieldprimary) + strutil::tostr(uint8fieldprimary) + strutil::tostr(uint16fieldprimary) + strutil::tostr(uintfieldprimary) + strutil::tostr(uint64fieldprimary);
     testcfgmap::iterator itr = m_testcfgmap.find(key);
@@ -216,7 +216,7 @@ testcfg_t* testcfgmgr::get_testcfg(const char* stringfieldprimary, testcfg_t::bo
     return cfg;
 }
 
-testcfg_t* testcfgmgr::get_testcfg_by_stringfieldunique(const char* stringfieldunique)
+const testcfg_t* testcfgmgr::get_testcfg_by_stringfieldunique(const char* stringfieldunique)
 {
     stringfieldunique2testcfgmap::iterator itr = m_stringfieldunique2testcfgmap.find(stringfieldunique);
     if(itr == m_stringfieldunique2testcfgmap.end()){
@@ -227,7 +227,7 @@ testcfg_t* testcfgmgr::get_testcfg_by_stringfieldunique(const char* stringfieldu
     return cfg;
 }
 
-testcfg_t* testcfgmgr::get_testcfg_by_boolfieldunique(testcfg_t::boolfieldunique_t boolfieldunique)
+const testcfg_t* testcfgmgr::get_testcfg_by_boolfieldunique(testcfg_t::boolfieldunique_t boolfieldunique)
 {
     boolfieldunique2testcfgmap::iterator itr = m_boolfieldunique2testcfgmap.find(boolfieldunique);
     if(itr == m_boolfieldunique2testcfgmap.end()){
@@ -238,7 +238,7 @@ testcfg_t* testcfgmgr::get_testcfg_by_boolfieldunique(testcfg_t::boolfieldunique
     return cfg;
 }
 
-testcfg_t* testcfgmgr::get_testcfg_by_charfieldunique(testcfg_t::charfieldunique_t charfieldunique)
+const testcfg_t* testcfgmgr::get_testcfg_by_charfieldunique(testcfg_t::charfieldunique_t charfieldunique)
 {
     charfieldunique2testcfgmap::iterator itr = m_charfieldunique2testcfgmap.find(charfieldunique);
     if(itr == m_charfieldunique2testcfgmap.end()){
@@ -249,7 +249,7 @@ testcfg_t* testcfgmgr::get_testcfg_by_charfieldunique(testcfg_t::charfieldunique
     return cfg;
 }
 
-testcfg_t* testcfgmgr::get_testcfg_by_int16fieldunique(testcfg_t::int16fieldunique_t int16fieldunique)
+const testcfg_t* testcfgmgr::get_testcfg_by_int16fieldunique(testcfg_t::int16fieldunique_t int16fieldunique)
 {
     int16fieldunique2testcfgmap::iterator itr = m_int16fieldunique2testcfgmap.find(int16fieldunique);
     if(itr == m_int16fieldunique2testcfgmap.end()){
@@ -260,7 +260,7 @@ testcfg_t* testcfgmgr::get_testcfg_by_int16fieldunique(testcfg_t::int16fielduniq
     return cfg;
 }
 
-testcfg_t* testcfgmgr::get_testcfg_by_intfieldunique(testcfg_t::intfieldunique_t intfieldunique)
+const testcfg_t* testcfgmgr::get_testcfg_by_intfieldunique(testcfg_t::intfieldunique_t intfieldunique)
 {
     intfieldunique2testcfgmap::iterator itr = m_intfieldunique2testcfgmap.find(intfieldunique);
     if(itr == m_intfieldunique2testcfgmap.end()){
@@ -271,7 +271,7 @@ testcfg_t* testcfgmgr::get_testcfg_by_intfieldunique(testcfg_t::intfieldunique_t
     return cfg;
 }
 
-testcfg_t* testcfgmgr::get_testcfg_by_int64fieldunique(testcfg_t::int64fieldunique_t int64fieldunique)
+const testcfg_t* testcfgmgr::get_testcfg_by_int64fieldunique(testcfg_t::int64fieldunique_t int64fieldunique)
 {
     int64fieldunique2testcfgmap::iterator itr = m_int64fieldunique2testcfgmap.find(int64fieldunique);
     if(itr == m_int64fieldunique2testcfgmap.end()){
@@ -282,7 +282,7 @@ testcfg_t* testcfgmgr::get_testcfg_by_int64fieldunique(testcfg_t::int64fielduniq
     return cfg;
 }
 
-testcfg_t* testcfgmgr::get_testcfg_by_uint8fieldunique(testcfg_t::uint8fieldunique_t uint8fieldunique)
+const testcfg_t* testcfgmgr::get_testcfg_by_uint8fieldunique(testcfg_t::uint8fieldunique_t uint8fieldunique)
 {
     uint8fieldunique2testcfgmap::iterator itr = m_uint8fieldunique2testcfgmap.find(uint8fieldunique);
     if(itr == m_uint8fieldunique2testcfgmap.end()){
@@ -293,7 +293,7 @@ testcfg_t* testcfgmgr::get_testcfg_by_uint8fieldunique(testcfg_t::uint8fielduniq
     return cfg;
 }
 
-testcfg_t* testcfgmgr::get_testcfg_by_uint16fieldunique(testcfg_t::uint16fieldunique_t uint16fieldunique)
+const testcfg_t* testcfgmgr::get_testcfg_by_uint16fieldunique(testcfg_t::uint16fieldunique_t uint16fieldunique)
 {
     uint16fieldunique2testcfgmap::iterator itr = m_uint16fieldunique2testcfgmap.find(uint16fieldunique);
     if(itr == m_uint16fieldunique2testcfgmap.end()){
@@ -304,7 +304,7 @@ testcfg_t* testcfgmgr::get_testcfg_by_uint16fieldunique(testcfg_t::uint16fieldun
     return cfg;
 }
 
-testcfg_t* testcfgmgr::get_testcfg_by_uintfieldunique(testcfg_t::uintfieldunique_t uintfieldunique)
+const testcfg_t* testcfgmgr::get_testcfg_by_uintfieldunique(testcfg_t::uintfieldunique_t uintfieldunique)
 {
     uintfieldunique2testcfgmap::iterator itr = m_uintfieldunique2testcfgmap.find(uintfieldunique);
     if(itr == m_uintfieldunique2testcfgmap.end()){
@@ -315,7 +315,7 @@ testcfg_t* testcfgmgr::get_testcfg_by_uintfieldunique(testcfg_t::uintfieldunique
     return cfg;
 }
 
-testcfg_t* testcfgmgr::get_testcfg_by_uint64fieldunique(testcfg_t::uint64fieldunique_t uint64fieldunique)
+const testcfg_t* testcfgmgr::get_testcfg_by_uint64fieldunique(testcfg_t::uint64fieldunique_t uint64fieldunique)
 {
     uint64fieldunique2testcfgmap::iterator itr = m_uint64fieldunique2testcfgmap.find(uint64fieldunique);
     if(itr == m_uint64fieldunique2testcfgmap.end()){
@@ -326,7 +326,7 @@ testcfg_t* testcfgmgr::get_testcfg_by_uint64fieldunique(testcfg_t::uint64fieldun
     return cfg;
 }
 
-testcfg_t* testcfgmgr::get_testcfg_by_floatfieldunique(testcfg_t::floatfieldunique_t floatfieldunique)
+const testcfg_t* testcfgmgr::get_testcfg_by_floatfieldunique(testcfg_t::floatfieldunique_t floatfieldunique)
 {
     floatfieldunique2testcfgmap::iterator itr = m_floatfieldunique2testcfgmap.find(floatfieldunique);
     if(itr == m_floatfieldunique2testcfgmap.end()){
@@ -337,7 +337,7 @@ testcfg_t* testcfgmgr::get_testcfg_by_floatfieldunique(testcfg_t::floatfielduniq
     return cfg;
 }
 
-testcfg_t* testcfgmgr::get_testcfg_by_doublefieldunique(testcfg_t::doublefieldunique_t doublefieldunique)
+const testcfg_t* testcfgmgr::get_testcfg_by_doublefieldunique(testcfg_t::doublefieldunique_t doublefieldunique)
 {
     doublefieldunique2testcfgmap::iterator itr = m_doublefieldunique2testcfgmap.find(doublefieldunique);
     if(itr == m_doublefieldunique2testcfgmap.end()){

@@ -19,12 +19,12 @@ void load()
 
 void test()
 {
-    dotaequipcfg_t *dotaequipcfg = dotaequipcfgmgr::instance().get_dotaequipcfg_by_id(1);
+    const dotaequipcfg_t *dotaequipcfg = dotaequipcfgmgr::instance().get_dotaequipcfg_by_id(1);
     if (NULL == dotaequipcfg){
         return;
     }
 
-    dotaherocfg_t *dotaherocfg = dotaequipcfgmgr::instance().get_dotaherocfg_by_name("Ð¡ºÚ");
+    const dotaherocfg_t *dotaherocfg = dotaequipcfgmgr::instance().get_dotaherocfg_by_name("Ð¡ºÚ");
     if (NULL == dotaherocfg){
         return;
     }

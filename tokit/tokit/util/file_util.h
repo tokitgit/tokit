@@ -34,7 +34,7 @@ namespace fileutil
     char* get_whole_file_buf(const std::string &path);
 
     // 以字符方式读取整个文件，返回文本内容字符串（文件大时不适合用此方法,因为返回的string将被深拷贝）
-    string get_whole_file_str(const std::string &path);
+    bool get_whole_file_str(const std::string &path, std::string &text);
 
     // 覆盖文件：如果文件内容不变，则不作操作，否则直接用新的文件内容替换掉原来的（这么做是希望当文件内容不变时，防止文件的时间戳发生变化）
     bool overwrite_file(const std::string &path, const std::string &text);

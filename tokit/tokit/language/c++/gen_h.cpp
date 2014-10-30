@@ -73,12 +73,7 @@ namespace hxx
 		return text;
 	}
 
-    string gen_includes_part(const cfgbase_t &cfgbase)
-    {
-        return "";
-    }
-
-    string gen_mgr_primary_key_map_typedef(const cfg_t &cfg)
+    string gen_mgr_n_key_map_typedef(const cfg_t &cfg)
     {
         size_t n_key = cfg.keys.size();
         if (n_key <= 1){
@@ -104,7 +99,7 @@ namespace hxx
         return text;
     }
 
-    string gen_mgr_unique_key_map_typedef(const cfg_t &cfg)
+    string gen_mgr_1_key_map_typedef(const cfg_t &cfg)
     {
         string text = "";
 
@@ -142,8 +137,8 @@ namespace hxx
 
         string text;
         text += "    " + cpputil::get_comment(cfg) + "\n";
-        text += gen_mgr_primary_key_map_typedef(cfg);
-        text += gen_mgr_unique_key_map_typedef(cfg);
+        text += gen_mgr_n_key_map_typedef(cfg);
+        text += gen_mgr_1_key_map_typedef(cfg);
         text += gen_mgr_vec_typedef(cfg);
 
         if (!text.empty()){
@@ -165,13 +160,13 @@ namespace hxx
         return text;
     }
 
-    string gen_mgr_primary_key_find_func(const cfg_t &cfg)
+    string gen_mgr_n_key_find_func(const cfg_t &cfg)
     {
         string text = cpputil::get_member_func_decl_stmt(cfg, cpputil::get_n_key_find_func_declare, "    ", ";\n");
         return text;
     }
 
-    string gen_mgr_unique_key_find_func(const cfg_t &cfg)
+    string gen_mgr_1_key_find_func(const cfg_t &cfg)
     {
         string text = cpputil::get_member_func_decl_stmt(cfg, cpputil::get_1_key_find_func_declare_list);
         return text;
@@ -185,8 +180,8 @@ namespace hxx
 
         string text;
         text += "    " + cpputil::get_comment(cfg) + "\n";
-        text += gen_mgr_primary_key_find_func(cfg);
-        text += gen_mgr_unique_key_find_func(cfg);
+        text += gen_mgr_n_key_find_func(cfg);
+        text += gen_mgr_1_key_find_func(cfg);
 
         if (!text.empty()){
             text.erase(text.end() - 1);
@@ -202,7 +197,6 @@ namespace hxx
         typedef std::vector<std::string> namevec_t;
 
         string text;
-        text += "    " + cpputil::get_comment(cfg) + "\n";
 
         namevec_t membernamevec;
 
@@ -247,7 +241,12 @@ namespace hxx
         return text;
     }
 
-    string gen_mgr_primary_key_member(const cfg_t &cfg)
+    string gen_mgr_get_func(const cfg_t &cfg)
+    {
+        return gen_mgr_find_func(cfg) + "\n" + gen_mgr_get_member_func(cfg);
+    }
+
+    string gen_mgr_n_key_member(const cfg_t &cfg)
     {
         if (cfg.only_has_1_row()){
             return "";
@@ -263,7 +262,7 @@ namespace hxx
         return text;
     }
 
-    string gen_mgr_unique_key_member(const cfg_t &cfg)
+    string gen_mgr_1_key_member(const cfg_t &cfg)
     {
         if (cfg.only_has_1_row()){
             return "";
@@ -277,9 +276,10 @@ namespace hxx
                 continue;
             }
 
-            string member_text = "    %map% m_%map%;\n";
+            string member_text = "    %map% m_%map%; // %field_cn_name% -> %cfg%\n";
 
             strutil::replace(member_text, "%map%", cpputil::get_1_key_map_name(cfg, field));
+            strutil::replace(member_text, "%field_cn_name%", field.cn_name);
             text += member_text;
         }
         
@@ -314,8 +314,8 @@ namespace hxx
     {
         string text;
         text += "    " + cpputil::get_comment(cfg) + "\n";
-        text += gen_mgr_primary_key_member(cfg);
-        text += gen_mgr_unique_key_member(cfg);
+        text += gen_mgr_n_key_member(cfg);
+        text += gen_mgr_1_key_member(cfg);
         text += gen_mgr_vec_member(cfg);
         text += gen_mgr_alone_member(cfg);
 
@@ -329,31 +329,31 @@ namespace hxx
 
 bool cpp_generator::gen_h_file(const string &h_file)
 {
-	string h_template_contents = fileutil::get_whole_file_str(m_h_templet);
-	if(h_template_contents.empty()){
-		return false;
-	}
+    static string h_template_text;
+    if (h_template_text.empty()){
+        fileutil::get_whole_file_str(m_h_templet_path, h_template_text);
 
-    string src = h_template_contents;
+        if(h_template_text.empty()){
+            return false;
+        }
+    }
 
-    strutil::replace(src, "%cfg%", m_cfgbase.filename);
+    string text = h_template_text;
 
-    // 包含所需头文件
-    strutil::replace(src, "%includes_part%", hxx::gen_includes_part(m_cfgbase));
+    strutil::replace(text, "%cfg%", m_cfgbase.filename);
 
     // 定义结构体
-    strutil::replace(src, "%structs_part%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_struct));
+    strutil::replace(text, "%structs%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_struct));
 
     // 开始实现mgr
-    strutil::replace(src, "%mgr_typedefs_part%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_typedef, "\n\n"));
-    strutil::replace(src, "%mgr_load_funcs_part%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_load_func, "\n"));
-    strutil::replace(src, "%mgr_clear_funcs_part%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_clear_func, "\n"));
-    strutil::replace(src, "%mgr_find_funcs_part%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_find_func, "\n\n"));
-    strutil::replace(src, "%mgr_get_funcs_part%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_get_member_func, "\n\n"));
-    strutil::replace(src, "%mgr_members_part%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_members, "\n\n"));
-    strutil::replace(src, "%cfg_member%", cpputil::get_member_comment_list(m_cfgbase));
-    strutil::replace(src, "%mgr%", cpputil::get_mgr_name(m_cfgbase));
+    strutil::replace(text, "%typedefs%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_typedef, "\n\n"));
+    strutil::replace(text, "%load_funcs%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_load_func, "\n"));
+    strutil::replace(text, "%clear_funcs%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_clear_func, "\n"));
+    strutil::replace(text, "%get_funcs%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_get_func, "\n\n"));
+    strutil::replace(text, "%members%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_members, "\n\n"));
+    strutil::replace(text, "%cfg_member%", cpputil::get_member_comment_list(m_cfgbase));
+    strutil::replace(text, "%mgr%", cpputil::get_mgr_name(m_cfgbase));
  
-    bool is_overwrite_file_ok = fileutil::overwrite_file(h_file, src);
+    bool is_overwrite_file_ok = fileutil::overwrite_file(h_file, text);
     return is_overwrite_file_ok;
 }

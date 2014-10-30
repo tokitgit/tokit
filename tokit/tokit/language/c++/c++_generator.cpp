@@ -140,7 +140,7 @@ namespace cpputil{
             }
         }
 
-        string text = "%cfgtype%* %mgr%::get_%cfg%(%key%)";
+        string text = "const %cfgtype%* %mgr%::get_%cfg%(%key%)";
 
         strutil::replace(text, "%cfg%", cfg.en_name);
         strutil::replace(text, "%cfgtype%", cpputil::get_cfg_type_name(cfg));
@@ -170,7 +170,7 @@ namespace cpputil{
             return "";
         }
 
-        string text = "%cfgtype%* %mgr%::get_%cfg%_by_%key_name%(%key%)";
+        string text = "const %cfgtype%* %mgr%::get_%cfg%_by_%key_name%(%key%)";
 
         string key = cpputil::get_field_parameter_c_type(cfg, field) + " " + field.en_name;
         strutil::replace(text, "%key%", key);
@@ -241,13 +241,13 @@ bool cpp_generator::generate()
         return false;
     }
 
-    if(false == fileutil::exist(m_h_templet)){
-        ECHO_ERR("参数错误: 找不到.h模板头文件<%s>", m_h_templet.c_str());
+    if(false == fileutil::exist(m_h_templet_path)){
+        ECHO_ERR("参数错误: 找不到.h模板头文件<%s>", m_h_templet_path.c_str());
         return false;
     }
 
-    if(false == fileutil::exist(m_cpp_templet)){
-        ECHO_ERR("参数错误: 找不到cpp模板源文件<%s>", m_cpp_templet.c_str());
+    if(false == fileutil::exist(m_cpp_templet_path)){
+        ECHO_ERR("参数错误: 找不到cpp模板源文件<%s>", m_cpp_templet_path.c_str());
         return false;
     }
 

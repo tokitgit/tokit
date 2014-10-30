@@ -54,7 +54,7 @@ bool dotaequipcfgmgr::load_dotaequipcfg()
     rapidxml::file<> fdoc(this->get_path("dotaequipcfg.xml").c_str());
     rapidxml::xml_document<> doc;
     if(!fdoc.data()){
-        std::cout << "err: load <dotaequipcfg.xml> failed, please check the file path" << std::endl;
+        std::cout << "err: load " << this->get_path("dotaequipcfg.xml") << " failed, please check the file path" << std::endl;
         return false;
     }
 
@@ -93,7 +93,7 @@ bool dotaequipcfgmgr::load_dotaequipcfg()
         m_name2dotaequipcfgmap[cfg.name] = curcfg;
     }
 
-    uint32_t passed_ms = tickutil::tick_diff(tick_now);
+    uint32 passed_ms = tickutil::tick_diff(tick_now);
     double passed_sec = (double)passed_ms / 1000;
 
     printf("load <%-20s> success, cost time = <%-6f>s\n", "dotaequipcfg.xml", passed_sec);
@@ -108,7 +108,7 @@ bool dotaequipcfgmgr::load_dotaherocfg()
     rapidxml::file<> fdoc(this->get_path("dotaherocfg.xml").c_str());
     rapidxml::xml_document<> doc;
     if(!fdoc.data()){
-        std::cout << "err: load <dotaherocfg.xml> failed, please check the file path" << std::endl;
+        std::cout << "err: load " << this->get_path("dotaherocfg.xml") << " failed, please check the file path" << std::endl;
         return false;
     }
 
@@ -144,7 +144,7 @@ bool dotaequipcfgmgr::load_dotaherocfg()
         m_name2dotaherocfgmap[cfg.name] = curcfg;
     }
 
-    uint32_t passed_ms = tickutil::tick_diff(tick_now);
+    uint32 passed_ms = tickutil::tick_diff(tick_now);
     double passed_sec = (double)passed_ms / 1000;
 
     printf("load <%-20s> success, cost time = <%-6f>s\n", "dotaherocfg.xml", passed_sec);
@@ -167,7 +167,7 @@ void dotaequipcfgmgr::clear_dotaherocfg()
 }
 
 // dota装备表
-dotaequipcfg_t* dotaequipcfgmgr::get_dotaequipcfg_by_id(dotaequipcfg_t::id_t id)
+const dotaequipcfg_t* dotaequipcfgmgr::get_dotaequipcfg_by_id(dotaequipcfg_t::id_t id)
 {
     id2dotaequipcfgmap::iterator itr = m_id2dotaequipcfgmap.find(id);
     if(itr == m_id2dotaequipcfgmap.end()){
@@ -178,7 +178,7 @@ dotaequipcfg_t* dotaequipcfgmgr::get_dotaequipcfg_by_id(dotaequipcfg_t::id_t id)
     return cfg;
 }
 
-dotaequipcfg_t* dotaequipcfgmgr::get_dotaequipcfg_by_name(const char* name)
+const dotaequipcfg_t* dotaequipcfgmgr::get_dotaequipcfg_by_name(const char* name)
 {
     name2dotaequipcfgmap::iterator itr = m_name2dotaequipcfgmap.find(name);
     if(itr == m_name2dotaequipcfgmap.end()){
@@ -190,7 +190,7 @@ dotaequipcfg_t* dotaequipcfgmgr::get_dotaequipcfg_by_name(const char* name)
 }
 
 // dota英雄表
-dotaherocfg_t* dotaequipcfgmgr::get_dotaherocfg_by_id(dotaherocfg_t::id_t id)
+const dotaherocfg_t* dotaequipcfgmgr::get_dotaherocfg_by_id(dotaherocfg_t::id_t id)
 {
     id2dotaherocfgmap::iterator itr = m_id2dotaherocfgmap.find(id);
     if(itr == m_id2dotaherocfgmap.end()){
@@ -201,7 +201,7 @@ dotaherocfg_t* dotaequipcfgmgr::get_dotaherocfg_by_id(dotaherocfg_t::id_t id)
     return cfg;
 }
 
-dotaherocfg_t* dotaequipcfgmgr::get_dotaherocfg_by_name(const char* name)
+const dotaherocfg_t* dotaequipcfgmgr::get_dotaherocfg_by_name(const char* name)
 {
     name2dotaherocfgmap::iterator itr = m_name2dotaherocfgmap.find(name);
     if(itr == m_name2dotaherocfgmap.end()){

@@ -101,23 +101,25 @@ namespace fileutil
         return buf;
     }
 
-    string get_whole_file_str(const std::string &path)
+    bool get_whole_file_str(const std::string &path, std::string &text)
     {
         if(false == exist(path)){
-            return "";
+            text = "";
+            return false;
         }
 
         std::ifstream file(path.c_str());
         std::stringstream buf;
         buf << file.rdbuf();
 
-        std::string contents(buf.str());
-        return contents;
+        text = buf.str();
+        return true;
     }
 
     bool overwrite_file(const std::string &path, const std::string &new_text)
     {
-        const string &old_text = get_whole_file_str(path);
+        string old_text;
+        get_whole_file_str(path, old_text);
         if (old_text == new_text){
             return true;
         }

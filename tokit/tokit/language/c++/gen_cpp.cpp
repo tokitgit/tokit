@@ -159,7 +159,7 @@ namespace cxx
 		{
 		// 2个主键
 		case 2:
-			ret = "uint64_t key = keyutil::Get3232Key(";
+			ret = "uint64 key = keyutil::Get3232Key(";
 			ret += keys[0].en_name;
 			ret += ", ";
 			ret += keys[1].en_name;
@@ -168,7 +168,7 @@ namespace cxx
 
         // 3个主键
 		case 3:
-			ret = "uint64_t key = keyutil::Get161616Key(";
+			ret = "uint64 key = keyutil::Get161616Key(";
 			ret += keys[0].en_name;
 			ret += ", ";
 			ret += keys[1].en_name;
@@ -179,7 +179,7 @@ namespace cxx
 
 		// 4个主键
 		case 4:
-			ret = "uint64_t key = keyutil::Get16161616Key(";
+			ret = "uint64 key = keyutil::Get16161616Key(";
 			ret += keys[0].en_name;
 			ret += ", ";
 			ret += keys[1].en_name;
@@ -195,7 +195,7 @@ namespace cxx
 		return ret;
 	}
 
-    string get_primary_key_stmt(const cfg_t &cfg, const char* prefix = "")
+    string splice_n_key(const cfg_t &cfg, const char* prefix = "")
     {
         size_t n_key = cfg.keys.size();
         if(n_key <= 1){
@@ -228,7 +228,7 @@ namespace cxx
         return text;
     }
 
-	string gen_primary_key_map_insert_stmt(const cfg_t &cfg)
+	string gen_n_key_map_insert_stmt(const cfg_t &cfg)
 	{
 		size_t n_key = cfg.keys.size();
 		if(n_key <= 1){
@@ -256,14 +256,14 @@ namespace cxx
 			keys.push_back(key);
 		}
 
-		string map_key = "\n        " + get_primary_key_stmt(cfg, "cfg.");
+		string map_key = "\n        " + splice_n_key(cfg, "cfg.");
 		string map_insert = "\n        m_%map%[key] = curcfg;\n";
 		strutil::replace(map_insert, "%map%", cpputil::get_n_key_map_name(cfg));
 
 		return map_key + map_insert;
 	}
 
-    string gen_unique_key_map_insert(const cfg_t &cfg)
+    string gen_1_key_map_insert_stmt(const cfg_t &cfg)
     {
         string text = "";
 
@@ -295,7 +295,7 @@ namespace cxx
             "\n    rapidxml::file<> fdoc(this->get_path(\"%cfg%.xml\").c_str());"
             "\n    rapidxml::xml_document<> doc;"
             "\n    if(!fdoc.data()){"
-            "\n        std::cout << \"err: load <%cfg%.xml> failed, please check the file path\" << std::endl;"
+            "\n        std::cout << \"err: load \" << this->get_path(\"%cfg%.xml\") << \" failed, please check the file path\" << std::endl;"
             "\n        return false;"
             "\n    }"
             "\n"
@@ -357,8 +357,8 @@ namespace cxx
             strutil::replace(vec_push_stmt, "%cfgtype%", cpputil::get_cfg_type_name(cfg));
 
             string map_insert_stmt = "\n    ";
-            map_insert_stmt += gen_primary_key_map_insert_stmt(cfg);
-            map_insert_stmt += gen_unique_key_map_insert(cfg);
+            map_insert_stmt += gen_n_key_map_insert_stmt(cfg);
+            map_insert_stmt += gen_1_key_map_insert_stmt(cfg);
 
             text += vec_push_stmt;
             text += map_insert_stmt;
@@ -375,7 +375,7 @@ namespace cxx
         string end_stmt = 
             "\n    }"
             "\n"
-            "\n    uint32_t passed_ms = tickutil::tick_diff(tick_now);"
+            "\n    uint32 passed_ms = tickutil::tick_diff(tick_now);"
             "\n    double passed_sec = (double)passed_ms / 1000;"
             "\n"
             //"\n    std::cout << \"load <%cfg%.xml> success, cost time = <\" << passed_sec << \"> s\" << std::endl;"
@@ -389,18 +389,18 @@ namespace cxx
         return text;
     }
 
-    string gen_load_stmt(const cfg_t &cfg)
+    string gen_call_load_func_stmt(const cfg_t &cfg)
     {
         return "    is_succ &= load_" + cfg.en_name + "();";
     }
 
-    string gen_clear_stmt(const cfg_t &cfg)
+    string gen_call_clear_func_stmt(const cfg_t &cfg)
     {
         string text = "    " + cpputil::get_clear_func_name(cfg) + "();";
         return text;
     }
 
-    string gen_each_clear_func(const cfg_t &cfg)
+    string gen_clear_func(const cfg_t &cfg)
     {
         string text = 
             "\n%clear_func%"
@@ -439,7 +439,7 @@ namespace cxx
         return text;
     }
 
-    string gen_primary_key_find_func(const cfg_t &cfg)
+    string gen_n_key_find_func(const cfg_t &cfg)
     {
         const size_t n_key = cfg.keys.size();
         if(n_key <= 1){
@@ -463,12 +463,12 @@ namespace cxx
 
         strutil::replace(text, "%cfg%", cpputil::get_cfg_type_name(cfg));
         strutil::replace(text, "%find_func%", cpputil::get_n_key_find_func_declare(cfg));
-        strutil::replace(text, "%key_stmt%", get_primary_key_stmt(cfg));
+        strutil::replace(text, "%key_stmt%", splice_n_key(cfg));
         strutil::replace(text, "%map%", cpputil::get_n_key_map_name(cfg));
         return text;
     }
 
-    string gen_unique_key_find_func(const cfg_t &cfg)
+    string gen_1_key_find_func(const cfg_t &cfg)
     {
         string templet = 
             "\n%find_func%"
@@ -512,29 +512,33 @@ namespace cxx
 
         string text;
         text += cpputil::get_comment(cfg);
-        text += gen_primary_key_find_func(cfg) + gen_unique_key_find_func(cfg);
+        text += gen_n_key_find_func(cfg) + gen_1_key_find_func(cfg);
         return text;
     }
 }
 
 bool cpp_generator::gen_cpp_file(const string &cpp_file)
 {
-    string cpp_templet_contents = fileutil::get_whole_file_str(m_cpp_templet);
-    if(cpp_templet_contents.empty()){
-        return false;
+    static string cpp_templet_text;
+    if (cpp_templet_text.empty()){
+        fileutil::get_whole_file_str(m_cpp_templet_path, cpp_templet_text);
+
+        if(cpp_templet_text.empty()){
+            return false;
+        }
     }
 
-    string src = cpp_templet_contents;
+    string src = cpp_templet_text;
     strutil::replace(src, "%cfg%", m_cfgbase.filename);
 
     strutil::replace(src, "%structs_ctor%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_struct_ctor, "\n\n"));
     strutil::replace(src, "%mgr_load_funcs_part%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_load_func, "\n"));
-    strutil::replace(src, "%mgr_clear_funcs_part%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_each_clear_func, "\n"));
+    strutil::replace(src, "%mgr_clear_funcs_part%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_clear_func, "\n"));
     strutil::replace(src, "%mgr_find_funcs_part%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_find_func, "\n"));
 
     strutil::replace(src, "%mgr%", cpputil::get_mgr_name(m_cfgbase));
-    strutil::replace(src, "%load_stmt%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_load_stmt, "\n"));
-    strutil::replace(src, "%clear_stmt%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_clear_stmt, "\n"));
+    strutil::replace(src, "%load_stmt%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_call_load_func_stmt, "\n"));
+    strutil::replace(src, "%clear_stmt%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_call_clear_func_stmt, "\n"));
     strutil::replace(src, "%cfg_member%", cpputil::get_member_comment_list(m_cfgbase));
 
     bool is_overwrite_file_ok = fileutil::overwrite_file(cpp_file, src);

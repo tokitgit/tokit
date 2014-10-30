@@ -20,20 +20,20 @@ using namespace std;
 
 namespace keyutil
 {
-    uint64_t Get16161616Key(uint16_t w, uint16_t x, uint16_t y, uint16_t z);
+    uint64 Get16161616Key(uint16 w, uint16 x, uint16 y, uint16 z);
 
-    uint64_t Get161616Key(uint16_t x, uint16_t y, uint16_t z);
+    uint64 Get161616Key(uint16 x, uint16 y, uint16 z);
 
-    uint64_t Get3232Key(uint32 x, uint32 y);
+    uint64 Get3232Key(uint32 x, uint32 y);
 }
 
-typedef uint64_t Tick;
+typedef uint64 Tick;
 namespace tickutil
 {
     Tick get_tick();
 
     // 返回两次时钟周期的毫秒差
-    uint32_t tick_diff(Tick old_tick);
+    uint32 tick_diff(Tick old_tick);
 }
 
 namespace strutil
@@ -56,25 +56,25 @@ namespace strutil
 
     // 将无符号64位整数转换为字符串
     // 例如：tostr(100123) = "100123"
-    string tostr(uint64_t n);
+    string tostr(uint64 n);
 
     inline bool str_to_bool(const char* val)
     {
         return (val[0] == '0') ? false : true;
     }
 
-    inline int32_t str_to_int32(const char* val)
+    inline int32 str_to_int32(const char* val)
     {
         return atoi(val);
     }
 
-    inline uint32_t str_to_uint32(const char* val)
+    inline uint32 str_to_uint32(const char* val)
     {
         char *stop_at = NULL;
         return ::strtoul(val, &stop_at, 10);
     }
 
-    inline int64_t str_to_int64(const char* val)
+    inline int64 str_to_int64(const char* val)
     {
 #ifdef WIN32
         return _atoi64(val);
@@ -83,7 +83,7 @@ namespace strutil
 #endif        
     }
 
-    inline uint64_t str_to_uint64(const char* val)
+    inline uint64 str_to_uint64(const char* val)
     {
 #ifdef WIN32
         char *stop_at = NULL;
@@ -110,7 +110,7 @@ namespace strutil
     stringset_t split_str_set(const string &src, char cut = ',');
 
     template <typename T, typename FUNC_T>
-    std::vector<T> split_str_to_vec(const string &src, FUNC_T (*cast_func)(const char*), char cut = ',')
+    inline std::vector<T> split_str_to_vec(const string &src, FUNC_T (*cast_func)(const char*), char cut = ',')
     {
         typedef std::vector<T> T_vec;
         T_vec t_vec;
@@ -125,7 +125,7 @@ namespace strutil
     }
 
     template <typename T, typename FUNC_T>
-    std::set<T> split_str_to_set(const char* src, FUNC_T (*cast_func)(const char*), char cut = ',')
+    inline std::set<T> split_str_to_set(const char* src, FUNC_T (*cast_func)(const char*), char cut = ',')
     {
         typedef std::set<T> T_set;
         T_set t_set;
