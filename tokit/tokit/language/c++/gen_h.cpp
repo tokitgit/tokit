@@ -25,6 +25,7 @@ namespace hxx
             "struct %cfgtype%{\n"
                 "%typedef%\n"
             "    %cfgtype%();\n\n"
+            "    std::string print() const;\n\n"
                 "%fields%"
             "};\n"
             ;

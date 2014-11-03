@@ -52,6 +52,53 @@ testcfg_t::testcfg_t()
 {
 }
 
+std::string testcfg_t::print() const
+{
+    char buf[2048];
+    sprintf_s(buf, sizeof(buf), "stringfield=%s boolfield=%u charfield=%d int16field=%d intfield=%d int64field=%I64d uint8field=%u uint16field=%u uintfield=%u uint64field=%llu floatfield=%f "
+        "doublefield=%lf stringfieldprimary=%s boolfieldprimary=%u charfieldprimary=%d int16fieldprimary=%d intfieldprimary=%d int64fieldprimary=%I64d uint8fieldprimary=%u uint16fieldprimary=%u uintfieldprimary=%u "
+        "uint64fieldprimary=%llu floatfieldprimary=%f doublefieldprimary=%lf stringfieldunique=%s boolfieldunique=%u charfieldunique=%d int16fieldunique=%d intfieldunique=%d int64fieldunique=%I64d uint8fieldunique=%u "
+        "uint16fieldunique=%u uintfieldunique=%u uint64fieldunique=%llu floatfieldunique=%f doublefieldunique=%lf "
+        , stringfield.c_str()
+        , boolfield
+        , charfield
+        , int16field
+        , intfield
+        , int64field
+        , uint8field
+        , uint16field
+        , uintfield
+        , uint64field
+        , floatfield
+        , doublefield
+        , stringfieldprimary.c_str()
+        , boolfieldprimary
+        , charfieldprimary
+        , int16fieldprimary
+        , intfieldprimary
+        , int64fieldprimary
+        , uint8fieldprimary
+        , uint16fieldprimary
+        , uintfieldprimary
+        , uint64fieldprimary
+        , floatfieldprimary
+        , doublefieldprimary
+        , stringfieldunique.c_str()
+        , boolfieldunique
+        , charfieldunique
+        , int16fieldunique
+        , intfieldunique
+        , int64fieldunique
+        , uint8fieldunique
+        , uint16fieldunique
+        , uintfieldunique
+        , uint64fieldunique
+        , floatfieldunique
+        , doublefieldunique);
+
+    return buf;
+}
+
 void testcfgmgr::clear()
 {
     clear_testcfg();
@@ -68,7 +115,7 @@ bool testcfgmgr::load()
 // ≤‚ ‘”√¿˝±Ì
 bool testcfgmgr::load_testcfg()
 {
-    Tick tick_now = tickutil::get_tick();
+    tick_t load_tick;
 
     rapidxml::file<> fdoc(this->get_path("testcfg.xml").c_str());
     rapidxml::xml_document<> doc;
@@ -177,10 +224,7 @@ bool testcfgmgr::load_testcfg()
         m_doublefieldunique2testcfgmap[cfg.doublefieldunique] = curcfg;
     }
 
-    uint32 passed_ms = tickutil::tick_diff(tick_now);
-    double passed_sec = (double)passed_ms / 1000;
-
-    printf("load <%-20s> success, cost time = <%-6f>s\n", "testcfg.xml", passed_sec);
+    printf("load <%-20s> success, cost time = <%-6f>s\n", "testcfg.xml", load_tick.end_tick());
     return true;
 }
 

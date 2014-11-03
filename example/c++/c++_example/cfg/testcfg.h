@@ -67,6 +67,8 @@ struct testcfg_t{
 
     testcfg_t();
 
+    std::string print() const;
+
     std::string stringfield; // ×Ö·û´®
     bool boolfield; // boolÐÍ
     char charfield; // ×Ö·û

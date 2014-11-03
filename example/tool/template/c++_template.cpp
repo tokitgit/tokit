@@ -14,6 +14,8 @@
 
 %structs_ctor%
 
+%structs_print%
+
 void %mgr%::clear()
 {
 %clear_stmt%

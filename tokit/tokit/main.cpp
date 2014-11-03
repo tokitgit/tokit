@@ -22,7 +22,7 @@ bool parse_excel(const std::string &excel, const enum_parse_option parse_option,
 
     errvec_t errvec;
     if (!parser::parse_excel(excel, cfgbase, errvec, parse_option)){
-        ECHO_ERR("错误：解析<%s>文件失败", excel.c_str());
+        ECHO_ERR("错误：解析<%s>文件失败，请确保该文件存在且未被打开", excel.c_str());
         echoutil::echo_errvec(errvec);
         return false;
     }

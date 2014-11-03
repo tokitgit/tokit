@@ -66,7 +66,7 @@ bool xml_generator::generate()
 
 bool xml_generator::save_as_xml()
 {
-    tick_t export_xml_tick;
+    // tick_t export_xml_tick;
 
     // 将excel中各个工作表数据导出到对应的xml文件中
     size_t n_cfg = m_cfgbase.cfgs.size();
@@ -83,6 +83,6 @@ bool xml_generator::save_as_xml()
         ECHO_OK("导出[%s] -> [%s]成功", cfg.cn_name.c_str(), xml.c_str());
     }
 
-    ECHO_WARN("导出xml完毕, 共耗时<%0.3f>秒", export_xml_tick.end_tick());
+    // ECHO_WARN("导出xml完毕, 共耗时<%0.3f>秒", export_xml_tick.end_tick());
     return true;
 }

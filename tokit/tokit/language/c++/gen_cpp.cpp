@@ -46,6 +46,74 @@ namespace cxx
         return ctor_text;
     }
 
+    // 生成结构体的构造函数
+    string gen_struct_print(const cfg_t &cfg)
+    {
+        string print_text = 
+            "std::string %cfg%::print() const"
+            "\n{"
+            "%print%"
+            "\n}"
+            ;       
+
+        strutil::replace(print_text, "%cfg%", cpputil::get_cfg_type_name(cfg));
+
+        string printf_fmt;
+        string printf_argv;
+
+        static const string static_printf_format[fieldtype_max] = {
+            "",
+            "%s",
+            "%u",
+            "%d",
+            "%d",
+            "%d",
+            "%I64d",
+            "%u",
+            "%u",
+            "%u",
+            "%llu",
+            "%f",
+            "%lf",
+        };
+
+        size_t n_fields = cfg.fields.size();
+        for(size_t n = 0; n < n_fields; ++n){
+            const field_t &field = cfg.fields[n];
+            if (field.is_array() || field.is_set()){
+                continue;
+            }
+
+            printf_fmt  += field.en_name + "=" + static_printf_format[field.fieldtype];
+            if (n + 1 < n_fields){
+                printf_fmt += " ";
+            }
+
+            if (0 == n % 10 && n > 1){
+                printf_fmt += "\"\n        \"";
+            }
+
+            printf_argv += "\n        , ";
+            printf_argv += (field.fieldtype == fieldtype_string) ? field.en_name + ".c_str()" :
+                                                                   field.en_name;
+        }
+
+        string print_stmt;
+
+        if(n_fields > 0){
+            print_stmt = "\n    char buf[2048];"
+                         "\n    sprintf_s(buf, sizeof(buf), \"%printf_fmt%\"%printf_argv%);"
+                         "\n"
+                         "\n    return buf;";
+
+            strutil::replace(print_stmt, "%printf_fmt%", printf_fmt);
+            strutil::replace(print_stmt, "%printf_argv%", printf_argv);
+        }
+
+        strutil::replace(print_text, "%print%", print_stmt);
+        return print_text;
+    }
+
 	// 生成读取属性的语句
 	string gen_load_attr_statement(const field_t &field)
 	{
@@ -289,7 +357,7 @@ namespace cxx
             "\n// %comment%"
             "\n%load_func_name%"
             "\n{"
-            "\n    Tick tick_now = tickutil::get_tick();"
+            "\n    tick_t load_tick;"
             "\n"
             "\n    rapidxml::file<> fdoc(this->get_path(\"%cfg%.xml\").c_str());"
             "\n    rapidxml::xml_document<> doc;"
@@ -374,11 +442,7 @@ namespace cxx
         string end_stmt = 
             "\n    }"
             "\n"
-            "\n    uint32 passed_ms = tickutil::tick_diff(tick_now);"
-            "\n    double passed_sec = (double)passed_ms / 1000;"
-            "\n"
-            //"\n    std::cout << \"load <%cfg%.xml> success, cost time = <\" << passed_sec << \"> s\" << std::endl;"
-            "\n    printf(\"load <%-20s> success, cost time = <%-6f>s\\n\", \"%cfg%.xml\", passed_sec);"
+            "\n    printf(\"load <%-20s> success, cost time = <%-6f>s\\n\", \"%cfg%.xml\", load_tick.end_tick());"
             "\n    return true;"
             "\n}"
             ;
@@ -532,6 +596,7 @@ bool cpp_generator::gen_cpp_file(const string &cpp_file)
     strutil::replace(src, "%cfg%", m_cfgbase.filename);
 
     strutil::replace(src, "%structs_ctor%", cpputil::splice(m_cfgbase, cxx::gen_struct_ctor, "\n\n"));
+    strutil::replace(src, "%structs_print%", cpputil::splice(m_cfgbase, cxx::gen_struct_print, "\n\n"));
     strutil::replace(src, "%load_funcs%",   cpputil::splice(m_cfgbase, cxx::gen_load_func, "\n"));
     strutil::replace(src, "%clear_funcs%",  cpputil::splice(m_cfgbase, cxx::gen_clear_func, "\n"));
     strutil::replace(src, "%find_funcs%",   cpputil::splice(m_cfgbase, cxx::gen_find_func, "\n"));

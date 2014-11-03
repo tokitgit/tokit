@@ -102,6 +102,16 @@ namespace tickutil
     }
 }
 
+// ·µ»ØÃë
+double tick_t::end_tick()
+{
+    Tick tick_now = tickutil::get_tick();
+    Tick diff = tick_now - m_tick;
+
+    double passed_sec = (double)diff / tickutil::GetTickFrequency();
+    return passed_sec;
+}
+
 namespace strutil
 {
     // Ìæ»»×Ö·û´®

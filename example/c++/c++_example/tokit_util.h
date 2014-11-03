@@ -36,6 +36,26 @@ namespace tickutil
     uint32 tick_diff(Tick old_tick);
 }
 
+class tick_t
+{
+public:
+    tick_t()
+    {
+        start_tick();
+    }
+
+    void start_tick()
+    {
+        m_tick = tickutil::get_tick();
+    }
+
+    // 返回秒
+    double end_tick();
+
+private:
+    Tick m_tick;
+};
+
 namespace strutil
 {
     // 移除掉字符串开头和末尾处的空格和\t符号

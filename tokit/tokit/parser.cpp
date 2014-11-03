@@ -364,8 +364,6 @@ bool parser::parse_excel(const string &xlsx, cfgbase_t &cfgbase, errvec_t &errve
     
     libxl::Book *book = xlCreateXMLBook();
     
-    tick_t libxl_tick;
-
     // 我们将使用2种方法读取excel；libxl库、ole，2者区别是：
     //     a. libxl速度很快，ole速度很慢
     //     b. libxl不支持公式，ole支持公式
@@ -375,11 +373,6 @@ bool parser::parse_excel(const string &xlsx, cfgbase_t &cfgbase, errvec_t &errve
     if(!book->load(w_xlsx.c_str())){
         return false;
     }
-
-    ECHO_WARN("libxl加载完毕, 共耗时<%0.3f>秒", libxl_tick.end_tick());
-
-    tick_t search_formula_tick;    
-    tick_t ole_tick;
 
     CApplication excel_app;
     CWorkbooks books;
@@ -391,7 +384,6 @@ bool parser::parse_excel(const string &xlsx, cfgbase_t &cfgbase, errvec_t &errve
     // 2. 使用libxl检测excel文件中是否含有公式
     excelutil::formula_flag_vec each_sheet_formula_flags;
     bool is_need_ole_open = is_excel_contain_formula_cell(*book, each_sheet_formula_flags);
-    ECHO_WARN("查找公式共耗时<%0.3f>秒", search_formula_tick.end_tick());
 
     // 2.1. 如果有公式，则通过ole方式再加载一次excel
     if (is_need_ole_open){
@@ -401,8 +393,6 @@ bool parser::parse_excel(const string &xlsx, cfgbase_t &cfgbase, errvec_t &errve
         }
     }
 
-    ECHO_WARN("ole加载完毕, 共耗时<%0.3f>秒", ole_tick.end_tick());
-
     // 3. 依次解析各个工作表
     for(int i = 0; i < book->sheetCount(); i++){   
         cfg_t cfg;
@@ -411,17 +401,8 @@ bool parser::parse_excel(const string &xlsx, cfgbase_t &cfgbase, errvec_t &errve
             continue;
         }
         
-        tick_t pre_load_tick;
-
         // 3.1 如果工作表中含公式，则进行ole预读取，以加快之后的读取速度
         parseutil::check_need_preload_sheet(sheets, i + 1, each_sheet_formula_flags[i]);
-        ECHO_WARN("预加载工作表完毕, 共耗时<%0.3f>秒", pre_load_tick.end_tick());
-
-        tick_t parse_sheet_tick;
-
-        // std::wstring csv = strutil::string2wstring(strutil::get_dir(xlsx));
-        // csv += olesheet.get_Name() + L".csv";
-        // olesheet.SaveAs(csv.c_str(), _variant_t((long)Excel::xlCSV),vtMissing,vtMissing,vtMissing,vtMissing,_variant_t((long)Excel::xlNoChange),vtMissing,vtMissing,vtMissing);
 
         // 3.2 解析出工作表的内容，并将结果存放到cfg中
         bool ok = parseutil::parse_cfg_from_sheet(*sheet, cfg, errvec, parse_option);
@@ -440,8 +421,6 @@ bool parser::parse_excel(const string &xlsx, cfgbase_t &cfgbase, errvec_t &errve
             continue;
         }
 
-        ECHO_WARN("解析工作表完毕, 共耗时<%0.3f>秒", parse_sheet_tick.end_tick());
-
         cfgbase.cfgs.push_back(cfg);
     }
 
@@ -454,7 +433,6 @@ bool parser::parse_excel(const string &xlsx, cfgbase_t &cfgbase, errvec_t &errve
     if (is_need_ole_open){
         tick_t close_tick;
         excelutil::ole_close_excel(w_xlsx, excel_app, books, olebook, sheets);
-        ECHO_WARN("close执行完毕, 共耗时<%0.3f>秒", close_tick.end_tick());
     }
 
     ECHO_WARN("执行完毕, 共耗时<%0.3f>秒", parse_tick.end_tick());
