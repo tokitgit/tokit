@@ -103,7 +103,7 @@ struct cfg_t
 
 typedef std::vector<cfg_t> cfgvec_t;
 
-// 配置结构定义中心，与一整个excel文件相对应，描述了一整个excel文件内部的结构
+// 配置结构定义中心，与一整个excel文件相对应，描述了excel文件内部各个工作表的结构
 struct cfgbase_t
 {
     cfg_t* find_by_en_name(const char* en_name)
@@ -123,9 +123,9 @@ struct cfgbase_t
         return NULL;
     }
 
-    // 本配置的文件名
-    string filename;
-    cfgvec_t cfgs; // 各个工作表的描述
+    
+    string filename; // 本配置的文件名
+    cfgvec_t cfgs;   // 各个工作表的描述
 };
 
 namespace cfgutil{

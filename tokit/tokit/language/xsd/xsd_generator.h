@@ -25,7 +25,7 @@ public:
 
 public:
     // @impl
-    bool generate();
+    virtual bool generate();
 
 public:
     static string& tokit_type_2_xsd_type(enum_tokit_field_type);

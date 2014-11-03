@@ -225,33 +225,80 @@ namespace strutil
         return vec;
     }
 
-    /*
-    template <typename T>
-    std::vector<T> split_str_to_int_vec(const string &src, char cut)
-    {
-        typedef std::vector<T> intvec_t;
-        intvec_t intvec;
+    BOOL StringToWString(const std::string &str,std::wstring &wstr)
+    {   
+        int wlen = MultiByteToWideChar (CP_ACP, 0, str.c_str(), -1, NULL, 0);
+        int len  = (int)str.length();
+        wstr.resize(wlen + 1,L' ');
 
-        stringvec_t strvec = split(src, cut);
-        for (size_t n = 0; n < strvec.size(); n++){
-            std::string str = strvec[n];
-            intvec.push_back(atoi(str.c_str()));
+        int result = MultiByteToWideChar(CP_ACP,0, str.c_str(),len, (LPWSTR)wstr.c_str(), wlen * sizeof(wchar_t));
+        if (result == 0){
+            return FALSE;
         }
 
-        return intvec;
+        return TRUE;
     }
 
-    intset_t split_str_to_int_set(const string &src, char cut)
-    {
-        intset_t intset;
+    //wstring高字节不为0，返回FALSE
+    BOOL WStringToString(const std::wstring &wstr,std::string &str)
+    {   
+        int len  = WideCharToMultiByte (CP_ACP, 0, wstr.c_str(), -1, NULL, 0, NULL, NULL);
+        int wlen = (int)str.length();    
+        str.resize(len + 1, ' ');
 
-        stringvec_t strvec = split(src);
-        for (size_t n = 0; n < strvec.size(); n++){
-            std::string str = strvec[n];
-            intset.insert(atoi(str.c_str()));
+        int result = WideCharToMultiByte(CP_ACP,0, wstr.c_str(),len, (LPSTR)str.c_str(), len, NULL, NULL);
+        if (result == 0){
+            return FALSE;
         }
 
-        return intset;
+        return TRUE;
     }
-    */
+
+    //把字符串转换成宽字符串  
+    std::wstring string2wstring(const std::string &str)  
+    {     
+        std::wstring wstr;
+
+        int wlen = MultiByteToWideChar (CP_ACP, 0, str.c_str(), -1, NULL, 0);
+        int len  = (int)str.length();
+        wstr.resize(wlen + 1,L' ');
+
+        int result = MultiByteToWideChar(CP_ACP,0, str.c_str(),len, (LPWSTR)wstr.c_str(), wlen * sizeof(wchar_t));
+        if (result == 0){
+            return FALSE;
+        }
+
+        return wstr;  
+    }  
+
+    //把宽字符串转换成字符串，输出使用  
+    std::string& wstring2string(const std::wstring &wstr)
+    {     
+        static string str;  
+        int iLen = WideCharToMultiByte( CP_ACP, NULL, wstr.c_str(), -1, NULL, 0, NULL, FALSE ); // 计算转换后字符串的长度。（包含字符串结束符）
+        str.resize(iLen - 1);
+        WideCharToMultiByte( CP_OEMCP, NULL, wstr.c_str(), -1, (LPSTR)str.c_str(), iLen, NULL, FALSE); // 正式转换。  
+        return str;
+
+        /*
+        string sResult;  
+        int iLen = WideCharToMultiByte( CP_ACP, NULL, sToMatch.c_str(), -1, NULL, 0, NULL, FALSE ); // 计算转换后字符串的长度。（包含字符串结束符）  
+        char *lpsz = new char[iLen];  
+        WideCharToMultiByte( CP_OEMCP, NULL, sToMatch.c_str(), -1, lpsz, iLen, NULL, FALSE); // 正式转换。  
+        sResult.assign( lpsz, iLen - 1 ); // 对string对象进行赋值。  
+        delete []lpsz;  
+        return sResult;  
+        */
+    }
+
+    //把宽字符串转换成字符串，输出使用  
+    std::string& wstring2string(const wchar_t *wstr)
+    {     
+        static string str;
+
+        int iLen = WideCharToMultiByte( CP_ACP, NULL, wstr, -1, NULL, 0, NULL, FALSE ); // 计算转换后字符串的长度。（包含字符串结束符）
+        str.resize(iLen - 1);
+        WideCharToMultiByte( CP_OEMCP, NULL, wstr, -1, (LPSTR)str.c_str(), iLen, NULL, FALSE); // 正式转换。  
+        return str;
+    } 
 }

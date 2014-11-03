@@ -20,4 +20,24 @@ namespace tickutil
     uint32_t tick_diff(Tick old_tick);
 }
 
+class tick_t
+{
+public:
+    tick_t()
+    {
+        start_tick();
+    }
+
+    void start_tick()
+    {
+        m_tick = tickutil::get_tick();
+    }
+
+    // ∑µªÿ√Î
+    double end_tick();
+
+private:
+    Tick m_tick;
+};
+
 #endif //_tickutil_h_

@@ -21,6 +21,7 @@ using namespace std;
 
 namespace cxx
 {
+    // 生成结构体的构造函数
     string gen_struct_ctor(const cfg_t &cfg)
     {
         string ctor_text = 
@@ -80,8 +81,8 @@ namespace cxx
             "atof",
         };
 
-        static const string static_load_vec_stmt = "cfg.%field% = strutil::split_str_to_vec<%fieldtype%>(%val%, %cast%);";
-        static const string static_load_set_stmt = "cfg.%field% = strutil::split_str_to_set<%fieldtype%>(%val%, %cast%);";
+        static const string static_load_vec_stmt = "cfg.%field% = strutil::split_str_to_vec<%T%>(%val%, %cast%);";
+        static const string static_load_set_stmt = "cfg.%field% = strutil::split_str_to_set<%T%>(%val%, %cast%);";
 
         static const string static_load_str_vec_stmt = "cfg.%field% = strutil::split(%val%);";
         static const string static_load_str_set_stmt = "cfg.%field% = strutil::split_str_set(%val%);";
@@ -105,12 +106,12 @@ namespace cxx
         const string &cast_func = static_cast_func_name[field.fieldtype];
         strutil::replace(stmt, "%val%", val);
         strutil::replace(stmt, "%field%", field.en_name);
-        strutil::replace(stmt, "%fieldtype%", cpp_generator::raw_type_2_c_type(field.fieldtype));
+        strutil::replace(stmt, "%T%", cpp_generator::raw_type_2_c_type(field.fieldtype));
         strutil::replace(stmt, "%cast%", cast_func);
 		return stmt;
 	}
 
-	// splice the key string
+	// 拼接字符串键值
 	// eg: string key = tostr(prop.type) + tostr(prop.id) + prop.name;
 	// eg: string key = tostr(prop.type) + prop.name;
 	// eg: string &key = prop.name;
@@ -129,9 +130,7 @@ namespace cxx
 			if(key.fieldtype == fieldtype_string){
 				ret += key.en_name;
 			}else{
-				ret += "strutil::tostr(";
-				ret += key.en_name;
-				ret += ")";
+				ret += "strutil::tostr(" + key.en_name + ")";
 			}
 
 			ret += " + ";
@@ -495,7 +494,7 @@ namespace cxx
             strutil::replace(func_stmt, "%cfg%", cpputil::get_cfg_type_name(cfg));
             strutil::replace(func_stmt, "%find_func%", cpputil::get_1_key_find_func_declare(cfg, field));
             strutil::replace(func_stmt, "%map%", cpputil::get_1_key_map_name(cfg, field));
-            strutil::replace(func_stmt, "%key%", field.en_name);
+            strutil::replace(func_stmt, "%key%", field.en_name); 
 
             text += func_stmt + "\n";
         }
@@ -519,27 +518,28 @@ namespace cxx
 
 bool cpp_generator::gen_cpp_file(const string &cpp_file)
 {
-    static string cpp_templet_text;
-    if (cpp_templet_text.empty()){
-        fileutil::get_whole_file_str(m_cpp_templet_path, cpp_templet_text);
+    static string cpp_templet;
+    if (cpp_templet.empty()){
+        fileutil::get_whole_file_str(m_cpp_templet_path, cpp_templet);
 
-        if(cpp_templet_text.empty()){
+        if(cpp_templet.empty()){
+            ECHO_ERR("生成c++文件失败：找不到模板文件<%s>", m_cpp_templet_path.c_str());
             return false;
         }
     }
 
-    string src = cpp_templet_text;
+    string src = cpp_templet;
     strutil::replace(src, "%cfg%", m_cfgbase.filename);
 
-    strutil::replace(src, "%structs_ctor%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_struct_ctor, "\n\n"));
-    strutil::replace(src, "%mgr_load_funcs_part%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_load_func, "\n"));
-    strutil::replace(src, "%mgr_clear_funcs_part%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_clear_func, "\n"));
-    strutil::replace(src, "%mgr_find_funcs_part%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_find_func, "\n"));
+    strutil::replace(src, "%structs_ctor%", cpputil::splice(m_cfgbase, cxx::gen_struct_ctor, "\n\n"));
+    strutil::replace(src, "%load_funcs%",   cpputil::splice(m_cfgbase, cxx::gen_load_func, "\n"));
+    strutil::replace(src, "%clear_funcs%",  cpputil::splice(m_cfgbase, cxx::gen_clear_func, "\n"));
+    strutil::replace(src, "%find_funcs%",   cpputil::splice(m_cfgbase, cxx::gen_find_func, "\n"));
 
-    strutil::replace(src, "%mgr%", cpputil::get_mgr_name(m_cfgbase));
-    strutil::replace(src, "%load_stmt%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_call_load_func_stmt, "\n"));
-    strutil::replace(src, "%clear_stmt%", cpputil::splice_each_cfg(m_cfgbase, cxx::gen_call_clear_func_stmt, "\n"));
-    strutil::replace(src, "%cfg_member%", cpputil::get_member_comment_list(m_cfgbase));
+    strutil::replace(src, "%mgr%",          cpputil::get_mgr_name(m_cfgbase));
+    strutil::replace(src, "%load_stmt%",    cpputil::splice(m_cfgbase, cxx::gen_call_load_func_stmt, "\n"));
+    strutil::replace(src, "%clear_stmt%",   cpputil::splice(m_cfgbase, cxx::gen_call_clear_func_stmt, "\n"));
+    strutil::replace(src, "%cfg_member%",   cpputil::get_member_comment_list(m_cfgbase));
 
     bool is_overwrite_file_ok = fileutil::overwrite_file(cpp_file, src);
     return is_overwrite_file_ok;

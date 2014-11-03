@@ -12,18 +12,23 @@
 #include <string>
 #include <vector>
 
-enum GTestColor {
-    COLOR_DEFAULT,
-    COLOR_RED,
-    COLOR_GREEN,
-    COLOR_YELLOW
-};
+namespace gtest
+{
+    enum GTestColor {
+        COLOR_DEFAULT,
+        COLOR_RED,
+        COLOR_GREEN,
+        COLOR_YELLOW
+    };
+}
+
+using namespace gtest;
 
 void ColoredPrintf(GTestColor color, const char* fmt, ...);
 
-#define ECHO_ERR(fmt, ...) ColoredPrintf(COLOR_RED, "    "fmt"\n", __VA_ARGS__)
-#define ECHO_OK(fmt, ...) ColoredPrintf(COLOR_GREEN, "    "fmt"\n", __VA_ARGS__)
-#define ECHO_WARN(fmt, ...) ColoredPrintf(COLOR_YELLOW, fmt"\n", __VA_ARGS__)
+#define ECHO_ERR(fmt, ...) ColoredPrintf(gtest::COLOR_RED, "    "fmt"\n", __VA_ARGS__)
+#define ECHO_OK(fmt, ...) ColoredPrintf(gtest::COLOR_GREEN, "    "fmt"\n", __VA_ARGS__)
+#define ECHO_WARN(fmt, ...) ColoredPrintf(gtest::COLOR_YELLOW, fmt"\n", __VA_ARGS__)
 #define ECHO_INFO(fmt, ...) fprintf(stdout, fmt"\n", __VA_ARGS__);
 
 typedef std::vector<std::string> errvec_t;

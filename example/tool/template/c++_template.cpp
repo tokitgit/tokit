@@ -26,8 +26,8 @@ bool %mgr%::load()
 	return is_succ;
 }
 
-%mgr_load_funcs_part%
+%load_funcs%
 
-%mgr_clear_funcs_part%
+%clear_funcs%
 
-%mgr_find_funcs_part%
+%find_funcs%

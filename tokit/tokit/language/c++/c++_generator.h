@@ -46,10 +46,10 @@ namespace cpputil{
 namespace cpputil{
     // 将excel文件中的每个工作表对应生成的文本串拼接起来
     typedef string (gen_func_t)(const cfg_t&);
-    string splice_each_cfg(const cfgbase_t &cfgbase, gen_func_t func, const char* splice_str = "\n");
+    string splice(const cfgbase_t &cfgbase, gen_func_t func, const char* splice_token = "\n");
 
-    // 获取对象方法的声明
-    string get_member_func_decl_stmt(const cfg_t&, gen_func_t func, const char* prefix = "", const char* postfix = "");
+    // 例如：void %mgr%::clear() -> void clear()
+    string clear_scope(const cfg_t&, gen_func_t func, const char* prefix = "", const char* postfix = "");
 }
 
 class cpp_generator : public generator
@@ -65,10 +65,10 @@ public:
 
 public:
     // @impl
-    bool generate();
+    virtual bool generate();
 
 public:
-    // 原声类型 -> c++类型
+    // tokit原生类型 -> c++类型
     static string& raw_type_2_c_type(enum_tokit_field_type);
 
 private:

@@ -18,7 +18,12 @@ class CWorksheet;
 class parser
 {
 public:
+    // 解析出excel中的各个工作表，将解析结果存入结构体
     static bool parse_excel(const string &xlsx, cfgbase_t&, errvec_t &errvec, enum_parse_option parse_option = parse_option_skip_data);
+
+public:
+    // 用于存储excel中的单元格数组，仅在采取ole载入方式时有效
+    static COleSafeArray *g_ole_cell_array;
 };
 
 #endif //_parser_h_

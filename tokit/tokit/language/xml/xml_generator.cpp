@@ -19,12 +19,15 @@
 #include "tickutil.h"
 
 namespace xmlutil{
+    // 转码:
+    //     1. 引号 -> &quot;
     void escape_xml(const string &str)
     {
         strutil::replace(const_cast<std::string&>(str), "\"", "&quot;");
     }
 
-    void get_xml_text(const cfg_t &cfg, std::string &xml_text)
+    // 将数据拼接成xml格式
+    void slice_xml_text(const cfg_t &cfg, std::string &xml_text)
     {
         const fieldvec_t &fields = cfg.fields;
         const table_t &table = cfg.table;
@@ -36,11 +39,13 @@ namespace xmlutil{
         for(size_t r = 0; r < cfg.table.size(); r++){
             const row_t &row = table[r];
 
+            // 将数据拼接成形如<row a="a1" b="b1" c="c1"....>的xml文本
             row_text = "    <row";
             for(size_t c = 0; c < fields.size(); c++){
                 escape_xml(row[c]);
                 row_text += " " + cfg.fields[c].en_name + "=\"" + row[c] + "\"";
             }
+
             row_text += "/>\n";
             xml_text += row_text;
         }
@@ -61,15 +66,16 @@ bool xml_generator::generate()
 
 bool xml_generator::save_as_xml()
 {
-    //Tick tick_now = tickutil::get_tick();
+    tick_t export_xml_tick;
 
+    // 将excel中各个工作表数据导出到对应的xml文件中
     size_t n_cfg = m_cfgbase.cfgs.size();
     for(size_t n = 0; n < n_cfg; ++n){
         const cfg_t &cfg = m_cfgbase.cfgs[n];
         const string xml = m_xml_dir + "\\" + strip_ext(strip_dir(cfg.en_name)) + ".xml";
 
         string xml_text;        
-        xmlutil::get_xml_text(cfg, xml_text);
+        xmlutil::slice_xml_text(cfg, xml_text);
         
         ofstream o(xml);
         o << xml_text;
@@ -77,8 +83,6 @@ bool xml_generator::save_as_xml()
         ECHO_OK("导出[%s] -> [%s]成功", cfg.cn_name.c_str(), xml.c_str());
     }
 
-//     uint32_t passed_ms = tickutil::tick_diff(tick_now);
-//     double passed_sec = (double)passed_ms / 1000;
-//     ECHO_WARN("导出xml完毕, 共耗时<%0.3f>秒", passed_sec);
+    ECHO_WARN("导出xml完毕, 共耗时<%0.3f>秒", export_xml_tick.end_tick());
     return true;
 }

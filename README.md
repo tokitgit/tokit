@@ -11,6 +11,33 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 
 详细步骤可见目录下的《Tokit使用手册.pdf》。
 
+## 使用命令
+
+使用tokit要求有一个符合tokit格式的excel文件
+
+使用方式如下：
+	tokit.exe <excel文件> 
+		[-xsd <放置xsd文件的目录>] 
+		[-c++ <h模板> <cpp模板> <放置c++文件的目录>] 
+		[-saveasxml <放置xml文件的目录>] 
+
+选项： 
+	-xsd 根据excel生成xsd文件 
+	-c++ 根据excel生成c++文件 
+	-saveasxml 将excel文件导出成为xml数据文件
+
+比如：
+
+	假设有一个符合tokit格式的excel文件《装备.xlsx》，里面有一个工作表item，则 
+		
+		tokit.exe ../装备.xlsx -xsd ./xsd/ 「将在xsd目录下生成item.xsd文件」 
+		tokit.exe ../装备.xlsx -c++ ./template/c++_template.h ./template/c++_template.cpp ./c++/「将在c++目录下生成item.h和item.cpp文件」 
+		tokit.exe ../装备.xlsx -saveasxml ./xml/「将在xml目录下生成item.xml数据文件」 
+		
+	这些参数可结合起来： 
+		tokit.exe ../装备.xlsx -xsd ./xsd/ -c++ ./template/c++_template.h ./template/c++_template.cpp ./c++/ -saveasxml ./xml/「将生成item.xsd、item.h、item.cpp和item.xml文件」
+
+
 ## 下载之后
 
 下载tokit整个项目之后，运行example目录下的《一键生成.bat》脚本，该脚本将根据example\excel中的各个excel文件，生成对应的xml、xsd、c++文件。
@@ -54,13 +81,13 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 						* 1.《dotaherocfg.xml》
 	-----------------------------------------------------------------
 	<dotaherocfg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	    <row id="1" name="小黑" strength="11" agile="20" intelligense="301"/>
-	    <row id="2" name="风行" strength="11" agile="20" intelligense="301"/>
-	    <row id="3" name="凤凰" strength="11" agile="20" intelligense="301"/>
-	    <row id="4" name="斧王" strength="11" agile="20" intelligense="301"/>
-	    <row id="5" name="宙斯" strength="11" agile="20" intelligense="301"/>
-	    <row id="6" name="虚空" strength="11" agile="20" intelligense="301"/>
-	    <row id="7" name="猴子" strength="11" agile="20" intelligense="301"/>
+		<row id="1" name="小黑" strength="10.5" agile="20.00001" intelligense="301.1111"/>
+		<row id="2" name="风行" strength="10.5" agile="20.00001" intelligense="301.1111"/>
+		<row id="3" name="凤凰" strength="10.5" agile="20.00001" intelligense="301.1111"/>
+		<row id="4" name="斧王" strength="10.5" agile="20.00001" intelligense="301.1111"/>
+		<row id="5" name="宙斯" strength="10.5" agile="20.00001" intelligense="301.1111"/>
+		<row id="6" name="虚空" strength="10.5" agile="20.00001" intelligense="301.1111"/>
+		<row id="7" name="猴子" strength="10.5" agile="20.00001" intelligense="301.1111"/>
 	</dotaherocfg>
 	-----------------------------------------------------------------
 

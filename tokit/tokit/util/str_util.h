@@ -93,6 +93,11 @@ namespace strutil
 
         return intset;
     }
+
+    std::wstring string2wstring(const std::string &sToMatch);
+    std::string& wstring2string(const std::wstring &sToMatch);
+
+    std::string& wstring2string(const wchar_t*);
 };
 
 using namespace strutil;

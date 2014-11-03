@@ -199,29 +199,32 @@ namespace cpputil{
 }
 
 namespace cpputil{
-    string splice_each_cfg(const cfgbase_t &cfgbase, gen_func_t func, const char* splice_str /* = "\n" */)
+    string splice(const cfgbase_t &cfgbase, gen_func_t func, const char* splice_token /* = "\n" */)
     {
         // 将调用func产生的文本拼接起来
         string text = "";
 
         size_t n_cfg = cfgbase.cfgs.size();
+
         for(size_t n = 0; n < n_cfg; ++n){
             const cfg_t &cfg = cfgbase.cfgs[n];
-            string ret_text = func(cfg);
-            if (ret_text.empty()){
+            const string each_cfg_text = func(cfg);
+
+            if (each_cfg_text.empty()){
                 continue;
             }
 
-            text += ret_text;
+            text += each_cfg_text;
+
             if (n + 1 < n_cfg){
-                text += splice_str;
+                text += splice_token;
             }
         }
 
         return text;
     }
 
-    string get_member_func_decl_stmt(const cfg_t &cfg, gen_func_t func, const char* prefix /* = "" */, const char* postfix /* = "" */)
+    string clear_scope(const cfg_t &cfg, gen_func_t func, const char* prefix, const char* postfix)
     {
         string stmt = func(cfg);
         if (stmt.empty()){
@@ -254,6 +257,8 @@ bool cpp_generator::generate()
     string h_file = m_to_dir + "\\" + strip_ext(strip_dir(m_cfgbase.filename)) + ".h";
     string cpp_file = m_to_dir + "\\" + strip_ext(strip_dir(m_cfgbase.filename)) + ".cpp";
 
+    // 开始生成
+    // 1. c++的h头文件
     if (!gen_h_file(h_file)){
         ECHO_ERR("生成h头文件<%s>失败", h_file.c_str());
         echo_errs();
@@ -262,6 +267,7 @@ bool cpp_generator::generate()
 
     ECHO_OK("生成h头文件<%s>成功", h_file.c_str());
 
+    // 2. c++的cpp头文件
     if (!gen_cpp_file(cpp_file)){
         ECHO_ERR("生成cpp源文件<%s>失败", cpp_file.c_str());
         echo_errs();

@@ -39,3 +39,15 @@ namespace tickutil
         return ms;
     }
 }
+
+// ∑µªÿ√Î
+double tick_t::end_tick()
+{
+    Tick tick_now = tickutil::get_tick();
+    Tick diff = tick_now - m_tick;
+
+    // uint32_t ms = (double)((tick_now - old_tick) * 1000 / GetTickFrequency());
+
+    double passed_sec = (double)diff / tickutil::GetTickFrequency();
+    return passed_sec;
+}

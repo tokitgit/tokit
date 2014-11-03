@@ -150,25 +150,25 @@ namespace hxx
 
     string gen_mgr_load_func(const cfg_t &cfg)
     {
-        string text = cpputil::get_member_func_decl_stmt(cfg, cpputil::get_load_func_declare, "    ", ";");
+        string text = cpputil::clear_scope(cfg, cpputil::get_load_func_declare, "    ", ";");
         return text;
     }
 
     string gen_mgr_clear_func(const cfg_t &cfg)
     {
-        string text = cpputil::get_member_func_decl_stmt(cfg, cpputil::get_clear_func_declare, "    ", ";");
+        string text = cpputil::clear_scope(cfg, cpputil::get_clear_func_declare, "    ", ";");
         return text;
     }
 
     string gen_mgr_n_key_find_func(const cfg_t &cfg)
     {
-        string text = cpputil::get_member_func_decl_stmt(cfg, cpputil::get_n_key_find_func_declare, "    ", ";\n");
+        string text = cpputil::clear_scope(cfg, cpputil::get_n_key_find_func_declare, "    ", ";\n");
         return text;
     }
 
     string gen_mgr_1_key_find_func(const cfg_t &cfg)
     {
-        string text = cpputil::get_member_func_decl_stmt(cfg, cpputil::get_1_key_find_func_declare_list);
+        string text = cpputil::clear_scope(cfg, cpputil::get_1_key_find_func_declare_list);
         return text;
     }
 
@@ -329,28 +329,30 @@ namespace hxx
 
 bool cpp_generator::gen_h_file(const string &h_file)
 {
-    static string h_template_text;
-    if (h_template_text.empty()){
-        fileutil::get_whole_file_str(m_h_templet_path, h_template_text);
+    // 取出h模板文件的内容
+    static string static_h_template;
+    if (static_h_template.empty()){
+        fileutil::get_whole_file_str(m_h_templet_path, static_h_template);
 
-        if(h_template_text.empty()){
+        if(static_h_template.empty()){
+            ECHO_ERR("生成c++文件失败：找不到模板文件<%s>", m_h_templet_path.c_str());
             return false;
         }
     }
 
-    string text = h_template_text;
+    string text = static_h_template;
 
     strutil::replace(text, "%cfg%", m_cfgbase.filename);
 
-    // 定义结构体
-    strutil::replace(text, "%structs%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_struct));
+    // 1. 定义配置数据结构体
+    strutil::replace(text, "%structs%", cpputil::splice(m_cfgbase, hxx::gen_struct));
 
-    // 开始实现mgr
-    strutil::replace(text, "%typedefs%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_typedef, "\n\n"));
-    strutil::replace(text, "%load_funcs%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_load_func, "\n"));
-    strutil::replace(text, "%clear_funcs%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_clear_func, "\n"));
-    strutil::replace(text, "%get_funcs%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_get_func, "\n\n"));
-    strutil::replace(text, "%members%", cpputil::splice_each_cfg(m_cfgbase, hxx::gen_mgr_members, "\n\n"));
+    // 2. 开始实现mgr管理器，该mgr将提供载入、清空和查找接口
+    strutil::replace(text, "%typedefs%", cpputil::splice(m_cfgbase, hxx::gen_mgr_typedef, "\n\n"));
+    strutil::replace(text, "%load_funcs%", cpputil::splice(m_cfgbase, hxx::gen_mgr_load_func, "\n"));
+    strutil::replace(text, "%clear_funcs%", cpputil::splice(m_cfgbase, hxx::gen_mgr_clear_func, "\n"));
+    strutil::replace(text, "%get_funcs%", cpputil::splice(m_cfgbase, hxx::gen_mgr_get_func, "\n\n"));
+    strutil::replace(text, "%members%", cpputil::splice(m_cfgbase, hxx::gen_mgr_members, "\n\n"));
     strutil::replace(text, "%cfg_member%", cpputil::get_member_comment_list(m_cfgbase));
     strutil::replace(text, "%mgr%", cpputil::get_mgr_name(m_cfgbase));
  

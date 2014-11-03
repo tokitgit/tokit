@@ -2,7 +2,7 @@
 //< @file:   prop\parser\main.cpp
 //< @author: 洪坤安
 //< @date:   2014年9月10日 14:49:42
-//< @brief:  
+//< @brief:  tokit主入口
 //< Copyright (c) 2014 Tokit. All rights reserved.
 ///<------------------------------------------------------------------------------
 
@@ -13,9 +13,10 @@
 #include "c++/c++_generator.h"
 #include "xml/xml_generator.h"
 
-bool parse_excel(std::string &excel, cfgbase_t &cfgbase, enum_parse_option parse_option){
+// 解析excel文件
+bool parse_excel(const std::string &excel, const enum_parse_option parse_option, cfgbase_t &cfgbase){
     if(false == fileutil::exist(excel)){
-        ECHO_ERR("错误: 找不到excel结构定义文件<%s>", excel.c_str());
+        ECHO_ERR("错误: 找不到excel文件<%s>", excel.c_str());
         return false;
     }
 
@@ -48,21 +49,21 @@ int main(int argc, char **argv)
     if (argc < 2){
         ECHO_ERR("参数格式错误，格式应为：");
         ECHO_ERR("   excel文件的路径  命令1  命令1的参数  命令2  命令2的参数...");
-        ECHO_ERR("   比如: ../../hello.xlsx  -xsd  ../xsd/  -saveasxml ../xml/");
+        ECHO_ERR("   比如: e:/hello.xlsx  -xsd  ../xsd/  -saveasxml ../xml/");
 
         return 0;
     }
 
-    std::string excel = argv[1];
+    std::string excel = argv[1]; // excel文件的路径
     cfgbase_t cfgbase;
     enum_parse_option parse_option = get_parse_option(argc, argv);
 
-    // 解析excel文件
-    if (!parse_excel(excel, cfgbase, parse_option)){
+    // 解析excel文件，结果存放在 cfgbase 中
+    if (!parse_excel(excel, parse_option, cfgbase)){
         return 0;
     }
 
-    // 开始执行命令
+    // 根据传入参数，开始执行命令
     int pos = 2;
     while(pos < argc){
         std::string cmd = argv[pos++];
@@ -77,6 +78,7 @@ int main(int argc, char **argv)
 
             std::string xsd_dir  = argv[pos++];
 
+            // 生成xsd文件
             xsd_generator xsd_gen(cfgbase, xsd_dir);
             xsd_gen.generate();
         }else if(cmd == "-c++"){
@@ -92,6 +94,7 @@ int main(int argc, char **argv)
             std::string cpp_templet = argv[pos++];
             std::string cpp_dir	    = argv[pos++];
 
+            // 生成c++文件
             cpp_generator cpp_gen(cfgbase, cpp_dir, h_templet, cpp_templet);
             cpp_gen.generate();
         }else if(cmd == "-go"){
@@ -103,6 +106,7 @@ int main(int argc, char **argv)
                 return 0;
             }
 
+            // 生成go文件（未开放）
             std::string go_templet = argv[pos++];
             std::string go_dir	   = argv[pos++];
         }else if(cmd == "-saveasxml"){
@@ -116,6 +120,7 @@ int main(int argc, char **argv)
 
             std::string xml_dir = argv[pos++];
 
+            // 生成xml文件
             xml_generator xml_gen(cfgbase, xml_dir);
             xml_gen.generate();
         }

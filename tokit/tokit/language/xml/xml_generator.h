@@ -2,7 +2,7 @@
 //< @file:   language\xml\xml_generator.h
 //< @author: 洪坤安
 //< @date:   2014年9月25日 15:49:5
-//< @brief:  
+//< @brief:  导出xml数据
 //< Copyright (c) 2014 Tokit. All rights reserved.
 ///<------------------------------------------------------------------------------
 
@@ -25,9 +25,10 @@ public:
 
 public:
     // @impl
-    bool generate();
+    virtual bool generate();
 
 private:
+    // 将excel中各个工作表导出到对应的xml文件
     bool save_as_xml();
 
 private:
