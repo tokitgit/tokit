@@ -52,7 +52,7 @@ dotamonstercfg_t::dotamonstercfg_t()
 std::string dotaequipcfg_t::print() const
 {
     char buf[2048];
-    sprintf_s(buf, sizeof(buf), "id=%u name=%s desc=%s price=%u isdrop=%u attack=%d "
+    snprintf(buf, sizeof(buf), "id=%u name=%s desc=%s price=%u isdrop=%u attack=%d "
         , id
         , name.c_str()
         , desc.c_str()
@@ -66,7 +66,7 @@ std::string dotaequipcfg_t::print() const
 std::string dotaherocfg_t::print() const
 {
     char buf[2048];
-    sprintf_s(buf, sizeof(buf), "id=%u name=%s strength=%lf agile=%lf intelligense=%lf"
+    snprintf(buf, sizeof(buf), "id=%u name=%s strength=%lf agile=%lf intelligense=%lf"
         , id
         , name.c_str()
         , strength
@@ -79,7 +79,7 @@ std::string dotaherocfg_t::print() const
 std::string dotaskillcfg_t::print() const
 {
     char buf[2048];
-    sprintf_s(buf, sizeof(buf), "id=%u name=%s strength=%lf agile=%lf intelligense=%lf"
+    snprintf(buf, sizeof(buf), "id=%u name=%s strength=%lf agile=%lf intelligense=%lf"
         , id
         , name.c_str()
         , strength
@@ -92,7 +92,7 @@ std::string dotaskillcfg_t::print() const
 std::string dotamonstercfg_t::print() const
 {
     char buf[2048];
-    sprintf_s(buf, sizeof(buf), "id=%u name=%s strength=%lf agile=%lf intelligense=%lf"
+    snprintf(buf, sizeof(buf), "id=%u name=%s strength=%lf agile=%lf intelligense=%lf"
         , id
         , name.c_str()
         , strength

@@ -55,10 +55,10 @@ testcfg_t::testcfg_t()
 std::string testcfg_t::print() const
 {
     char buf[2048];
-    sprintf_s(buf, sizeof(buf), "stringfield=%s boolfield=%u charfield=%d int16field=%d intfield=%d int64field=%I64d uint8field=%u uint16field=%u uintfield=%u uint64field=%llu floatfield=%f "
-        "doublefield=%lf stringfieldprimary=%s boolfieldprimary=%u charfieldprimary=%d int16fieldprimary=%d intfieldprimary=%d int64fieldprimary=%I64d uint8fieldprimary=%u uint16fieldprimary=%u uintfieldprimary=%u "
-        "uint64fieldprimary=%llu floatfieldprimary=%f doublefieldprimary=%lf stringfieldunique=%s boolfieldunique=%u charfieldunique=%d int16fieldunique=%d intfieldunique=%d int64fieldunique=%I64d uint8fieldunique=%u "
-        "uint16fieldunique=%u uintfieldunique=%u uint64fieldunique=%llu floatfieldunique=%f doublefieldunique=%lf "
+    snprintf(buf, sizeof(buf), "stringfield=%s boolfield=%u charfield=%d int16field=%d intfield=%d int64field="I64d" uint8field=%u uint16field=%u uintfield=%u uint64field="I64u" floatfield=%f "
+        "doublefield=%lf stringfieldprimary=%s boolfieldprimary=%u charfieldprimary=%d int16fieldprimary=%d intfieldprimary=%d int64fieldprimary="I64d" uint8fieldprimary=%u uint16fieldprimary=%u uintfieldprimary=%u "
+        "uint64fieldprimary="I64u" floatfieldprimary=%f doublefieldprimary=%lf stringfieldunique=%s boolfieldunique=%u charfieldunique=%d int16fieldunique=%d intfieldunique=%d int64fieldunique="I64d" uint8fieldunique=%u "
+        "uint16fieldunique=%u uintfieldunique=%u uint64fieldunique="I64u" floatfieldunique=%f doublefieldunique=%lf "
         , stringfield.c_str()
         , boolfield
         , charfield

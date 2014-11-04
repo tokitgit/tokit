@@ -68,11 +68,11 @@ namespace cxx
             "%d",
             "%d",
             "%d",
-            "%I64d",
+            "\"I64d\"",
             "%u",
             "%u",
             "%u",
-            "%llu",
+            "\"I64u\"",
             "%f",
             "%lf",
         };
@@ -102,7 +102,7 @@ namespace cxx
 
         if(n_fields > 0){
             print_stmt = "\n    char buf[2048];"
-                         "\n    sprintf_s(buf, sizeof(buf), \"%printf_fmt%\"%printf_argv%);"
+                         "\n    snprintf(buf, sizeof(buf), \"%printf_fmt%\"%printf_argv%);"
                          "\n"
                          "\n    return buf;";
 

@@ -9,7 +9,7 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 - [x] xsd
 - [x] c++
 
-其中c++文件中含有自动读取xml数据的接口以及查找接口。
+其中c++文件中含有自动读取xml数据的接口以及查找接口。支持linux和win平台。
 
 ## 使用过程
 
@@ -17,7 +17,7 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 * 2. 程序人员在同一个excel中编辑好字段定义，使其符合tokit格式
 * 3. 使用tokit从excel中生成c++代码，并导出xml数据文件和xsd文件。
 
-详细步骤可见目录下的**`《Tokit使用手册.pdf》`**。
+详细步骤可见目录下的**《Tokit使用手册.pdf》**。
 
 ## 使用命令
 
@@ -49,11 +49,11 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 
 ## 下载之后
 
-下载tokit整个项目之后，运行`example`目录下的`《一键生成.bat》`脚本。
+下载tokit整个项目之后，运行**example**目录下的**《一键生成.bat》**脚本。
 
-示例excel置于`example\excel`目录下，该脚本将根据`example\excel`中的各个excel文件，生成对应的xml、xsd、c++文件。
+该脚本将根据example\excel中的各个示例excel文件，生成对应的xml、xsd、c++文件。
 
-参考`example\c++\c++_example.sln`项目和`《Tokit使用手册.pdf》`，将tokit接入你自己的c++项目
+参考**example\c++\c++_example.sln**项目和**《Tokit使用手册.pdf》**，将tokit接入你自己的c++项目
 
 ## 示例
 

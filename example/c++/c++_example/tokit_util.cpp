@@ -105,10 +105,9 @@ namespace tickutil
 // ∑µªÿ√Î
 double tick_t::end_tick()
 {
-    Tick tick_now = tickutil::get_tick();
-    Tick diff = tick_now - m_tick;
+    Tick pass_ms = tick_diff(m_tick);
 
-    double passed_sec = (double)diff / tickutil::GetTickFrequency();
+    double passed_sec = (double)pass_ms / 1000;
     return passed_sec;
 }
 

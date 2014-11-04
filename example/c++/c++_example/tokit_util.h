@@ -16,6 +16,15 @@
 #include "type.h"
 #include <stdlib.h>
 
+#ifdef WIN32
+    #define snprintf sprintf_s
+    #define I64d "%I64d"
+    #define I64u "%I64u"
+#else
+    #define I64d "%lld"
+    #define I64u "%llu"
+#endif
+
 using namespace std;
 
 namespace keyutil
