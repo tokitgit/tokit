@@ -1,7 +1,15 @@
 tokit
 =====
 
-tokit是一个用于方便网游研发人员配置数据的工具。可以根据一份符合tokit格式的excel文件，生成对应的xml、xsd以及c++文件。其中c++文件中含有自动读取xml数据的接口以及查找接口。
+tokit是一个用于方便网游研发人员配置数据的工具。可以根据一份符合tokit格式的excel文件，生成对应的文件。
+
+目前支持生成：
+
+- [x] xml
+- [x] xsd
+- [x] c++
+
+其中c++文件中含有自动读取xml数据的接口以及查找接口。
 
 ## 使用过程
 
@@ -9,7 +17,7 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 * 2. 程序人员在同一个excel中编辑好字段定义，使其符合tokit格式
 * 3. 使用tokit从excel中生成c++代码，并导出xml数据文件和xsd文件。
 
-详细步骤可见目录下的`《Tokit使用手册.pdf》`。
+详细步骤可见目录下的**`《Tokit使用手册.pdf》`**。
 
 ## 使用命令
 
@@ -17,16 +25,15 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 
 使用方式如下：
 
-	tokit.exe  <excel文件>
-			[-xsd  <放置xsd文件的目录>]
-			[-c++  <h模板>  <cpp模板>  <放置c++文件的目录>]
-			[-saveasxml  <放置xml文件的目录>] 
+>`tokit.exe`  `<excel文件>`<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ `-xsd`  `<放置xsd文件的目录>` ]  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ `-c++`  `<h模板>`  `<cpp模板>`  `<放置c++文件的目录>` ]  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ `-saveasxml`  `<放置xml文件的目录>` ]  
 
-选项： 
-
-	-xsd   根据excel生成xsd文件 
-	-c++   根据excel生成c++文件 
-	-saveasxml   将excel文件导出成为xml数据文件
+>选项：<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`-xsd`   根据excel生成xsd文件  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`-c++`   根据excel生成c++文件  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`-saveasxml`   将excel文件导出成为xml数据文件  
 
 比如：
 
@@ -42,11 +49,11 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 
 ## 下载之后
 
-下载tokit整个项目之后，运行example目录下的《一键生成.bat》脚本。
+下载tokit整个项目之后，运行`example`目录下的`《一键生成.bat》`脚本。
 
-示例excel置于example\excel目录下，该脚本将根据example\excel中的各个excel文件，生成对应的xml、xsd、c++文件。
+示例excel置于`example\excel`目录下，该脚本将根据`example\excel`中的各个excel文件，生成对应的xml、xsd、c++文件。
 
-参考example\c++\c++_example.sln项目和《Tokit使用手册.pdf》，将tokit接入你自己的c++项目
+参考`example\c++\c++_example.sln`项目和`《Tokit使用手册.pdf》`，将tokit接入你自己的c++项目
 
 ## 示例
 
@@ -54,25 +61,30 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 为了更快的了解tokit，现在把tokit生成的文件全部贴出来。
 
 
-假设现在有一个excel文件《dota英雄表.xlsx》，里面的内容是
+假设现在有一个excel文件`《dota英雄表.xlsx》`，里面的内容是
 
-							《dota英雄表.xlsx》
+						《dota英雄表.xlsx》
 ![dotahero](https://github.com/tokitgit/tokit/blob/master/doc/image/dotahero.jpg)
 						
 	
 则使用tokit之后，将生成xml、xsd和c++文件
 
+<br>
+<br>
 
-
-					* 1.《dotaherocfg.xml》
+						* 1.《dotaherocfg.xml》
 ![dotahero_xml](https://github.com/tokitgit/tokit/blob/master/doc/image/dotahero_xml.jpg)
 
+<br>
+<br>
 
-					* 2.《dota装备表.xsd》
+						* 2.《dota装备表.xsd》
 ![dotahero_xsd](https://github.com/tokitgit/tokit/blob/master/doc/image/dotahero_xsd.jpg)
 
+<br>
+<br>
 
-					* 3.《dotaherocfg.h》
+						* 3.《dotaherocfg.h》
 ```cpp
 ///<------------------------------------------------------------------------------
 //< @file:  dotaherocfg.h
@@ -167,13 +179,13 @@ public:
 };
 
 #endif // _dotaherocfg_h_
------------------------------------------------------------------
 ```
 
-							
-					* 4.《dotaherocfg.cpp》
+<br>
+<br>
+
+						* 4.《dotaherocfg.cpp》
 ```cpp
------------------------------------------------------------------
 ///<------------------------------------------------------------------------------
 //< @file:  dotaherocfg.cpp
 //< @brief: dota英雄表
@@ -301,10 +313,10 @@ const dotaherocfg_t* dotaherocfgmgr::get_dotaherocfg_by_name(const char* name)
     dotaherocfg_t *cfg = itr->second;
     return cfg;
 }
------------------------------------------------------------------
 ```
 
 
-把自己的项目跟tokit对接后，载入《dotaherocfg.xml》文件的工作很简单，添加一行语句即可： 
-		
-		dotaherocfgmgr::instance().load();
+把自己的项目跟tokit对接后，载入`《dotaherocfg.xml》`文件的工作很简单，添加一行语句即可： 
+```c++		
+dotaherocfgmgr::instance().load();
+```
