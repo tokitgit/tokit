@@ -9,38 +9,42 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 * 2. 程序人员在同一个excel中编辑好字段定义，使其符合tokit格式
 * 3. 使用tokit从excel中生成c++代码，并导出xml数据文件和xsd文件。
 
-详细步骤可见目录下的《Tokit使用手册.pdf》。
+详细步骤可见目录下的`《Tokit使用手册.pdf》`。
 
 ## 使用命令
 
 使用tokit要求有一个符合tokit格式的excel文件
 
 使用方式如下：
-	tokit.exe <excel文件> 
-		[-xsd <放置xsd文件的目录>] 
-		[-c++ <h模板> <cpp模板> <放置c++文件的目录>] 
-		[-saveasxml <放置xml文件的目录>] 
+
+	tokit.exe  <excel文件>
+			[-xsd  <放置xsd文件的目录>]
+			[-c++  <h模板>  <cpp模板>  <放置c++文件的目录>]
+			[-saveasxml  <放置xml文件的目录>] 
 
 选项： 
-	-xsd 根据excel生成xsd文件 
-	-c++ 根据excel生成c++文件 
-	-saveasxml 将excel文件导出成为xml数据文件
+
+	-xsd   根据excel生成xsd文件 
+	-c++   根据excel生成c++文件 
+	-saveasxml   将excel文件导出成为xml数据文件
 
 比如：
 
 	假设有一个符合tokit格式的excel文件《装备.xlsx》，里面有一个工作表item，则 
 		
-		tokit.exe ../装备.xlsx -xsd ./xsd/ 「将在xsd目录下生成item.xsd文件」 
-		tokit.exe ../装备.xlsx -c++ ./template/c++_template.h ./template/c++_template.cpp ./c++/「将在c++目录下生成item.h和item.cpp文件」 
-		tokit.exe ../装备.xlsx -saveasxml ./xml/「将在xml目录下生成item.xml数据文件」 
+		tokit.exe   ../装备.xlsx   -xsd   ./xsd/   「将在xsd目录下生成item.xsd文件」 
+		tokit.exe   ../装备.xlsx   -c++   ./template/c++_template.h   ./template/c++_template.cpp   ./c++/  「将在c++目录下生成item.h和item.cpp文件」 
+		tokit.exe   ../装备.xlsx   -saveasxml   ./xml/  「将在xml目录下生成item.xml数据文件」 
 		
 	这些参数可结合起来： 
-		tokit.exe ../装备.xlsx -xsd ./xsd/ -c++ ./template/c++_template.h ./template/c++_template.cpp ./c++/ -saveasxml ./xml/「将生成item.xsd、item.h、item.cpp和item.xml文件」
+		tokit.exe   ../装备.xlsx   -xsd   ./xsd/   -c++   ./template/c++_template.h   ./template/c++_template.cpp   ./c++/ -saveasxml   ./xml/  「将生成item.xsd、item.h、item.cpp和item.xml文件」
 
 
 ## 下载之后
 
-下载tokit整个项目之后，运行example目录下的《一键生成.bat》脚本，该脚本将根据example\excel中的各个excel文件，生成对应的xml、xsd、c++文件。
+下载tokit整个项目之后，运行example目录下的《一键生成.bat》脚本。
+
+示例excel置于example\excel目录下，该脚本将根据example\excel中的各个excel文件，生成对应的xml、xsd、c++文件。
 
 参考example\c++\c++_example.sln项目和《Tokit使用手册.pdf》，将tokit接入你自己的c++项目
 
@@ -52,6 +56,8 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 
 假设现在有一个excel文件《dota英雄表.xlsx》，里面的内容是
 
+
+	![dotahero](https://github.com/tokitgit/tokit/raw/master/doc/image/dotahero.jpeg)  
 
 							《dota英雄表.xlsx》
 	-----------------------------------------------------------------
@@ -90,7 +96,6 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 		<row id="7" name="猴子" strength="10.5" agile="20.00001" intelligense="301.1111"/>
 	</dotaherocfg>
 	-----------------------------------------------------------------
-
 
 
 						* 2.《dota装备表.xsd》
@@ -347,4 +352,6 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 
 
 
-把自己的项目跟tokit对接后，载入《dotaherocfg.xml》文件的工作很简单，添加一行语句即可： dotaherocfgmgr::instance().load();
+把自己的项目跟tokit对接后，载入《dotaherocfg.xml》文件的工作很简单，添加一行语句即可： 
+		
+		dotaherocfgmgr::instance().load();

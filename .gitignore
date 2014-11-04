@@ -26,3 +26,9 @@
 *.exe
 *.out
 *.app
+*.suo
+*.user
+*.manifest
+*.pdb
+*.ilk
+*.manifest
