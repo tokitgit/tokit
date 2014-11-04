@@ -65,7 +65,9 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 
 						《dota英雄表.xlsx》
 ![dotahero](https://github.com/tokitgit/tokit/blob/master/doc/image/dotahero.jpg)
-						
+
+<br>
+<br>
 	
 则使用tokit之后，将生成xml、xsd和c++文件
 
