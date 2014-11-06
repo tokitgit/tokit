@@ -32,6 +32,9 @@
     <Filter Include="generator\xml">
       <UniqueIdentifier>{4a34ce3b-3ac7-4d9d-b325-ea10639f0cf6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="generator\json">
+      <UniqueIdentifier>{e6f32503-d83d-477b-87a5-ee6a7b5bbefd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -101,6 +104,9 @@
     <ClInclude Include="util\tickutil.h">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="language\json\json_generator.h">
+      <Filter>generator\json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -143,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="util\tickutil.cpp">
       <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="language\json\json_generator.cpp">
+      <Filter>generator\json</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

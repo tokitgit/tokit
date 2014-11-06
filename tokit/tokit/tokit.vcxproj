@@ -115,6 +115,7 @@
     <ClInclude Include="excel\CWorksheets.h" />
     <ClInclude Include="generator.h" />
     <ClInclude Include="language\c++\c++_generator.h" />
+    <ClInclude Include="language\json\json_generator.h" />
     <ClInclude Include="language\xml\xml_generator.h" />
     <ClInclude Include="language\xsd\xsd_generator.h" />
     <ClInclude Include="parser.h" />
@@ -135,6 +136,7 @@
     <ClCompile Include="language\c++\c++_generator.cpp" />
     <ClCompile Include="language\c++\gen_cpp.cpp" />
     <ClCompile Include="language\c++\gen_h.cpp" />
+    <ClCompile Include="language\json\json_generator.cpp" />
     <ClCompile Include="language\xml\xml_generator.cpp" />
     <ClCompile Include="language\xsd\xsd_generator.cpp" />
     <ClCompile Include="main.cpp" />

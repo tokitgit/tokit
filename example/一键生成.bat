@@ -28,20 +28,26 @@ echo 1. 生成c++文件
 
 echo 2. 导出xml文件
     for /F %%x in ('dir /b /a-d /s "%excel_dir%\*.xlsx"') do ( 
-        echo 正在导出[ %%~nx.xml ]
+        echo 正在处理[ %%x ]
         %tool%\tokit.exe %%x -saveasxml %gen_dir%\xml
     )
 
-echo 3. 导出xsd文件
+echo 3. 导出json文件
+    for /F %%x in ('dir /b /a-d /s "%excel_dir%\*.xlsx"') do ( 
+        echo 正在处理[ %%x ]
+        %tool%\tokit.exe %%x -json %gen_dir%\json
+    )
+
+echo 4. 导出xsd文件
     for /F %%x in ('dir /b /a-d /s "%excel_dir%\*.xlsx"') do ( 
         echo 正在导出[ %%~nx.xsd ]
         %tool%\tokit.exe %%x -xsd %gen_dir%\xsd
     )
 
-echo 4. 一次性导出c++、xml、xsd文件
+echo 5. 一次性导出c++、xml、json、xsd文件
     for /F %%x in ('dir /b /a-d /s "%excel_dir%\*.xlsx"') do (
         echo 正在处理[ %%x ]
-        %tool%\tokit.exe %%x -c++ %template%/c++_template.h %template%/c++_template.cpp %gen_dir%\c++\c++_example\cfg -saveasxml %gen_dir%\xml -xsd %gen_dir%\xsd
+        %tool%\tokit.exe %%x -c++ %template%/c++_template.h %template%/c++_template.cpp %gen_dir%\c++\c++_example\cfg -saveasxml %gen_dir%\xml -xsd %gen_dir%\xsd -json %gen_dir%\json 
     )
 
 pause

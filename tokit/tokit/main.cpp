@@ -12,6 +12,7 @@
 #include "xsd/xsd_generator.h"
 #include "c++/c++_generator.h"
 #include "xml/xml_generator.h"
+#include "json/json_generator.h"
 
 // 解析excel文件
 bool parse_excel(const std::string &excel, const enum_parse_option parse_option, cfgbase_t &cfgbase){
@@ -35,7 +36,9 @@ enum_parse_option get_parse_option(int argc, char **argv)
 {
     enum_parse_option parse_option = parse_option_skip_data;
     for (int i = 1; i < argc; i++){
-        if (0 == strcmp(argv[i], "-saveasxml")){
+        const char *cmd = argv[i];
+        if (!strcmp(cmd, "-saveasxml") ||
+            !strcmp(cmd, "-json")){
             parse_option = parse_option_read_data;
             break;
         }
@@ -113,7 +116,7 @@ int main(int argc, char **argv)
             if(pos + 1 > argc){
                 ECHO_WARN("导出xml文件的命令错误，格式应为: ");
                 ECHO_WARN("   -saveasxml  生成的xml文件存放在哪个文件夹下");
-                ECHO_WARN("   比如: -saveasxml  ../xml/");
+                ECHO_WARN("   比如: -saveasxml  ./xml/");
 
                 return 0;
             }
@@ -123,6 +126,20 @@ int main(int argc, char **argv)
             // 生成xml文件
             xml_generator xml_gen(cfgbase, xml_dir);
             xml_gen.generate();
+        }else if(cmd == "-json"){
+            if(pos + 1 > argc){
+                ECHO_WARN("导出json文件的命令错误，格式应为: ");
+                ECHO_WARN("   -json  生成的json文件存放在哪个文件夹下");
+                ECHO_WARN("   比如: -json  ./json/");
+
+                return 0;
+            }
+
+            std::string json_dir = argv[pos++];
+
+            // 生成json文件
+            json_generator json_gen(cfgbase, json_dir);
+            json_gen.generate();
         }
     }
 

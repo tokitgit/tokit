@@ -21,23 +21,23 @@
 namespace xmlutil{
     // 转码:
     //     1. 引号 -> &quot;
-    void escape_xml(const string &str)
+    void escape_xml(string &str)
     {
-        strutil::replace(const_cast<std::string&>(str), "\"", "&quot;");
+        strutil::replace(str, "\"", "&quot;");
     }
 
     // 将数据拼接成xml格式
     void slice_xml_text(const cfg_t &cfg, std::string &xml_text)
     {
         const fieldvec_t &fields = cfg.fields;
-        const table_t &table = cfg.table;
+        table_t &table = *(const_cast<table_t*>(&cfg.table));
 
         xml_text = "<" + cfg.en_name + " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n";
         xml_text.reserve(cfg.table.size() * fields.size() * 15);
 
         string row_text;
         for(size_t r = 0; r < cfg.table.size(); r++){
-            const row_t &row = table[r];
+            row_t &row = table[r];
 
             // 将数据拼接成形如<row a="a1" b="b1" c="c1"....>的xml文本
             row_text = "    <row";
@@ -66,7 +66,6 @@ bool xml_generator::generate()
 
 bool xml_generator::save_as_xml()
 {
-    // tick_t export_xml_tick;
 
     // 将excel中各个工作表数据导出到对应的xml文件中
     size_t n_cfg = m_cfgbase.cfgs.size();
@@ -76,13 +75,11 @@ bool xml_generator::save_as_xml()
 
         string xml_text;        
         xmlutil::slice_xml_text(cfg, xml_text);
-        
+
         ofstream o(xml);
         o << xml_text;
-
         ECHO_OK("导出[%s] -> [%s]成功", cfg.cn_name.c_str(), xml.c_str());
     }
 
-    // ECHO_WARN("导出xml完毕, 共耗时<%0.3f>秒", export_xml_tick.end_tick());
     return true;
 }
