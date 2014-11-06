@@ -74,7 +74,7 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 ```java
 tokit.exe  dota英雄表.xlsx  -c++ c++_template.h  c++_template.cpp  .\c++  -saveasxml  .\xml  -xsd  .\xsd
 
-其中template\c++_template.h和template\c++_template.cpp是2个h模板和cpp模板，用于tokit生成c++文件。
+其中template\c++_template.h和template\c++_template.cpp分别是h模板和cpp模板，用于tokit生成c++文件。
 ```
 
 生成的文件如下：
