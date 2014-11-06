@@ -8,6 +8,7 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 - [x] xml
 - [x] xsd
 - [x] c++
+- [x] json
 
 其中c++文件中含有自动读取xml数据的接口以及查找接口。支持linux和win平台。
 
@@ -29,11 +30,13 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ `-xsd`  `<放置xsd文件的目录>` ]  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ `-c++`  `<h模板>`  `<cpp模板>`  `<放置c++文件的目录>` ]  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ `-saveasxml`  `<放置xml文件的目录>` ]  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ `-json`  `<放置json文件的目录>` ]  
 
 >选项：<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`-xsd`   根据excel生成xsd文件  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`-c++`   根据excel生成c++文件  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`-saveasxml`   将excel文件导出成为xml数据文件  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`-json`   将excel文件导出成为json数据文件  
 
 比如：
 
@@ -42,9 +45,10 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 		tokit.exe   ../装备.xlsx   -xsd   ./xsd/   「将在xsd目录下生成item.xsd文件」 
 		tokit.exe   ../装备.xlsx   -c++   ./template/c++_template.h   ./template/c++_template.cpp   ./c++/  「将在c++目录下生成item.h和item.cpp文件」 
 		tokit.exe   ../装备.xlsx   -saveasxml   ./xml/  「将在xml目录下生成item.xml数据文件」 
+		tokit.exe   ../装备.xlsx   -json   ./json/  「将在json目录下生成item.json数据文件」 
 		
 	这些参数可结合起来： 
-		tokit.exe   ../装备.xlsx   -xsd   ./xsd/   -c++   ./template/c++_template.h   ./template/c++_template.cpp   ./c++/ -saveasxml   ./xml/  「将生成item.xsd、item.h、item.cpp和item.xml文件」
+		tokit.exe   ../装备.xlsx   -xsd   ./xsd/   -c++   ./template/c++_template.h   ./template/c++_template.cpp   ./c++/ -saveasxml   ./xml/  -json   ./json/「将生成item.xsd、item.h、item.cpp、item.xml和item.json文件」
 
 
 ## 下载之后
@@ -69,10 +73,10 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 <br>
 <br>
 	
-则按如下方式使用tokit之后，将生成xml、xsd和c++文件
+则按如下方式使用tokit之后，将生成xml、xsd、json和c++文件
 
 ```java
-tokit.exe  dota英雄表.xlsx  -c++ c++_template.h  c++_template.cpp  .\c++  -saveasxml  .\xml  -xsd  .\xsd
+tokit.exe  dota英雄表.xlsx  -c++ c++_template.h  c++_template.cpp  .\c++  -saveasxml  .\xml  -xsd  .\xsd  -json  .\json
 
 其中template\c++_template.h和template\c++_template.cpp分别是h模板和cpp模板，用于tokit生成c++文件。
 ```
@@ -94,7 +98,13 @@ tokit.exe  dota英雄表.xlsx  -c++ c++_template.h  c++_template.cpp  .\c++  -sa
 <br>
 <br>
 
-						* 3.《dotaherocfg.h》
+						* 3.《dotaherocfg.json》
+![dotahero_xsd](https://github.com/tokitgit/tokit/blob/master/doc/image/dotahero_json.jpg)
+
+<br>
+<br>
+
+						* 4.《dotaherocfg.h》
 ```cpp
 ///<------------------------------------------------------------------------------
 //< @file:  dotaherocfg.h
@@ -194,7 +204,7 @@ public:
 <br>
 <br>
 
-						* 4.《dotaherocfg.cpp》
+						* 5.《dotaherocfg.cpp》
 ```cpp
 ///<------------------------------------------------------------------------------
 //< @file:  dotaherocfg.cpp
