@@ -10,7 +10,7 @@
 #include <iostream>
 #include <string.h>
 #include <rapidxml_utils.hpp>
-#include "tokit_util.h"
+#include "tokit_tool.h"
 
 dotaequipcfg_t::dotaequipcfg_t()
     : id(0)
@@ -152,14 +152,14 @@ bool dotaequipcfgmgr::load_dotaequipcfg()
 
     dotaequipcfg_t cfg;
     for(rapidxml::xml_node<> *node = root->first_node(); node; node = node->next_sibling()){
-        cfg.id = strutil::str_to_uint32(node->first_attribute("id")->value());
-        cfg.name = strutil::un_escape_xml(node->first_attribute("name")->value());
-        cfg.desc = strutil::un_escape_xml(node->first_attribute("desc")->value());
-        cfg.price = strutil::str_to_uint32(node->first_attribute("price")->value());
+        cfg.id = strtool::str_to_uint32(node->first_attribute("id")->value());
+        cfg.name = strtool::un_escape_xml(node->first_attribute("name")->value());
+        cfg.desc = strtool::un_escape_xml(node->first_attribute("desc")->value());
+        cfg.price = strtool::str_to_uint32(node->first_attribute("price")->value());
         cfg.isdrop = (node->last_attribute("isdrop")->value()[0] != '0');
-        cfg.attack = strutil::str_to_int32(node->last_attribute("attack")->value());
-        cfg.bornlist = strutil::split_str_to_vec<uint32>(node->last_attribute("bornlist")->value(), strutil::str_to_uint32);
-        cfg.bornnum = strutil::split_str_to_vec<uint8>(node->last_attribute("bornnum")->value(), strutil::str_to_uint32);
+        cfg.attack = strtool::str_to_int32(node->last_attribute("attack")->value());
+        cfg.bornlist = strtool::split_str_to_vec<uint32>(node->last_attribute("bornlist")->value(), strtool::str_to_uint32);
+        cfg.bornnum = strtool::split_str_to_vec<uint8>(node->last_attribute("bornnum")->value(), strtool::str_to_uint32);
 
         m_dotaequipcfgvec.push_back(cfg);
         dotaequipcfg_t* curcfg = &m_dotaequipcfgvec.back();
@@ -203,8 +203,8 @@ bool dotaequipcfgmgr::load_dotaherocfg()
 
     dotaherocfg_t cfg;
     for(rapidxml::xml_node<> *node = root->first_node(); node; node = node->next_sibling()){
-        cfg.id = strutil::str_to_uint32(node->first_attribute("id")->value());
-        cfg.name = strutil::un_escape_xml(node->first_attribute("name")->value());
+        cfg.id = strtool::str_to_uint32(node->first_attribute("id")->value());
+        cfg.name = strtool::un_escape_xml(node->first_attribute("name")->value());
         cfg.strength = atof(node->first_attribute("strength")->value());
         cfg.agile = atof(node->last_attribute("agile")->value());
         cfg.intelligense = atof(node->last_attribute("intelligense")->value());
@@ -251,8 +251,8 @@ bool dotaequipcfgmgr::load_dotaskillcfg()
 
     dotaskillcfg_t cfg;
     for(rapidxml::xml_node<> *node = root->first_node(); node; node = node->next_sibling()){
-        cfg.id = strutil::str_to_uint32(node->first_attribute("id")->value());
-        cfg.name = strutil::un_escape_xml(node->first_attribute("name")->value());
+        cfg.id = strtool::str_to_uint32(node->first_attribute("id")->value());
+        cfg.name = strtool::un_escape_xml(node->first_attribute("name")->value());
         cfg.strength = atof(node->first_attribute("strength")->value());
         cfg.agile = atof(node->last_attribute("agile")->value());
         cfg.intelligense = atof(node->last_attribute("intelligense")->value());
@@ -299,8 +299,8 @@ bool dotaequipcfgmgr::load_dotamonstercfg()
 
     dotamonstercfg_t cfg;
     for(rapidxml::xml_node<> *node = root->first_node(); node; node = node->next_sibling()){
-        cfg.id = strutil::str_to_uint32(node->first_attribute("id")->value());
-        cfg.name = strutil::un_escape_xml(node->first_attribute("name")->value());
+        cfg.id = strtool::str_to_uint32(node->first_attribute("id")->value());
+        cfg.name = strtool::un_escape_xml(node->first_attribute("name")->value());
         cfg.strength = atof(node->first_attribute("strength")->value());
         cfg.agile = atof(node->last_attribute("agile")->value());
         cfg.intelligense = atof(node->last_attribute("intelligense")->value());

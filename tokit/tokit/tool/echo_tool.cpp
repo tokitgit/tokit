@@ -1,12 +1,12 @@
 ///<------------------------------------------------------------------------------
-//< @file:   echoutil.cpp
+//< @file:   echotool.cpp
 //< @author: 洪坤安
 //< @date:   2014年9月20日 10:38:58
 //< @brief:  
 //< Copyright (c) 2014 Tokit. All rights reserved.
 ///<------------------------------------------------------------------------------
 
-#include "echoutil.h"
+#include "echo_tool.h"
 #include <windows.h>
 #include <io.h>
 #include <stdio.h>
@@ -75,7 +75,7 @@ void ColoredPrintf(GTestColor color, const char* fmt, ...) {
     va_end(args);
 }
 
-namespace echoutil
+namespace echotool
 {
     std::string getmsg(const char* fmt, ...)
     {

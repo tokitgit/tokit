@@ -1,10 +1,10 @@
-#include "str_util.h"
+#include "str_tool.h"
 
 #include <time.h>
 
 #define IS_SPACE(c) (c == ' ' || c == '\t')
 
-namespace strutil
+namespace strtool
 {
     // 移除掉字符串开头和末尾处的空格和\t符号
     // 例如: trim("   start xxx end   ") = "start xxx end"
@@ -187,7 +187,7 @@ namespace strutil
 
     // 将无符号64位整数转换为字符串
     // 例如：tostr(100123) = "100123"
-    string tostr(uint64_t n)
+    string tostr(uint64 n)
     {
         char buf[64] = {0};
         errno_t err = _ui64toa_s (n, buf, sizeof(buf), 10);

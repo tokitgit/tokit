@@ -1,16 +1,15 @@
-#ifndef _str_util_h_
-#define _str_util_h_
+#ifndef _str_tool_h_
+#define _str_tool_h_
 
 #include <string>
 #include <vector>
 #include <set>
 #include <wtypes.h>
+#include "type.h"
 
 using std::string;
 
-typedef _ULonglong uint64_t;
-
-namespace strutil
+namespace strtool
 {
     // 移除掉字符串开头和末尾处的空格和\t符号
     // 例如: trim("   start xxx end   ") = "start xxx end"
@@ -57,7 +56,7 @@ namespace strutil
 
     // 将无符号64位整数转换为字符串
     // 例如：tostr(100123) = "100123"
-    string tostr(uint64_t n);
+    string tostr(uint64 n);
 
     typedef std::vector<std::string> stringvec_t;
 
@@ -100,6 +99,6 @@ namespace strutil
     std::string& wstring2string(const wchar_t*);
 };
 
-using namespace strutil;
+using namespace strtool;
 
-#endif // _str_util_h_
+#endif // _str_tool_h_

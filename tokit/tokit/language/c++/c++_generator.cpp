@@ -11,13 +11,13 @@
 #include <iostream>
 
 #include "cfg.h"
-#include "file_util.h"
-#include "str_util.h"
-#include "echoutil.h"
-#include "tickutil.h"
+#include "file_tool.h"
+#include "str_tool.h"
+#include "echo_tool.h"
+#include "tick_tool.h"
 #include "parser.h"
 
-namespace cpputil{
+namespace cpptool{
     string get_field_c_typedef_type(const cfg_t &cfg, const field_t &field, enum_get_c_field_option c_type /* = fct_with_namespace */)
     {
         string ret;
@@ -34,7 +34,7 @@ namespace cpputil{
 
             // 检测是否需要指定作用域
             ret = (gcfo_without_namespace == c_type) ? typedef_type 
-                                                     : cpputil::get_cfg_type_name(cfg) + "::" + typedef_type;
+                                                     : cpptool::get_cfg_type_name(cfg) + "::" + typedef_type;
         }else{
             ret = cpp_generator::raw_type_2_c_type(field.fieldtype);
         }
@@ -49,10 +49,10 @@ namespace cpputil{
 
         if (field.is_array()){
             text = "std::vector<%type%>";
-            strutil::replace(text, "%type%", c_type);
+            strtool::replace(text, "%type%", c_type);
         }else if(field.is_set()){
             text = "std::set<%type%>";
-            strutil::replace(text, "%type%", c_type);
+            strtool::replace(text, "%type%", c_type);
         }else{
             text = c_type;
         }
@@ -99,21 +99,21 @@ namespace cpputil{
     string get_load_func_declare(const cfg_t &cfg)
     {
         string text = "bool %mgr%::load_%cfg%()";
-        strutil::replace(text, "%cfg%", cfg.en_name);
+        strtool::replace(text, "%cfg%", cfg.en_name);
         return text;
     }
 
     string get_clear_func_name(const cfg_t &cfg)
     {
         string text = "clear_%cfg%";
-        strutil::replace(text, "%cfg%", cfg.en_name);
+        strtool::replace(text, "%cfg%", cfg.en_name);
         return text;
     }
 
     string get_clear_func_declare(const cfg_t &cfg)
     {
         string text = "void %mgr%::%clear_func_name%()";
-        strutil::replace(text, "%clear_func_name%", get_clear_func_name(cfg));
+        strtool::replace(text, "%clear_func_name%", get_clear_func_name(cfg));
         return text;
     }
 
@@ -132,7 +132,7 @@ namespace cpputil{
 
             const field_t &field = cfg.fields[keyidx];
 
-            string paramtype = cpputil::get_field_parameter_c_type(cfg, field);
+            string paramtype = cpptool::get_field_parameter_c_type(cfg, field);
             key.append(paramtype + " " + field.en_name);
 
             if (n + 1 < n_key){
@@ -142,9 +142,9 @@ namespace cpputil{
 
         string text = "const %cfgtype%* %mgr%::get_%cfg%(%key%)";
 
-        strutil::replace(text, "%cfg%", cfg.en_name);
-        strutil::replace(text, "%cfgtype%", cpputil::get_cfg_type_name(cfg));
-        strutil::replace(text, "%key%",  key);
+        strtool::replace(text, "%cfg%", cfg.en_name);
+        strtool::replace(text, "%cfgtype%", cpptool::get_cfg_type_name(cfg));
+        strtool::replace(text, "%key%",  key);
         return text;
     }
 
@@ -172,11 +172,11 @@ namespace cpputil{
 
         string text = "const %cfgtype%* %mgr%::get_%cfg%_by_%key_name%(%key%)";
 
-        string key = cpputil::get_field_parameter_c_type(cfg, field) + " " + field.en_name;
-        strutil::replace(text, "%key%", key);
-        strutil::replace(text, "%key_name%", field.en_name);
-        strutil::replace(text, "%cfg%", cfg.en_name);
-        strutil::replace(text, "%cfgtype%", cpputil::get_cfg_type_name(cfg));
+        string key = cpptool::get_field_parameter_c_type(cfg, field) + " " + field.en_name;
+        strtool::replace(text, "%key%", key);
+        strtool::replace(text, "%key_name%", field.en_name);
+        strtool::replace(text, "%cfg%", cfg.en_name);
+        strtool::replace(text, "%cfgtype%", cpptool::get_cfg_type_name(cfg));
         return text;
     }
 
@@ -198,7 +198,7 @@ namespace cpputil{
     }
 }
 
-namespace cpputil{
+namespace cpptool{
     string splice(const cfgbase_t &cfgbase, gen_func_t func, const char* splice_token /* = "\n" */)
     {
         // 将调用func产生的文本拼接起来
@@ -232,24 +232,24 @@ namespace cpputil{
         }
 
         // 清除掉对象域声明
-        strutil::replace(stmt, "%mgr%::", "");
+        strtool::replace(stmt, "%mgr%::", "");
         return prefix + stmt + postfix;
     }
 }
 
 bool cpp_generator::generate()
 {
-    if(false == fileutil::exist(m_to_dir)){
+    if(false == filetool::exist(m_to_dir)){
         ECHO_ERR("参数错误: 找不到指定的生成源文件的路径<%s>，请确认路径是否存在!", m_to_dir.c_str());
         return false;
     }
 
-    if(false == fileutil::exist(m_h_templet_path)){
+    if(false == filetool::exist(m_h_templet_path)){
         ECHO_ERR("参数错误: 找不到.h模板头文件<%s>", m_h_templet_path.c_str());
         return false;
     }
 
-    if(false == fileutil::exist(m_cpp_templet_path)){
+    if(false == filetool::exist(m_cpp_templet_path)){
         ECHO_ERR("参数错误: 找不到cpp模板源文件<%s>", m_cpp_templet_path.c_str());
         return false;
     }

@@ -1,13 +1,13 @@
 ///<------------------------------------------------------------------------------
-//< @file:   echoutil.h
+//< @file:   echotool.h
 //< @author: 洪坤安
 //< @date:   2014年9月20日 10:38:49
 //< @brief:  
 //< Copyright (c) 2014 Tokit. All rights reserved.
 ///<------------------------------------------------------------------------------
 
-#ifndef _echoutil_h_
-#define _echoutil_h_
+#ifndef _echotool_h_
+#define _echotool_h_
 
 #include <string>
 #include <vector>
@@ -33,13 +33,13 @@ void ColoredPrintf(GTestColor color, const char* fmt, ...);
 
 typedef std::vector<std::string> errvec_t;
 
-namespace echoutil
+namespace echotool
 {
     std::string getmsg(const char* fmt, ...);
 
     void echo_errvec(const errvec_t&);
 }
 
-using namespace echoutil;
+using namespace echotool;
 
-#endif //_echoutil_h_
+#endif //_echotool_h_

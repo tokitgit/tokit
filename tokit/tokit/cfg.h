@@ -128,7 +128,7 @@ struct cfgbase_t
     cfgvec_t cfgs;   // 各个工作表的描述
 };
 
-namespace cfgutil{
+namespace cfgtool{
     // 字段类型的名称 -> 对应枚举
 	enum_tokit_field_type type_name_2_enum(const char* tokit_type);
 }

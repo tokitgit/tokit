@@ -12,18 +12,18 @@
 #include <iostream>
 
 #include "cfg.h"
-#include "file_util.h"
-#include "str_util.h"
-#include "echoutil.h"
+#include "file_tool.h"
+#include "str_tool.h"
+#include "echo_tool.h"
 #include "parser.h"
-#include "tickutil.h"
+#include "tick_tool.h"
 
 namespace jsontool{
     // 转码:
     //     1. 引号 -> &quot;
     void escape_json(string &str)
     {
-        strutil::replace(str, "\"", "&quot;");
+        strtool::replace(str, "\"", "&quot;");
     }
 
     // 将数据拼接成json格式
@@ -35,7 +35,7 @@ namespace jsontool{
         json_text = "{\n"
                     "\"%cfg%\": [\n";
 
-        strutil::replace(json_text, "%cfg%", cfg.en_name);
+        strtool::replace(json_text, "%cfg%", cfg.en_name);
         json_text.reserve(cfg.table.size() * fields.size() * 15);
 
         string row_text;
@@ -71,7 +71,7 @@ namespace jsontool{
 
 bool json_generator::generate()
 {
-    if(false == fileutil::exist(m_json_dir)){
+    if(false == filetool::exist(m_json_dir)){
         ECHO_ERR("错误: <%s>路径不存在", m_json_dir.c_str());
         return false;
     }

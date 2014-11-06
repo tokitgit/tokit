@@ -11,12 +11,12 @@
 #include <fstream>
 
 #include "cfg.h"
-#include "file_util.h"
-#include "str_util.h"
-#include "echoutil.h"
+#include "file_tool.h"
+#include "str_tool.h"
+#include "echo_tool.h"
 #include "parser.h"
 
-namespace xsdutil{
+namespace xsdtool{
     void gen_head(ofstream &o, const cfg_t &cfg)
     {
 	    o << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
@@ -31,19 +31,12 @@ namespace xsdutil{
 	    o << "        <xs:complexType>" << endl;
 	    o << "          <xs:sequence>" << endl;
 
-        /*
-        for(size_t n = 0; n < cfg.fields.size(); n++){
-            const field_t &field = cfg.fields[n];
-		    string& xsd_type = cfgutil::raw_type_2_xsd_type(field.fieldtype);
-		    o << "            <xs:element name=\"" << field.fieldname << "\" type=\"" << xsd_type << "\"/>" << endl;
-	    }
-        */
-
         for(size_t n = 0; n < cfg.fields.size(); n++){
 		    const field_t &field = cfg.fields[n];
 
 		    string& xsd_type = xsd_generator::tokit_type_2_xsd_type(field.fieldtype);
-		    o << "            <xs:attribute name=\"" << field.en_name << "\" type=\"" << xsd_type << "\"/>" << endl;
+            o << "            <xs:attribute name=\"" << field.en_name << "\" type=\"" << xsd_type << "\"/>" << endl;
+		    //o << "            <xs:element name=\"" << field.en_name << "\" type=\"" << xsd_type << "\"/>" << endl;
 	    }
 
         o << "          </xs:sequence>" << endl;
@@ -75,7 +68,7 @@ namespace xsdutil{
 
 bool xsd_generator::generate()
 {
-    if(false == fileutil::exist(m_xsd_dir)){
+    if(false == filetool::exist(m_xsd_dir)){
         ECHO_ERR("´íÎó: <%s>Â·¾¶²»´æÔÚ", m_xsd_dir.c_str());
         return false;
     }
@@ -89,7 +82,7 @@ bool xsd_generator::gen_xsds()
     for(size_t n = 0; n < n_cfg; ++n){
         const cfg_t &cfg = m_cfgbase.cfgs[n];
         const string xsd = m_xsd_dir + "\\" + strip_ext(strip_dir(cfg.cn_name)) + ".xsd";
-        xsdutil::gen_xsd(cfg, xsd);
+        xsdtool::gen_xsd(cfg, xsd);
     }
 
     return true;

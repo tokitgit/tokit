@@ -1,13 +1,13 @@
 ///<------------------------------------------------------------------------------
-//< @file:   prop\parser\excel_util.h
+//< @file:   prop\parser\excel_tool.h
 //< @author: 洪坤安
 //< @date:   2014年9月20日 17:59:45
 //< @brief:  
 //< Copyright (c) 2014 Tokit. All rights reserved.
 ///<------------------------------------------------------------------------------
 
-#ifndef _excel_util_h_
-#define _excel_util_h_
+#ifndef _excel_tool_h_
+#define _excel_tool_h_
 
 #include <string>
 #include <vector>
@@ -23,7 +23,7 @@ class COleSafeArray;
 
 using std::string;
 
-namespace excelutil
+namespace exceltool
 {
     // 通过ole的方式打开excel（实际上是打开一个系统现有的excel进程，让该进程加载该excel文件，所以此时要求加载的excel文件处于关闭状态，否则会打开失败）
     bool ole_open_excel(const string &xlsx, CApplication&, CWorkbooks&, CWorkbook&, CWorksheets&);
@@ -50,4 +50,4 @@ namespace excelutil
 
 	int get_col_cnt(libxl::Sheet &sheet);
 }
-#endif //_excel_util_h_
+#endif //_excel_tool_h_

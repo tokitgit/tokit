@@ -1,18 +1,18 @@
 ///<------------------------------------------------------------------------------
-//< @file:   tickutil.h
+//< @file:   tick_tool.h
 //< @author: 洪坤安
 //< @date:   2014年9月20日 11:46:18
 //< @brief:  
 //< Copyright (c) 2014 Tokit. All rights reserved.
 ///<------------------------------------------------------------------------------
 
-#ifndef _tickutil_h_
-#define _tickutil_h_
+#ifndef _ticktool_h_
+#define _ticktool_h_
 
 #include "type.h"
 
-typedef uint64_t Tick;
-namespace tickutil
+typedef uint64 Tick;
+namespace ticktool
 {
     Tick get_tick();
 
@@ -30,7 +30,7 @@ public:
 
     void start_tick()
     {
-        m_tick = tickutil::get_tick();
+        m_tick = ticktool::get_tick();
     }
 
     // 返回秒
@@ -40,4 +40,4 @@ private:
     Tick m_tick;
 };
 
-#endif //_tickutil_h_
+#endif //_ticktool_h_

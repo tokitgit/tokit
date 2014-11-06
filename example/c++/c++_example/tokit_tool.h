@@ -1,13 +1,13 @@
 ///<------------------------------------------------------------------------------
-//< @file:   c++\c++_example\tokit_util.h
+//< @file:   c++\c++_example\tokit_tool.h
 //< @author: 
 //< @date:   2014年9月27日 0:2:43
 //< @brief:  
 //< Copyright (c) 2014 Tokit. All rights reserved.
 ///<------------------------------------------------------------------------------
 
-#ifndef _tokit_util_h_
-#define _tokit_util_h_
+#ifndef _tokit_tool_h_
+#define _tokit_tool_h_
 
 #include <string>
 #include <vector>
@@ -27,7 +27,7 @@
 
 using namespace std;
 
-namespace keyutil
+namespace keytool
 {
     uint64 Get16161616Key(uint16 w, uint16 x, uint16 y, uint16 z);
 
@@ -37,7 +37,7 @@ namespace keyutil
 }
 
 typedef uint64 Tick;
-namespace tickutil
+namespace ticktool
 {
     Tick get_tick();
 
@@ -55,7 +55,7 @@ public:
 
     void start_tick()
     {
-        m_tick = tickutil::get_tick();
+        m_tick = ticktool::get_tick();
     }
 
     // 返回秒
@@ -65,7 +65,7 @@ private:
     Tick m_tick;
 };
 
-namespace strutil
+namespace strtool
 {
     // 移除掉字符串开头和末尾处的空格和\t符号
     // 例如: trim("   start xxx end   ") = "start xxx end"
@@ -169,7 +169,7 @@ namespace strutil
     }
 };
 
-using namespace tickutil;
-using namespace strutil;
+using namespace ticktool;
+using namespace strtool;
 
-#endif //_tokit_util_h_
+#endif //_tokit_tool_h_

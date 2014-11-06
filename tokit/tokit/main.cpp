@@ -7,8 +7,8 @@
 ///<------------------------------------------------------------------------------
 
 #include "parser.h"
-#include "echoutil.h"
-#include "file_util.h"
+#include "echo_tool.h"
+#include "file_tool.h"
 #include "xsd/xsd_generator.h"
 #include "c++/c++_generator.h"
 #include "xml/xml_generator.h"
@@ -16,7 +16,7 @@
 
 // 解析excel文件
 bool parse_excel(const std::string &excel, const enum_parse_option parse_option, cfgbase_t &cfgbase){
-    if(false == fileutil::exist(excel)){
+    if(false == filetool::exist(excel)){
         ECHO_ERR("错误: 找不到excel文件<%s>", excel.c_str());
         return false;
     }
@@ -24,7 +24,7 @@ bool parse_excel(const std::string &excel, const enum_parse_option parse_option,
     errvec_t errvec;
     if (!parser::parse_excel(excel, cfgbase, errvec, parse_option)){
         ECHO_ERR("错误：解析<%s>文件失败，请确保该文件存在且未被打开", excel.c_str());
-        echoutil::echo_errvec(errvec);
+        echotool::echo_errvec(errvec);
         return false;
     }
 

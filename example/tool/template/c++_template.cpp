@@ -10,7 +10,7 @@
 #include <iostream>
 #include <string.h>
 #include <rapidxml_utils.hpp>
-#include "tokit_util.h"
+#include "tokit_tool.h"
 
 %structs_ctor%
 

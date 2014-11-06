@@ -83,12 +83,12 @@
     <ClCompile Include="cfg\dotaequipcfg.cpp" />
     <ClCompile Include="cfg\testcfg.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="tokit_util.cpp" />
+    <ClCompile Include="tokit_tool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cfg\dotaequipcfg.h" />
     <ClInclude Include="cfg\testcfg.h" />
-    <ClInclude Include="tokit_util.h" />
+    <ClInclude Include="tokit_tool.h" />
     <ClInclude Include="type.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

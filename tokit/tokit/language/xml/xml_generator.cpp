@@ -12,18 +12,19 @@
 #include <iostream>
 
 #include "cfg.h"
-#include "file_util.h"
-#include "str_util.h"
-#include "echoutil.h"
-#include "parser.h"
-#include "tickutil.h"
+#include "file_tool.h"
+#include "str_tool.h"
+#include "echo_tool.h"
+#include "tick_tool.h"
 
-namespace xmlutil{
+#include "parser.h"
+
+namespace xmltool{
     // 转码:
     //     1. 引号 -> &quot;
     void escape_xml(string &str)
     {
-        strutil::replace(str, "\"", "&quot;");
+        strtool::replace(str, "\"", "&quot;");
     }
 
     // 将数据拼接成xml格式
@@ -56,7 +57,7 @@ namespace xmlutil{
 
 bool xml_generator::generate()
 {
-    if(false == fileutil::exist(m_xml_dir)){
+    if(false == filetool::exist(m_xml_dir)){
         ECHO_ERR("错误: <%s>路径不存在", m_xml_dir.c_str());
         return false;
     }
@@ -74,7 +75,7 @@ bool xml_generator::save_as_xml()
         const string xml = m_xml_dir + "\\" + strip_ext(strip_dir(cfg.en_name)) + ".xml";
 
         string xml_text;        
-        xmlutil::slice_xml_text(cfg, xml_text);
+        xmltool::slice_xml_text(cfg, xml_text);
 
         ofstream o(xml);
         o << xml_text;

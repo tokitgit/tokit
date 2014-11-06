@@ -1,15 +1,15 @@
-#include "file_util.h"
+#include "file_tool.h"
 
 #include <sys/stat.h>
 #include <io.h>
 #include <fstream>
 #include <sstream>
-#include "str_util.h"
-#include "echoutil.h"
+#include "str_tool.h"
+#include "echo_tool.h"
 
 using namespace std;
 
-namespace fileutil
+namespace filetool
 {
     bool is_dir_exist(const std::string &dir)
     {
@@ -55,7 +55,7 @@ namespace fileutil
 
         for (filevec_t::iterator itr = ext_files.begin(); itr != ext_files.end(); ++itr){
             string &filename = *itr;
-            files.push_back(strutil::strip_ext(filename));
+            files.push_back(strtool::strip_ext(filename));
         }
 
         return !files.empty();

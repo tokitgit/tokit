@@ -21,19 +21,19 @@
 #include "excel/CWorksheet.h"
 #include "excel/CWorksheets.h"
 
-#include "excel_util.h"
-#include "str_util.h"
-#include "echoutil.h"
-#include "tickutil.h"
-#include "file_util.h"
+#include "excel_tool.h"
+#include "str_tool.h"
+#include "echo_tool.h"
+#include "tick_tool.h"
+#include "file_tool.h"
 
-using namespace excelutil;
+using namespace exceltool;
 using namespace libxl;
 
 COleSafeArray* parser::g_ole_cell_array = NULL;
 
 
-namespace parseutil
+namespace parsetool
 {
     // 解析出各个区域的起始行
     bool parse_each_region_begin_row(libxl::Sheet &sheet, int row_cnt, cfg_t &cfg, errvec_t& errvec)
@@ -140,18 +140,18 @@ namespace parseutil
     bool parse_field(libxl::Sheet &sheet, cfg_t &cfg, int col, field_t &field, errvec_t& errvec)
 	{
         // 取出字段英文名
-		field.en_name = strutil::trim(get_cell_str(sheet, cfg.row_fields_begin + field_row_en_name, col));
+		field.en_name = strtool::trim(get_cell_str(sheet, cfg.row_fields_begin + field_row_en_name, col));
 		if(field.en_name.empty()){
             // 碰到空字段则停止解析
 			return true;
 		}
 
         // 取出字段类型
-		std::string fieldtype_cell = strutil::trim(get_cell_str(sheet, cfg.row_fields_begin + field_row_data_type, col));
-		field.fieldtype = cfgutil::type_name_2_enum(fieldtype_cell.c_str());
+		std::string fieldtype_cell = strtool::trim(get_cell_str(sheet, cfg.row_fields_begin + field_row_data_type, col));
+		field.fieldtype = cfgtool::type_name_2_enum(fieldtype_cell.c_str());
 		
         // 取出字段属性
-        std::string fieldattr_cell = strutil::trim(get_cell_str(sheet, cfg.row_fields_begin + field_row_is_unique, col));
+        std::string fieldattr_cell = strtool::trim(get_cell_str(sheet, cfg.row_fields_begin + field_row_is_unique, col));
 
         field.fieldattr = field_t::fieldattr_none;
         if(is_unique_key_by_str(fieldattr_cell)){
@@ -164,7 +164,7 @@ namespace parseutil
             field.fieldattr = field_t::fieldattr_set;
         }
 
-        field.cn_name = strutil::trim(get_cell_str(sheet, cfg.row_data_begin, col));
+        field.cn_name = strtool::trim(get_cell_str(sheet, cfg.row_data_begin, col));
         field.comment = field.cn_name;
 
         if(field.cn_name.empty()){
@@ -316,7 +316,7 @@ namespace parseutil
         std::wstring w_name = sheet.name();
 
         // 2. 取出工作表的名称
-		cfg.cn_name = strutil::wstring2string(sheet.name());
+		cfg.cn_name = strtool::wstring2string(sheet.name());
 
         // 开始解析
         bool succ = true;
@@ -348,7 +348,7 @@ namespace parseutil
             s_ole_safe_array.Clear();
             parser::g_ole_cell_array = &s_ole_safe_array;
 
-            excelutil::pre_load_sheet(ole_sheet, *parser::g_ole_cell_array);
+            exceltool::pre_load_sheet(ole_sheet, *parser::g_ole_cell_array);
         }
     }
 };
@@ -357,7 +357,7 @@ bool parser::parse_excel(const string &xlsx, cfgbase_t &cfgbase, errvec_t &errve
 {
     tick_t parse_tick;
 
-    if(false == fileutil::exist(xlsx)){
+    if(false == filetool::exist(xlsx)){
         errvec.push_back(xlsx + "文件不存在!");
         return false;
     }
@@ -369,7 +369,7 @@ bool parser::parse_excel(const string &xlsx, cfgbase_t &cfgbase, errvec_t &errve
     //     b. libxl不支持公式，ole支持公式
     
     // 1. 以libxl的方式载入excel
-    std::wstring w_xlsx = strutil::string2wstring(xlsx);
+    std::wstring w_xlsx = strtool::string2wstring(xlsx);
     if(!book->load(w_xlsx.c_str())){
         return false;
     }
@@ -382,12 +382,12 @@ bool parser::parse_excel(const string &xlsx, cfgbase_t &cfgbase, errvec_t &errve
     bool succ = true;
 
     // 2. 使用libxl检测excel文件中是否含有公式
-    excelutil::formula_flag_vec each_sheet_formula_flags;
+    exceltool::formula_flag_vec each_sheet_formula_flags;
     bool is_need_ole_open = is_excel_contain_formula_cell(*book, each_sheet_formula_flags);
 
     // 2.1. 如果有公式，则通过ole方式再加载一次excel
     if (is_need_ole_open){
-        succ = excelutil::ole_open_excel(xlsx, excel_app, books, olebook, sheets);
+        succ = exceltool::ole_open_excel(xlsx, excel_app, books, olebook, sheets);
         if (!succ){
             return false;
         }
@@ -402,10 +402,10 @@ bool parser::parse_excel(const string &xlsx, cfgbase_t &cfgbase, errvec_t &errve
         }
         
         // 3.1 如果工作表中含公式，则进行ole预读取，以加快之后的读取速度
-        parseutil::check_need_preload_sheet(sheets, i + 1, each_sheet_formula_flags[i]);
+        parsetool::check_need_preload_sheet(sheets, i + 1, each_sheet_formula_flags[i]);
 
         // 3.2 解析出工作表的内容，并将结果存放到cfg中
-        bool ok = parseutil::parse_cfg_from_sheet(*sheet, cfg, errvec, parse_option);
+        bool ok = parsetool::parse_cfg_from_sheet(*sheet, cfg, errvec, parse_option);
         if(false == ok){
             succ = false;
             continue;
@@ -432,7 +432,7 @@ bool parser::parse_excel(const string &xlsx, cfgbase_t &cfgbase, errvec_t &errve
     // 4. 释放ole资源
     if (is_need_ole_open){
         tick_t close_tick;
-        excelutil::ole_close_excel(w_xlsx, excel_app, books, olebook, sheets);
+        exceltool::ole_close_excel(w_xlsx, excel_app, books, olebook, sheets);
     }
 
     ECHO_WARN("执行完毕, 共耗时<%0.3f>秒", parse_tick.end_tick());

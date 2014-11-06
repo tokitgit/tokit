@@ -10,7 +10,7 @@
 #include <iostream>
 #include <string.h>
 #include <rapidxml_utils.hpp>
-#include "tokit_util.h"
+#include "tokit_tool.h"
 
 testcfg_t::testcfg_t()
     : stringfield("")
@@ -143,71 +143,71 @@ bool testcfgmgr::load_testcfg()
 
     testcfg_t cfg;
     for(rapidxml::xml_node<> *node = root->first_node(); node; node = node->next_sibling()){
-        cfg.stringfield = strutil::un_escape_xml(node->first_attribute("stringfield")->value());
+        cfg.stringfield = strtool::un_escape_xml(node->first_attribute("stringfield")->value());
         cfg.boolfield = (node->first_attribute("boolfield")->value()[0] != '0');
-        cfg.charfield = strutil::str_to_int32(node->first_attribute("charfield")->value());
-        cfg.int16field = strutil::str_to_int32(node->first_attribute("int16field")->value());
-        cfg.intfield = strutil::str_to_int32(node->first_attribute("intfield")->value());
-        cfg.int64field = strutil::str_to_int64(node->first_attribute("int64field")->value());
-        cfg.uint8field = strutil::str_to_uint32(node->first_attribute("uint8field")->value());
-        cfg.uint16field = strutil::str_to_uint32(node->first_attribute("uint16field")->value());
-        cfg.uintfield = strutil::str_to_uint32(node->first_attribute("uintfield")->value());
-        cfg.uint64field = strutil::str_to_uint64(node->first_attribute("uint64field")->value());
+        cfg.charfield = strtool::str_to_int32(node->first_attribute("charfield")->value());
+        cfg.int16field = strtool::str_to_int32(node->first_attribute("int16field")->value());
+        cfg.intfield = strtool::str_to_int32(node->first_attribute("intfield")->value());
+        cfg.int64field = strtool::str_to_int64(node->first_attribute("int64field")->value());
+        cfg.uint8field = strtool::str_to_uint32(node->first_attribute("uint8field")->value());
+        cfg.uint16field = strtool::str_to_uint32(node->first_attribute("uint16field")->value());
+        cfg.uintfield = strtool::str_to_uint32(node->first_attribute("uintfield")->value());
+        cfg.uint64field = strtool::str_to_uint64(node->first_attribute("uint64field")->value());
         cfg.floatfield = (float)atof(node->first_attribute("floatfield")->value());
         cfg.doublefield = atof(node->first_attribute("doublefield")->value());
-        cfg.stringfieldprimary = strutil::un_escape_xml(node->first_attribute("stringfieldprimary")->value());
+        cfg.stringfieldprimary = strtool::un_escape_xml(node->first_attribute("stringfieldprimary")->value());
         cfg.boolfieldprimary = (node->first_attribute("boolfieldprimary")->value()[0] != '0');
-        cfg.charfieldprimary = strutil::str_to_int32(node->first_attribute("charfieldprimary")->value());
-        cfg.int16fieldprimary = strutil::str_to_int32(node->first_attribute("int16fieldprimary")->value());
-        cfg.intfieldprimary = strutil::str_to_int32(node->first_attribute("intfieldprimary")->value());
-        cfg.int64fieldprimary = strutil::str_to_int64(node->first_attribute("int64fieldprimary")->value());
-        cfg.uint8fieldprimary = strutil::str_to_uint32(node->first_attribute("uint8fieldprimary")->value());
-        cfg.uint16fieldprimary = strutil::str_to_uint32(node->first_attribute("uint16fieldprimary")->value());
-        cfg.uintfieldprimary = strutil::str_to_uint32(node->first_attribute("uintfieldprimary")->value());
-        cfg.uint64fieldprimary = strutil::str_to_uint64(node->first_attribute("uint64fieldprimary")->value());
+        cfg.charfieldprimary = strtool::str_to_int32(node->first_attribute("charfieldprimary")->value());
+        cfg.int16fieldprimary = strtool::str_to_int32(node->first_attribute("int16fieldprimary")->value());
+        cfg.intfieldprimary = strtool::str_to_int32(node->first_attribute("intfieldprimary")->value());
+        cfg.int64fieldprimary = strtool::str_to_int64(node->first_attribute("int64fieldprimary")->value());
+        cfg.uint8fieldprimary = strtool::str_to_uint32(node->first_attribute("uint8fieldprimary")->value());
+        cfg.uint16fieldprimary = strtool::str_to_uint32(node->first_attribute("uint16fieldprimary")->value());
+        cfg.uintfieldprimary = strtool::str_to_uint32(node->first_attribute("uintfieldprimary")->value());
+        cfg.uint64fieldprimary = strtool::str_to_uint64(node->first_attribute("uint64fieldprimary")->value());
         cfg.floatfieldprimary = (float)atof(node->first_attribute("floatfieldprimary")->value());
         cfg.doublefieldprimary = atof(node->first_attribute("doublefieldprimary")->value());
-        cfg.stringfieldunique = strutil::un_escape_xml(node->first_attribute("stringfieldunique")->value());
+        cfg.stringfieldunique = strtool::un_escape_xml(node->first_attribute("stringfieldunique")->value());
         cfg.boolfieldunique = (node->first_attribute("boolfieldunique")->value()[0] != '0');
-        cfg.charfieldunique = strutil::str_to_int32(node->first_attribute("charfieldunique")->value());
-        cfg.int16fieldunique = strutil::str_to_int32(node->first_attribute("int16fieldunique")->value());
-        cfg.intfieldunique = strutil::str_to_int32(node->first_attribute("intfieldunique")->value());
-        cfg.int64fieldunique = strutil::str_to_int64(node->first_attribute("int64fieldunique")->value());
-        cfg.uint8fieldunique = strutil::str_to_uint32(node->last_attribute("uint8fieldunique")->value());
-        cfg.uint16fieldunique = strutil::str_to_uint32(node->last_attribute("uint16fieldunique")->value());
-        cfg.uintfieldunique = strutil::str_to_uint32(node->last_attribute("uintfieldunique")->value());
-        cfg.uint64fieldunique = strutil::str_to_uint64(node->last_attribute("uint64fieldunique")->value());
+        cfg.charfieldunique = strtool::str_to_int32(node->first_attribute("charfieldunique")->value());
+        cfg.int16fieldunique = strtool::str_to_int32(node->first_attribute("int16fieldunique")->value());
+        cfg.intfieldunique = strtool::str_to_int32(node->first_attribute("intfieldunique")->value());
+        cfg.int64fieldunique = strtool::str_to_int64(node->first_attribute("int64fieldunique")->value());
+        cfg.uint8fieldunique = strtool::str_to_uint32(node->last_attribute("uint8fieldunique")->value());
+        cfg.uint16fieldunique = strtool::str_to_uint32(node->last_attribute("uint16fieldunique")->value());
+        cfg.uintfieldunique = strtool::str_to_uint32(node->last_attribute("uintfieldunique")->value());
+        cfg.uint64fieldunique = strtool::str_to_uint64(node->last_attribute("uint64fieldunique")->value());
         cfg.floatfieldunique = (float)atof(node->last_attribute("floatfieldunique")->value());
         cfg.doublefieldunique = atof(node->last_attribute("doublefieldunique")->value());
-        cfg.stringfieldarray = strutil::split(node->last_attribute("stringfieldarray")->value());
-        cfg.boolfieldarray = strutil::split_str_to_vec<bool>(node->last_attribute("boolfieldarray")->value(), strutil::str_to_bool);
-        cfg.charfieldarray = strutil::split_str_to_vec<char>(node->last_attribute("charfieldarray")->value(), strutil::str_to_int32);
-        cfg.int16fieldarray = strutil::split_str_to_vec<int16>(node->last_attribute("int16fieldarray")->value(), strutil::str_to_int32);
-        cfg.intfieldarray = strutil::split_str_to_vec<int32>(node->last_attribute("intfieldarray")->value(), strutil::str_to_int32);
-        cfg.int64fieldarray = strutil::split_str_to_vec<int64>(node->last_attribute("int64fieldarray")->value(), strutil::str_to_int64);
-        cfg.uint8fieldarray = strutil::split_str_to_vec<uint8>(node->last_attribute("uint8fieldarray")->value(), strutil::str_to_uint32);
-        cfg.uint16fieldarray = strutil::split_str_to_vec<uint16>(node->last_attribute("uint16fieldarray")->value(), strutil::str_to_uint32);
-        cfg.uintfieldarray = strutil::split_str_to_vec<uint32>(node->last_attribute("uintfieldarray")->value(), strutil::str_to_uint32);
-        cfg.uint64fieldarray = strutil::split_str_to_vec<uint64>(node->last_attribute("uint64fieldarray")->value(), strutil::str_to_uint64);
-        cfg.floatfieldarray = strutil::split_str_to_vec<float>(node->last_attribute("floatfieldarray")->value(), atof);
-        cfg.doublefieldarray = strutil::split_str_to_vec<double>(node->last_attribute("doublefieldarray")->value(), atof);
-        cfg.stringfieldset = strutil::split_str_set(node->last_attribute("stringfieldset")->value());
-        cfg.boolfieldset = strutil::split_str_to_set<bool>(node->last_attribute("boolfieldset")->value(), strutil::str_to_bool);
-        cfg.charfieldset = strutil::split_str_to_set<char>(node->last_attribute("charfieldset")->value(), strutil::str_to_int32);
-        cfg.int16fieldset = strutil::split_str_to_set<int16>(node->last_attribute("int16fieldset")->value(), strutil::str_to_int32);
-        cfg.intfieldset = strutil::split_str_to_set<int32>(node->last_attribute("intfieldset")->value(), strutil::str_to_int32);
-        cfg.int64fieldset = strutil::split_str_to_set<int64>(node->last_attribute("int64fieldset")->value(), strutil::str_to_int64);
-        cfg.uint8fieldset = strutil::split_str_to_set<uint8>(node->last_attribute("uint8fieldset")->value(), strutil::str_to_uint32);
-        cfg.uint16fieldset = strutil::split_str_to_set<uint16>(node->last_attribute("uint16fieldset")->value(), strutil::str_to_uint32);
-        cfg.uintfieldset = strutil::split_str_to_set<uint32>(node->last_attribute("uintfieldset")->value(), strutil::str_to_uint32);
-        cfg.uint64fieldset = strutil::split_str_to_set<uint64>(node->last_attribute("uint64fieldset")->value(), strutil::str_to_uint64);
-        cfg.floatfieldset = strutil::split_str_to_set<float>(node->last_attribute("floatfieldset")->value(), atof);
-        cfg.doublefieldset = strutil::split_str_to_set<double>(node->last_attribute("doublefieldset")->value(), atof);
+        cfg.stringfieldarray = strtool::split(node->last_attribute("stringfieldarray")->value());
+        cfg.boolfieldarray = strtool::split_str_to_vec<bool>(node->last_attribute("boolfieldarray")->value(), strtool::str_to_bool);
+        cfg.charfieldarray = strtool::split_str_to_vec<char>(node->last_attribute("charfieldarray")->value(), strtool::str_to_int32);
+        cfg.int16fieldarray = strtool::split_str_to_vec<int16>(node->last_attribute("int16fieldarray")->value(), strtool::str_to_int32);
+        cfg.intfieldarray = strtool::split_str_to_vec<int32>(node->last_attribute("intfieldarray")->value(), strtool::str_to_int32);
+        cfg.int64fieldarray = strtool::split_str_to_vec<int64>(node->last_attribute("int64fieldarray")->value(), strtool::str_to_int64);
+        cfg.uint8fieldarray = strtool::split_str_to_vec<uint8>(node->last_attribute("uint8fieldarray")->value(), strtool::str_to_uint32);
+        cfg.uint16fieldarray = strtool::split_str_to_vec<uint16>(node->last_attribute("uint16fieldarray")->value(), strtool::str_to_uint32);
+        cfg.uintfieldarray = strtool::split_str_to_vec<uint32>(node->last_attribute("uintfieldarray")->value(), strtool::str_to_uint32);
+        cfg.uint64fieldarray = strtool::split_str_to_vec<uint64>(node->last_attribute("uint64fieldarray")->value(), strtool::str_to_uint64);
+        cfg.floatfieldarray = strtool::split_str_to_vec<float>(node->last_attribute("floatfieldarray")->value(), atof);
+        cfg.doublefieldarray = strtool::split_str_to_vec<double>(node->last_attribute("doublefieldarray")->value(), atof);
+        cfg.stringfieldset = strtool::split_str_set(node->last_attribute("stringfieldset")->value());
+        cfg.boolfieldset = strtool::split_str_to_set<bool>(node->last_attribute("boolfieldset")->value(), strtool::str_to_bool);
+        cfg.charfieldset = strtool::split_str_to_set<char>(node->last_attribute("charfieldset")->value(), strtool::str_to_int32);
+        cfg.int16fieldset = strtool::split_str_to_set<int16>(node->last_attribute("int16fieldset")->value(), strtool::str_to_int32);
+        cfg.intfieldset = strtool::split_str_to_set<int32>(node->last_attribute("intfieldset")->value(), strtool::str_to_int32);
+        cfg.int64fieldset = strtool::split_str_to_set<int64>(node->last_attribute("int64fieldset")->value(), strtool::str_to_int64);
+        cfg.uint8fieldset = strtool::split_str_to_set<uint8>(node->last_attribute("uint8fieldset")->value(), strtool::str_to_uint32);
+        cfg.uint16fieldset = strtool::split_str_to_set<uint16>(node->last_attribute("uint16fieldset")->value(), strtool::str_to_uint32);
+        cfg.uintfieldset = strtool::split_str_to_set<uint32>(node->last_attribute("uintfieldset")->value(), strtool::str_to_uint32);
+        cfg.uint64fieldset = strtool::split_str_to_set<uint64>(node->last_attribute("uint64fieldset")->value(), strtool::str_to_uint64);
+        cfg.floatfieldset = strtool::split_str_to_set<float>(node->last_attribute("floatfieldset")->value(), atof);
+        cfg.doublefieldset = strtool::split_str_to_set<double>(node->last_attribute("doublefieldset")->value(), atof);
 
         m_testcfgvec.push_back(cfg);
         testcfg_t* curcfg = &m_testcfgvec.back();
     
-        std::string key = cfg.stringfieldprimary + strutil::tostr(cfg.boolfieldprimary) + strutil::tostr(cfg.charfieldprimary) + strutil::tostr(cfg.int16fieldprimary) + strutil::tostr(cfg.intfieldprimary) + strutil::tostr(cfg.int64fieldprimary) + strutil::tostr(cfg.uint8fieldprimary) + strutil::tostr(cfg.uint16fieldprimary) + strutil::tostr(cfg.uintfieldprimary) + strutil::tostr(cfg.uint64fieldprimary);
+        std::string key = cfg.stringfieldprimary + strtool::tostr(cfg.boolfieldprimary) + strtool::tostr(cfg.charfieldprimary) + strtool::tostr(cfg.int16fieldprimary) + strtool::tostr(cfg.intfieldprimary) + strtool::tostr(cfg.int64fieldprimary) + strtool::tostr(cfg.uint8fieldprimary) + strtool::tostr(cfg.uint16fieldprimary) + strtool::tostr(cfg.uintfieldprimary) + strtool::tostr(cfg.uint64fieldprimary);
         m_testcfgmap[key] = curcfg;
 
         m_stringfieldunique2testcfgmap[cfg.stringfieldunique] = curcfg;
@@ -250,7 +250,7 @@ void testcfgmgr::clear_testcfg()
 // ≤‚ ‘”√¿˝±Ì
 const testcfg_t* testcfgmgr::get_testcfg(const char* stringfieldprimary, testcfg_t::boolfieldprimary_t boolfieldprimary, testcfg_t::charfieldprimary_t charfieldprimary, testcfg_t::int16fieldprimary_t int16fieldprimary, testcfg_t::intfieldprimary_t intfieldprimary, testcfg_t::int64fieldprimary_t int64fieldprimary, testcfg_t::uint8fieldprimary_t uint8fieldprimary, testcfg_t::uint16fieldprimary_t uint16fieldprimary, testcfg_t::uintfieldprimary_t uintfieldprimary, testcfg_t::uint64fieldprimary_t uint64fieldprimary)
 {
-    std::string key = stringfieldprimary + strutil::tostr(boolfieldprimary) + strutil::tostr(charfieldprimary) + strutil::tostr(int16fieldprimary) + strutil::tostr(intfieldprimary) + strutil::tostr(int64fieldprimary) + strutil::tostr(uint8fieldprimary) + strutil::tostr(uint16fieldprimary) + strutil::tostr(uintfieldprimary) + strutil::tostr(uint64fieldprimary);
+    std::string key = stringfieldprimary + strtool::tostr(boolfieldprimary) + strtool::tostr(charfieldprimary) + strtool::tostr(int16fieldprimary) + strtool::tostr(intfieldprimary) + strtool::tostr(int64fieldprimary) + strtool::tostr(uint8fieldprimary) + strtool::tostr(uint16fieldprimary) + strtool::tostr(uintfieldprimary) + strtool::tostr(uint64fieldprimary);
     testcfgmap::iterator itr = m_testcfgmap.find(key);
     if(itr == m_testcfgmap.end()){
         return NULL;

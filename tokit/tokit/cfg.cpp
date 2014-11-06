@@ -7,12 +7,12 @@
 ///<------------------------------------------------------------------------------
 
 #include "cfg.h"
-#include "str_util.h"
+#include "str_tool.h"
 
-#include "echoutil.h"
+#include "echo_tool.h"
 #include <algorithm>
 
-namespace cfgutil
+namespace cfgtool
 {
     // tokit可识别的数据类型数据
     string tokit_types[fieldtype_max] = {
@@ -49,5 +49,5 @@ namespace cfgutil
 
 string& field_t::get_field_type_name()
 {
-    return cfgutil::tokit_types[fieldtype];
+    return cfgtool::tokit_types[fieldtype];
 }

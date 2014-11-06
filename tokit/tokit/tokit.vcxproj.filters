@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="util">
-      <UniqueIdentifier>{69159387-9674-4a5c-9016-25efb0c6531a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="def">
       <UniqueIdentifier>{2e1ab35f-d369-409b-a367-144ba6268dcb}</UniqueIdentifier>
     </Filter>
@@ -16,9 +13,6 @@
     </Filter>
     <Filter Include="generator">
       <UniqueIdentifier>{a87337af-0b30-444b-8259-b19df5528a85}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="util\excel_api">
-      <UniqueIdentifier>{933265b7-728a-4656-af62-2e6172ae3c84}</UniqueIdentifier>
     </Filter>
     <Filter Include="generator\xsd">
       <UniqueIdentifier>{41dce698-2ad0-4fbc-83c7-1411938b7bd3}</UniqueIdentifier>
@@ -34,6 +28,12 @@
     </Filter>
     <Filter Include="generator\json">
       <UniqueIdentifier>{e6f32503-d83d-477b-87a5-ee6a7b5bbefd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tool">
+      <UniqueIdentifier>{69159387-9674-4a5c-9016-25efb0c6531a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tool\excel_api">
+      <UniqueIdentifier>{933265b7-728a-4656-af62-2e6172ae3c84}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -51,25 +51,25 @@
       <Filter>version</Filter>
     </ClInclude>
     <ClInclude Include="excel\CApplication.h">
-      <Filter>util\excel_api</Filter>
+      <Filter>tool\excel_api</Filter>
     </ClInclude>
     <ClInclude Include="excel\CRange.h">
-      <Filter>util\excel_api</Filter>
+      <Filter>tool\excel_api</Filter>
     </ClInclude>
     <ClInclude Include="excel\CRanges.h">
-      <Filter>util\excel_api</Filter>
+      <Filter>tool\excel_api</Filter>
     </ClInclude>
     <ClInclude Include="excel\CWorkbook.h">
-      <Filter>util\excel_api</Filter>
+      <Filter>tool\excel_api</Filter>
     </ClInclude>
     <ClInclude Include="excel\CWorkbooks.h">
-      <Filter>util\excel_api</Filter>
+      <Filter>tool\excel_api</Filter>
     </ClInclude>
     <ClInclude Include="excel\CWorksheet.h">
-      <Filter>util\excel_api</Filter>
+      <Filter>tool\excel_api</Filter>
     </ClInclude>
     <ClInclude Include="excel\CWorksheets.h">
-      <Filter>util\excel_api</Filter>
+      <Filter>tool\excel_api</Filter>
     </ClInclude>
     <ClInclude Include="cfg.h">
       <Filter>def</Filter>
@@ -89,23 +89,23 @@
     <ClInclude Include="language\xsd\xsd_generator.h">
       <Filter>generator\xsd</Filter>
     </ClInclude>
-    <ClInclude Include="util\echoutil.h">
-      <Filter>util</Filter>
-    </ClInclude>
-    <ClInclude Include="util\excel_util.h">
-      <Filter>util</Filter>
-    </ClInclude>
-    <ClInclude Include="util\file_util.h">
-      <Filter>util</Filter>
-    </ClInclude>
-    <ClInclude Include="util\str_util.h">
-      <Filter>util</Filter>
-    </ClInclude>
-    <ClInclude Include="util\tickutil.h">
-      <Filter>util</Filter>
-    </ClInclude>
     <ClInclude Include="language\json\json_generator.h">
       <Filter>generator\json</Filter>
+    </ClInclude>
+    <ClInclude Include="tool\echo_tool.h">
+      <Filter>tool</Filter>
+    </ClInclude>
+    <ClInclude Include="tool\excel_tool.h">
+      <Filter>tool</Filter>
+    </ClInclude>
+    <ClInclude Include="tool\file_tool.h">
+      <Filter>tool</Filter>
+    </ClInclude>
+    <ClInclude Include="tool\str_tool.h">
+      <Filter>tool</Filter>
+    </ClInclude>
+    <ClInclude Include="tool\tick_tool.h">
+      <Filter>tool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -135,23 +135,23 @@
     <ClCompile Include="language\xsd\xsd_generator.cpp">
       <Filter>generator\xsd</Filter>
     </ClCompile>
-    <ClCompile Include="util\echoutil.cpp">
-      <Filter>util</Filter>
-    </ClCompile>
-    <ClCompile Include="util\excel_util.cpp">
-      <Filter>util</Filter>
-    </ClCompile>
-    <ClCompile Include="util\file_util.cpp">
-      <Filter>util</Filter>
-    </ClCompile>
-    <ClCompile Include="util\str_util.cpp">
-      <Filter>util</Filter>
-    </ClCompile>
-    <ClCompile Include="util\tickutil.cpp">
-      <Filter>util</Filter>
-    </ClCompile>
     <ClCompile Include="language\json\json_generator.cpp">
       <Filter>generator\json</Filter>
+    </ClCompile>
+    <ClCompile Include="tool\echo_tool.cpp">
+      <Filter>tool</Filter>
+    </ClCompile>
+    <ClCompile Include="tool\excel_tool.cpp">
+      <Filter>tool</Filter>
+    </ClCompile>
+    <ClCompile Include="tool\file_tool.cpp">
+      <Filter>tool</Filter>
+    </ClCompile>
+    <ClCompile Include="tool\str_tool.cpp">
+      <Filter>tool</Filter>
+    </ClCompile>
+    <ClCompile Include="tool\tick_tool.cpp">
+      <Filter>tool</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

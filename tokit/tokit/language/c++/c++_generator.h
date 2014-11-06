@@ -18,7 +18,7 @@ struct cfgbase_t;
 struct cfg_t;
 struct field_t;
 
-namespace cpputil{
+namespace cpptool{
     enum enum_get_c_field_option{
         gcfo_with_namespace = 0,    // 指定作用域
         gcfo_without_namespace = 1, // 不指定作用域
@@ -43,7 +43,7 @@ namespace cpputil{
     string get_member_comment_list(const cfgbase_t &cfgbase); // 获取类成员的注释
 }
 
-namespace cpputil{
+namespace cpptool{
     // 将excel文件中的每个工作表对应生成的文本串拼接起来
     typedef string (gen_func_t)(const cfg_t&);
     string splice(const cfgbase_t &cfgbase, gen_func_t func, const char* splice_token = "\n");

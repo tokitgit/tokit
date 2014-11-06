@@ -8,15 +8,15 @@
 
 #include "c++_generator.h"
 
-#include "file_util.h"
-#include "str_util.h"
-#include "echoutil.h"
+#include "file_tool.h"
+#include "str_tool.h"
+#include "echo_tool.h"
 #include "cfg.h"
 #include "parser.h"
 
 #include <fstream>
 
-using namespace fileutil;
+using namespace filetool;
 using namespace std;
 
 namespace cxx
@@ -28,7 +28,7 @@ namespace cxx
             "%cfg%::%cfg%()"
             ;       
 
-        strutil::replace(ctor_text, "%cfg%", cpputil::get_cfg_type_name(cfg));
+        strtool::replace(ctor_text, "%cfg%", cpptool::get_cfg_type_name(cfg));
 
         for(size_t n = 0; n < cfg.fields.size(); ++n){
             const field_t &field = cfg.fields[n];
@@ -56,7 +56,7 @@ namespace cxx
             "\n}"
             ;       
 
-        strutil::replace(print_text, "%cfg%", cpputil::get_cfg_type_name(cfg));
+        strtool::replace(print_text, "%cfg%", cpptool::get_cfg_type_name(cfg));
 
         string printf_fmt;
         string printf_argv;
@@ -106,11 +106,11 @@ namespace cxx
                          "\n"
                          "\n    return buf;";
 
-            strutil::replace(print_stmt, "%printf_fmt%", printf_fmt);
-            strutil::replace(print_stmt, "%printf_argv%", printf_argv);
+            strtool::replace(print_stmt, "%printf_fmt%", printf_fmt);
+            strtool::replace(print_stmt, "%printf_argv%", printf_argv);
         }
 
-        strutil::replace(print_text, "%print%", print_stmt);
+        strtool::replace(print_text, "%print%", print_stmt);
         return print_text;
     }
 
@@ -135,25 +135,25 @@ namespace cxx
 
         static const string static_cast_func_name[fieldtype_max] = {
             "",
-            "strutil::un_escape_xml",
-            "strutil::str_to_bool",
-            "strutil::str_to_int32",
-            "strutil::str_to_int32",
-            "strutil::str_to_int32",
-            "strutil::str_to_int64",
-            "strutil::str_to_uint32",
-            "strutil::str_to_uint32",
-            "strutil::str_to_uint32",
-            "strutil::str_to_uint64",
+            "strtool::un_escape_xml",
+            "strtool::str_to_bool",
+            "strtool::str_to_int32",
+            "strtool::str_to_int32",
+            "strtool::str_to_int32",
+            "strtool::str_to_int64",
+            "strtool::str_to_uint32",
+            "strtool::str_to_uint32",
+            "strtool::str_to_uint32",
+            "strtool::str_to_uint64",
             "atof",
             "atof",
         };
 
-        static const string static_load_vec_stmt = "cfg.%field% = strutil::split_str_to_vec<%T%>(%val%, %cast%);";
-        static const string static_load_set_stmt = "cfg.%field% = strutil::split_str_to_set<%T%>(%val%, %cast%);";
+        static const string static_load_vec_stmt = "cfg.%field% = strtool::split_str_to_vec<%T%>(%val%, %cast%);";
+        static const string static_load_set_stmt = "cfg.%field% = strtool::split_str_to_set<%T%>(%val%, %cast%);";
 
-        static const string static_load_str_vec_stmt = "cfg.%field% = strutil::split(%val%);";
-        static const string static_load_str_set_stmt = "cfg.%field% = strutil::split_str_set(%val%);";
+        static const string static_load_str_vec_stmt = "cfg.%field% = strtool::split(%val%);";
+        static const string static_load_str_set_stmt = "cfg.%field% = strtool::split_str_set(%val%);";
 
 		string stmt = static_load_attr_stmt[field.fieldtype];
         if (field.is_array()){
@@ -172,10 +172,10 @@ namespace cxx
 
         string val = "node->first_attribute(\"%field%\")->value()";
         const string &cast_func = static_cast_func_name[field.fieldtype];
-        strutil::replace(stmt, "%val%", val);
-        strutil::replace(stmt, "%field%", field.en_name);
-        strutil::replace(stmt, "%T%", cpp_generator::raw_type_2_c_type(field.fieldtype));
-        strutil::replace(stmt, "%cast%", cast_func);
+        strtool::replace(stmt, "%val%", val);
+        strtool::replace(stmt, "%field%", field.en_name);
+        strtool::replace(stmt, "%T%", cpp_generator::raw_type_2_c_type(field.fieldtype));
+        strtool::replace(stmt, "%cast%", cast_func);
 		return stmt;
 	}
 
@@ -198,7 +198,7 @@ namespace cxx
 			if(key.fieldtype == fieldtype_string){
 				ret += key.en_name;
 			}else{
-				ret += "strutil::tostr(" + key.en_name + ")";
+				ret += "strtool::tostr(" + key.en_name + ")";
 			}
 
 			ret += " + ";
@@ -226,7 +226,7 @@ namespace cxx
 		{
 		// 2个主键
 		case 2:
-			ret = "uint64 key = keyutil::Get3232Key(";
+			ret = "uint64 key = keytool::Get3232Key(";
 			ret += keys[0].en_name;
 			ret += ", ";
 			ret += keys[1].en_name;
@@ -235,7 +235,7 @@ namespace cxx
 
         // 3个主键
 		case 3:
-			ret = "uint64 key = keyutil::Get161616Key(";
+			ret = "uint64 key = keytool::Get161616Key(";
 			ret += keys[0].en_name;
 			ret += ", ";
 			ret += keys[1].en_name;
@@ -246,7 +246,7 @@ namespace cxx
 
 		// 4个主键
 		case 4:
-			ret = "uint64 key = keyutil::Get16161616Key(";
+			ret = "uint64 key = keytool::Get16161616Key(";
 			ret += keys[0].en_name;
 			ret += ", ";
 			ret += keys[1].en_name;
@@ -325,7 +325,7 @@ namespace cxx
 
 		string map_key = "\n        " + splice_n_key(cfg, "cfg.");
 		string map_insert = "\n        m_%map%[key] = curcfg;\n";
-		strutil::replace(map_insert, "%map%", cpputil::get_n_key_map_name(cfg));
+		strtool::replace(map_insert, "%map%", cpptool::get_n_key_map_name(cfg));
 
 		return map_key + map_insert;
 	}
@@ -342,12 +342,12 @@ namespace cxx
 
             string insert_stmt = "\n        m_%map%[cfg.%key%] = curcfg;";
 
-            strutil::replace(insert_stmt, "%map%", cpputil::get_1_key_map_name(cfg, field));
-            strutil::replace(insert_stmt, "%key%", field.en_name);
+            strtool::replace(insert_stmt, "%map%", cpptool::get_1_key_map_name(cfg, field));
+            strtool::replace(insert_stmt, "%key%", field.en_name);
             text += insert_stmt;
         }
 
-        strutil::replace(text, "%cfg%", cfg.en_name);
+        strtool::replace(text, "%cfg%", cfg.en_name);
         return text;
     }
 
@@ -392,12 +392,12 @@ namespace cxx
             vec_reserve_stmt = "\n    m_%vec%.reserve(n_row);\n";
         }
 
-        strutil::replace(text, "%vec_reserve_stmt%", vec_reserve_stmt);
-        strutil::replace(text, "%cfg%", cfg.en_name);
-        strutil::replace(text, "%load_func_name%", cpputil::get_load_func_declare(cfg));
-        strutil::replace(text, "%comment%", cfg.cn_name);
-        strutil::replace(text, "%vec%", cpputil::get_vec_name(cfg));
-        strutil::replace(text, "%cfgtype%", cpputil::get_cfg_type_name(cfg));
+        strtool::replace(text, "%vec_reserve_stmt%", vec_reserve_stmt);
+        strtool::replace(text, "%cfg%", cfg.en_name);
+        strtool::replace(text, "%load_func_name%", cpptool::get_load_func_declare(cfg));
+        strtool::replace(text, "%comment%", cfg.cn_name);
+        strtool::replace(text, "%vec%", cpptool::get_vec_name(cfg));
+        strtool::replace(text, "%cfgtype%", cpptool::get_cfg_type_name(cfg));
 
         string load_attr_stmt;
 
@@ -407,7 +407,7 @@ namespace cxx
 
             load_attr_stmt = "        " + gen_load_attr_statement(field) + "\n";
             if (n * 2 + 1 > n_field){
-                strutil::replace(load_attr_stmt, "node->first_attribute", "node->last_attribute");
+                strtool::replace(load_attr_stmt, "node->first_attribute", "node->last_attribute");
             }
 
             text += load_attr_stmt;
@@ -419,9 +419,9 @@ namespace cxx
                 "\n        %cfgtype%* curcfg = &m_%vec%.back();"
                 ;
 
-            strutil::replace(vec_push_stmt, "%vec%", cpputil::get_vec_name(cfg));
-            strutil::replace(vec_push_stmt, "%cfg%", cfg.en_name);
-            strutil::replace(vec_push_stmt, "%cfgtype%", cpputil::get_cfg_type_name(cfg));
+            strtool::replace(vec_push_stmt, "%vec%", cpptool::get_vec_name(cfg));
+            strtool::replace(vec_push_stmt, "%cfg%", cfg.en_name);
+            strtool::replace(vec_push_stmt, "%cfgtype%", cpptool::get_cfg_type_name(cfg));
 
             string map_insert_stmt = "\n    ";
             map_insert_stmt += gen_n_key_map_insert_stmt(cfg);
@@ -435,7 +435,7 @@ namespace cxx
                 "\n        break;"
                 ;
 
-            strutil::replace(eval_stmt, "%cfg%", cfg.en_name);
+            strtool::replace(eval_stmt, "%cfg%", cfg.en_name);
             text += eval_stmt;
         }
 
@@ -447,7 +447,7 @@ namespace cxx
             "\n}"
             ;
 
-        strutil::replace(end_stmt, "%cfg%", cfg.en_name);
+        strtool::replace(end_stmt, "%cfg%", cfg.en_name);
         text += end_stmt;
         return text;
     }
@@ -459,7 +459,7 @@ namespace cxx
 
     string gen_call_clear_func_stmt(const cfg_t &cfg)
     {
-        string text = "    " + cpputil::get_clear_func_name(cfg) + "();";
+        string text = "    " + cpptool::get_clear_func_name(cfg) + "();";
         return text;
     }
 
@@ -475,10 +475,10 @@ namespace cxx
         string clear_stmt;
 
         if (!cfg.only_has_1_row()){
-            clear_stmt += "\n    m_" + cpputil::get_vec_name(cfg) + ".clear();";
+            clear_stmt += "\n    m_" + cpptool::get_vec_name(cfg) + ".clear();";
 
             if (cfg.keys.size() > 1){
-                clear_stmt += "\n    m_" + cpputil::get_n_key_map_name(cfg) + ".clear();";
+                clear_stmt += "\n    m_" + cpptool::get_n_key_map_name(cfg) + ".clear();";
             }
 
             size_t n_field = cfg.fields.size();
@@ -489,16 +489,16 @@ namespace cxx
                     continue;
                 }
 
-                clear_stmt += "\n    m_" + cpputil::get_1_key_map_name(cfg, field) + ".clear();";
+                clear_stmt += "\n    m_" + cpptool::get_1_key_map_name(cfg, field) + ".clear();";
             }
         }else{
             clear_stmt = "\n    m_%cfg% = %cfgtype%();";
-            strutil::replace(clear_stmt, "%cfgtype%", cpputil::get_cfg_type_name(cfg));
-            strutil::replace(clear_stmt, "%cfg%", cfg.en_name);
+            strtool::replace(clear_stmt, "%cfgtype%", cpptool::get_cfg_type_name(cfg));
+            strtool::replace(clear_stmt, "%cfg%", cfg.en_name);
         }
 
-        strutil::replace(text, "%clear_func%", cpputil::get_clear_func_declare(cfg));
-        strutil::replace(text, "%clear_stmt%", clear_stmt);
+        strtool::replace(text, "%clear_func%", cpptool::get_clear_func_declare(cfg));
+        strtool::replace(text, "%clear_stmt%", clear_stmt);
         return text;
     }
 
@@ -524,10 +524,10 @@ namespace cxx
             "\n"
             ;
 
-        strutil::replace(text, "%cfg%", cpputil::get_cfg_type_name(cfg));
-        strutil::replace(text, "%find_func%", cpputil::get_n_key_find_func_declare(cfg));
-        strutil::replace(text, "%key_stmt%", splice_n_key(cfg));
-        strutil::replace(text, "%map%", cpputil::get_n_key_map_name(cfg));
+        strtool::replace(text, "%cfg%", cpptool::get_cfg_type_name(cfg));
+        strtool::replace(text, "%find_func%", cpptool::get_n_key_find_func_declare(cfg));
+        strtool::replace(text, "%key_stmt%", splice_n_key(cfg));
+        strtool::replace(text, "%map%", cpptool::get_n_key_map_name(cfg));
         return text;
     }
 
@@ -555,15 +555,15 @@ namespace cxx
 
             string func_stmt = templet;
 
-            strutil::replace(func_stmt, "%cfg%", cpputil::get_cfg_type_name(cfg));
-            strutil::replace(func_stmt, "%find_func%", cpputil::get_1_key_find_func_declare(cfg, field));
-            strutil::replace(func_stmt, "%map%", cpputil::get_1_key_map_name(cfg, field));
-            strutil::replace(func_stmt, "%key%", field.en_name); 
+            strtool::replace(func_stmt, "%cfg%", cpptool::get_cfg_type_name(cfg));
+            strtool::replace(func_stmt, "%find_func%", cpptool::get_1_key_find_func_declare(cfg, field));
+            strtool::replace(func_stmt, "%map%", cpptool::get_1_key_map_name(cfg, field));
+            strtool::replace(func_stmt, "%key%", field.en_name); 
 
             text += func_stmt + "\n";
         }
 
-        strutil::replace(text, "%cfg%", cfg.en_name);
+        strtool::replace(text, "%cfg%", cfg.en_name);
         return text;
     }
 
@@ -574,7 +574,7 @@ namespace cxx
         }
 
         string text;
-        text += cpputil::get_comment(cfg);
+        text += cpptool::get_comment(cfg);
         text += gen_n_key_find_func(cfg) + gen_1_key_find_func(cfg);
         return text;
     }
@@ -584,7 +584,7 @@ bool cpp_generator::gen_cpp_file(const string &cpp_file)
 {
     static string cpp_templet;
     if (cpp_templet.empty()){
-        fileutil::get_whole_file_str(m_cpp_templet_path, cpp_templet);
+        filetool::get_whole_file_str(m_cpp_templet_path, cpp_templet);
 
         if(cpp_templet.empty()){
             ECHO_ERR("生成c++文件失败：找不到模板文件<%s>", m_cpp_templet_path.c_str());
@@ -593,19 +593,19 @@ bool cpp_generator::gen_cpp_file(const string &cpp_file)
     }
 
     string src = cpp_templet;
-    strutil::replace(src, "%cfg%", m_cfgbase.filename);
+    strtool::replace(src, "%cfg%", m_cfgbase.filename);
 
-    strutil::replace(src, "%structs_ctor%", cpputil::splice(m_cfgbase, cxx::gen_struct_ctor, "\n\n"));
-    strutil::replace(src, "%structs_print%", cpputil::splice(m_cfgbase, cxx::gen_struct_print, "\n\n"));
-    strutil::replace(src, "%load_funcs%",   cpputil::splice(m_cfgbase, cxx::gen_load_func, "\n"));
-    strutil::replace(src, "%clear_funcs%",  cpputil::splice(m_cfgbase, cxx::gen_clear_func, "\n"));
-    strutil::replace(src, "%find_funcs%",   cpputil::splice(m_cfgbase, cxx::gen_find_func, "\n"));
+    strtool::replace(src, "%structs_ctor%", cpptool::splice(m_cfgbase, cxx::gen_struct_ctor, "\n\n"));
+    strtool::replace(src, "%structs_print%", cpptool::splice(m_cfgbase, cxx::gen_struct_print, "\n\n"));
+    strtool::replace(src, "%load_funcs%",   cpptool::splice(m_cfgbase, cxx::gen_load_func, "\n"));
+    strtool::replace(src, "%clear_funcs%",  cpptool::splice(m_cfgbase, cxx::gen_clear_func, "\n"));
+    strtool::replace(src, "%find_funcs%",   cpptool::splice(m_cfgbase, cxx::gen_find_func, "\n"));
 
-    strutil::replace(src, "%mgr%",          cpputil::get_mgr_name(m_cfgbase));
-    strutil::replace(src, "%load_stmt%",    cpputil::splice(m_cfgbase, cxx::gen_call_load_func_stmt, "\n"));
-    strutil::replace(src, "%clear_stmt%",   cpputil::splice(m_cfgbase, cxx::gen_call_clear_func_stmt, "\n"));
-    strutil::replace(src, "%cfg_member%",   cpputil::get_member_comment_list(m_cfgbase));
+    strtool::replace(src, "%mgr%",          cpptool::get_mgr_name(m_cfgbase));
+    strtool::replace(src, "%load_stmt%",    cpptool::splice(m_cfgbase, cxx::gen_call_load_func_stmt, "\n"));
+    strtool::replace(src, "%clear_stmt%",   cpptool::splice(m_cfgbase, cxx::gen_call_clear_func_stmt, "\n"));
+    strtool::replace(src, "%cfg_member%",   cpptool::get_member_comment_list(m_cfgbase));
 
-    bool is_overwrite_file_ok = fileutil::overwrite_file(cpp_file, src);
+    bool is_overwrite_file_ok = filetool::overwrite_file(cpp_file, src);
     return is_overwrite_file_ok;
 }

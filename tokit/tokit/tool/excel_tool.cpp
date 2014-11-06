@@ -1,5 +1,5 @@
 ///<------------------------------------------------------------------------------
-//< @file:   prop\parser\excel_util.cpp
+//< @file:   prop\parser\excel_tool.cpp
 //< @author: 洪坤安
 //< @date:   2014年9月20日 17:59:55
 //< @brief:  
@@ -11,9 +11,9 @@
 #include <sstream>
 #include <limits>
 
-#include "excel_util.h"
-#include "str_util.h"
-#include "file_util.h"
+#include "excel_tool.h"
+#include "str_tool.h"
+#include "file_tool.h"
 
 #include "excel/CApplication.h"  
 #include "excel/CRange.h"  
@@ -25,7 +25,7 @@
 #include "Resource.h"
 #include "parser.h"
 
-namespace excelutil
+namespace exceltool
 {
     bool init_ole()
     {
@@ -48,9 +48,9 @@ namespace excelutil
             return false;
         }
 
-		if(false == fileutil::exist(xlsx)){
+		if(false == filetool::exist(xlsx)){
 			std::string err = xlsx + "文件不存在!";
-			AfxMessageBox(strutil::string2wstring(err).c_str());
+			AfxMessageBox(strtool::string2wstring(err).c_str());
 			return false;
 		}
 
@@ -68,7 +68,7 @@ namespace excelutil
 		books.AttachDispatch(excel_application.get_Workbooks(), TRUE);
 
         // const std::wstring wstr = 
-        const std::wstring w_xlsx = strutil::string2wstring(xlsx); //L"E:\\proj\\github_tokit\\trunk\\example\\excel\\测试用例.xlsx";
+        const std::wstring w_xlsx = strtool::string2wstring(xlsx); //L"E:\\proj\\github_tokit\\trunk\\example\\excel\\测试用例.xlsx";
 
 		//打开一个工作簿，如不存在，则新增一个工作簿
         LPDISPATCH lpDisp = books.Add(COleVariant(w_xlsx.c_str()));
@@ -173,7 +173,7 @@ namespace excelutil
                 //字符串
                 const wchar_t *w = sheet.readStr(row, col);
                 //const std::wstring wstr(w);
-                return strutil::wstring2string(w);
+                return strtool::wstring2string(w);
             }
         case libxl::CELLTYPE_NUMBER:
             {
@@ -217,7 +217,7 @@ namespace excelutil
             //字符串
             const wchar_t *w = vResult.bstrVal;
             // const std::wstring wstr(w);
-            return strutil::wstring2string(w);
+            return strtool::wstring2string(w);
         }
         //单元格空的
         case VT_EMPTY:

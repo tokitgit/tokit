@@ -13,7 +13,7 @@ class COleSafeArray;
 class CWorksheet;
 
 #include "cfg.h"
-#include "echoutil.h"
+#include "echo_tool.h"
 
 class parser
 {

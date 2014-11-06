@@ -10,7 +10,7 @@
 #define _generator_h_
 
 #include "cfg.h"
-#include "echoutil.h"
+#include "echo_tool.h"
 
 class generator
 {

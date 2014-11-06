@@ -8,10 +8,10 @@
 
 #include "generator.h"
 #include "parser.h"
-#include "file_util.h"
+#include "file_tool.h"
 
 void generator::echo_errs()
 {
-    echoutil::echo_errvec(m_errvec);
+    echotool::echo_errvec(m_errvec);
     m_errvec.clear();
 }

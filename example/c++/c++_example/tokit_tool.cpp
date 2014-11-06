@@ -1,12 +1,12 @@
 ///<------------------------------------------------------------------------------
-//< @file:   c++\c++_example\tokit_util.cpp
+//< @file:   c++\c++_example\tokit_tool.cpp
 //< @author: 
 //< @date:   2014年9月27日 0:3:56
 //< @brief:  
 //< Copyright (c) 2014 Tokit. All rights reserved.
 ///<------------------------------------------------------------------------------
 
-#include "tokit_util.h"
+#include "tokit_tool.h"
 
 #ifdef WIN32
     #include <windows.h>
@@ -19,7 +19,7 @@
 #include <string.h>
 #include <time.h>
 
-namespace keyutil
+namespace keytool
 {
     uint64 Get16161616Key(uint16 w, uint16 x, uint16 y, uint16 z)
     {
@@ -58,7 +58,7 @@ namespace keyutil
     }
 }
 
-namespace tickutil
+namespace ticktool
 {
 #ifdef WIN32
     // 获取CPU每秒的滴答次数
@@ -111,7 +111,7 @@ double tick_t::end_tick()
     return passed_sec;
 }
 
-namespace strutil
+namespace strtool
 {
     // 替换字符串
     // 例如：replace("this is an expmple", "is", "") = "th  an expmple"

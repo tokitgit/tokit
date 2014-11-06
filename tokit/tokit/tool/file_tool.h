@@ -1,5 +1,5 @@
-#ifndef _file_util_h_
-#define _file_util_h_
+#ifndef _file_tool_h_
+#define _file_tool_h_
 
 #include <string>
 #include <vector>
@@ -7,7 +7,7 @@
 using std::string;
 using std::vector;
 
-namespace fileutil
+namespace filetool
 {
     // 指定路径是否存在
     // 例如：dir = "../../example"
@@ -40,4 +40,4 @@ namespace fileutil
     bool overwrite_file(const std::string &path, const std::string &text);
 }
 
-#endif // _file_util_h_
+#endif // _file_tool_h_
