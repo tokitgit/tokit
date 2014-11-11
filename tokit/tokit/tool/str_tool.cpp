@@ -279,16 +279,6 @@ namespace strtool
         str.resize(iLen - 1);
         WideCharToMultiByte( CP_OEMCP, NULL, wstr.c_str(), -1, (LPSTR)str.c_str(), iLen, NULL, FALSE); // 正式转换。  
         return str;
-
-        /*
-        string sResult;  
-        int iLen = WideCharToMultiByte( CP_ACP, NULL, sToMatch.c_str(), -1, NULL, 0, NULL, FALSE ); // 计算转换后字符串的长度。（包含字符串结束符）  
-        char *lpsz = new char[iLen];  
-        WideCharToMultiByte( CP_OEMCP, NULL, sToMatch.c_str(), -1, lpsz, iLen, NULL, FALSE); // 正式转换。  
-        sResult.assign( lpsz, iLen - 1 ); // 对string对象进行赋值。  
-        delete []lpsz;  
-        return sResult;  
-        */
     }
 
     //把宽字符串转换成字符串，输出使用  
@@ -300,5 +290,5 @@ namespace strtool
         str.resize(iLen - 1);
         WideCharToMultiByte( CP_OEMCP, NULL, wstr, -1, (LPSTR)str.c_str(), iLen, NULL, FALSE); // 正式转换。  
         return str;
-    } 
+    }
 }

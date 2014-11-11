@@ -8,6 +8,7 @@
 #include "type.h"
 
 using std::string;
+using std::wstring;
 
 namespace strtool
 {
