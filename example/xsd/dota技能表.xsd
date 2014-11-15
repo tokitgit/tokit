@@ -5,7 +5,7 @@
     <xs:sequence minOccurs="0" maxOccurs="unbounded">
       <xs:element name="dotaskillcfg">
         <xs:complexType>
-          <xs:sequence>
+			<xs:sequence>
             <xs:attribute name="id" type="xs:unsignedInt"/>
             <xs:attribute name="name" type="xs:string"/>
             <xs:attribute name="strength" type="xs:double"/>

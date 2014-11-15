@@ -1,7 +1,7 @@
 ///<------------------------------------------------------------------------------
 //< @file:  %cfg%.h
 //< @brief: %cfg_member%
-//< 本头文件由工具自动生成，请勿在本文件内做改动
+//< 鏈ご鏂囦欢鐢卞伐鍏疯嚜鍔ㄧ敓鎴愶紝璇峰嬁鍦ㄦ湰鏂囦欢鍐呭仛鏀瑰姩
 //< @Copyright (c) 2014 tokit.
 ///<------------------------------------------------------------------------------
 
@@ -38,17 +38,17 @@ private:
     %mgr% (const %mgr%&){}
 
 public:
-	// @impl 获取本配置类名称
+	// @impl 鑾峰彇鏈厤缃被鍚嶇О
 	std::string mgr_name(){ return "%cfg%"; }
 
-    // 获取xml文件路径
+    // 鑾峰彇xml鏂囦欢璺緞
     std::string get_path(std::string xml){ return "../../xml/" + xml;}
 
 public:
-    // 载入%cfg_member%
+    // 杞藉叆%cfg_member%
 	virtual bool load();
 
-    // 清空%cfg_member%
+    // 娓呯┖%cfg_member%
     virtual void clear();
 
 public:

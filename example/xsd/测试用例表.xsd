@@ -5,7 +5,7 @@
     <xs:sequence minOccurs="0" maxOccurs="unbounded">
       <xs:element name="testcfg">
         <xs:complexType>
-          <xs:sequence>
+			<xs:sequence>
             <xs:attribute name="stringfield" type="xs:string"/>
             <xs:attribute name="boolfield" type="xs:unsignedByte"/>
             <xs:attribute name="charfield" type="xs:byte"/>

@@ -1,9 +1,9 @@
 <dotaherocfg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <row id="1" name="Ð¡ºÚ" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
-    <row id="2" name="·çÐÐ" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
-    <row id="3" name="·ï»Ë" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
-    <row id="4" name="¸«Íõ" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
-    <row id="5" name="ÖæË¹" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
-    <row id="6" name="Ðé¿Õ" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
-    <row id="7" name="ºï×Ó" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
+	<row id="1" name="å°é»‘" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
+	<row id="2" name="é£Žè¡Œ" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
+	<row id="3" name="å‡¤å‡°" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
+	<row id="4" name="æ–§çŽ‹" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
+	<row id="5" name="å®™æ–¯" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
+	<row id="6" name="è™šç©º" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
+	<row id="7" name="çŒ´å­" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
 </dotaherocfg>

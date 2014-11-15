@@ -105,21 +105,18 @@ namespace strtool
 
     inline int64 str_to_int64(const char* val)
     {
-#ifdef WIN32
-        return _atoi64(val);
-#else
-        return strtoll(val, NULL, 10);
-#endif        
+        double dvalue = 0; 
+        dvalue = strtod(val, NULL); 
+
+        return (int64)dvalue;
     }
 
     inline uint64 str_to_uint64(const char* val)
     {
-#ifdef WIN32
-        char *stop_at = NULL;
-        return _strtoui64(val, &stop_at, 10);
-#else
-        return strtoull(val, NULL, 10);
-#endif
+        double dvalue = 0; 
+        dvalue = strtod(val, NULL); 
+
+        return (uint64)dvalue;
     }
 
     inline std::string un_escape_xml(const char* old_str)

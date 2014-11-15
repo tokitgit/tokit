@@ -1,10 +1,10 @@
 {
 "dotaequipcfg": [
-	{"id":"1","name":"Ê¥ÕßÒÅÎï","desc":"","price":"1000","isdrop":"0","attack":"80","bornlist":"","bornnum":""},
-	{"id":"2","name":"¶ñÄ§µ¶·æ","desc":"","price":"1050","isdrop":"0","attack":"60","bornlist":"","bornnum":""},
-	{"id":"3","name":"Ê¥½£","desc":"Ê¥½£ÔÚ·¨Ê¦Ö®Õ½ÖĞÓÉÉñÇ××Ô½»Óè·´ÅÑ¾üÖ®ÊÖ£¬ËÀÍöºóµôÂä","price":"1100","isdrop":"0","attack":"300","bornlist":"1,2","bornnum":"1,1"},
-	{"id":"4","name":"Ï£Ã·Ë¹ÌØµÄÂÓ¶á","desc":"","price":"","isdrop":"0","attack":"32","bornlist":"","bornnum":""},
-	{"id":"5","name":"»îÁ¦Ö®Çò","desc":"","price":"","isdrop":"0","attack":"10","bornlist":"","bornnum":""},
-	{"id":"6","name":"Ä§ÁúÖ®ĞÄºÏ³ÉÊé","desc":"","price":"","isdrop":"0","attack":"-100","bornlist":"","bornnum":""},
-	{"id":"7","name":"Ä§ÁúÖ®ĞÄ","desc":"Ã¿Ãë»Ö¸´×î´óÉúÃüÖµµÄ%2","price":"","isdrop":"1","attack":"100","bornlist":"4,5,6","bornnum":"1,1,1"}
+	{"id":"1","name":"åœ£è€…é—ç‰©","desc":"","price":"1000","isdrop":"0","attack":"80","bornlist":"","bornnum":""},
+	{"id":"2","name":"æ¶é­”åˆ€é”‹","desc":"","price":"1050","isdrop":"0","attack":"60","bornlist":"","bornnum":""},
+	{"id":"3","name":"åœ£å‰‘","desc":"åœ£å‰‘åœ¨æ³•å¸ˆä¹‹æˆ˜ä¸­ç”±ç¥äº²è‡ªäº¤äºˆåå›å†›ä¹‹æ‰‹ï¼Œæ­»äº¡åæ‰è½","price":"1100","isdrop":"0","attack":"300","bornlist":"1,2","bornnum":"1,1"},
+	{"id":"4","name":"å¸Œæ¢…æ–¯ç‰¹çš„æ å¤º","desc":"","price":"","isdrop":"0","attack":"32","bornlist":"","bornnum":""},
+	{"id":"5","name":"æ´»åŠ›ä¹‹çƒ","desc":"","price":"","isdrop":"0","attack":"10","bornlist":"","bornnum":""},
+	{"id":"6","name":"é­”é¾™ä¹‹å¿ƒåˆæˆä¹¦","desc":"","price":"","isdrop":"0","attack":"-100","bornlist":"","bornnum":""},
+	{"id":"7","name":"é­”é¾™ä¹‹å¿ƒ","desc":"æ¯ç§’æ¢å¤æœ€å¤§ç”Ÿå‘½å€¼çš„%2","price":"","isdrop":"1","attack":"100","bornlist":"4,5,6","bornnum":"1,1,1"}
 ]}
