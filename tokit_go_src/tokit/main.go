@@ -66,7 +66,7 @@ func main() {
 			xsd_gen := xsd.Xsd_generator{&cfgbase, xsd_dir}
 			xsd_gen.Generate()
 			
-			tool.EchoWarn("生成xsd完毕, 共耗时<%f>秒", gen_clock.End_tick())
+			// tool.EchoWarn("生成xsd完毕, 共耗时<%f>秒", gen_clock.End_tick())
 		case cmd == "-c++":
 			if pos+3 > argc {
 				tool.EchoErr("生成c++源代码文件的命令错误，格式应为: ")
@@ -86,7 +86,7 @@ func main() {
 			cpp_gen := cpp.Cpp_generator{&cfgbase, cpp_dir, h_templet, cpp_templet}
 			cpp_gen.Generate()
 			
-			tool.EchoWarn("生成c++完毕, 共耗时<%f>秒", gen_clock.End_tick())
+			// tool.EchoWarn("生成c++完毕, 共耗时<%f>秒", gen_clock.End_tick())
 		case cmd == "-go":
 			if pos+2 > argc {
 				tool.EchoErr("生成go源代码文件命令错误，格式应为: ")
@@ -121,7 +121,7 @@ func main() {
 			xml_gen := xml.Xml_generator{&cfgbase, xml_dir}
 			xml_gen.Generate()
 			
-			tool.EchoWarn("生成xml完毕, 共耗时<%f>秒", gen_clock.End_tick())
+			// tool.EchoWarn("生成xml完毕, 共耗时<%f>秒", gen_clock.End_tick())
 		case cmd == "-json":
 			if pos+1 > argc {
 				tool.EchoWarn("导出json文件的命令错误，格式应为: ")
@@ -138,8 +138,10 @@ func main() {
 			json_gen := json.Json_generator{&cfgbase, json_dir}
 			json_gen.Generate()
 			
-			tool.EchoWarn("生成json完毕, 共耗时<%f>秒", gen_clock.End_tick())
+			// tool.EchoWarn("生成json完毕, 共耗时<%f>秒", gen_clock.End_tick())
 		}
+		
+		tool.ResetConsoleColor()
 	}
 
 }

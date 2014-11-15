@@ -38,3 +38,7 @@ func EchoOk(cmd string, arg ...interface{}) {
 	gocolortext.ChangeColor(gocolortext.Green, true, gocolortext.None, false)
 	fmt.Println(fmt.Sprintf(cmd, arg...))
 }
+
+func ResetConsoleColor() {
+	gocolortext.ResetColor()
+}
