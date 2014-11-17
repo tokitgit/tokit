@@ -1,8 +1,8 @@
 ///<------------------------------------------------------------------------------
-//< @文件名：echo_tool.cpp
+//< @文件名：xml_generator.cpp
 //< @作　者：洪坤安
 //< @日　期: 2014年11月12日 19:08:42
-//< @摘　要:
+//< @摘　要: 生成xml文件
 //< Copyright (c) 2014 Tokit. All rights reserved.
 ///<------------------------------------------------------------------------------
 
@@ -51,9 +51,6 @@ func escape_xml(str *string) {
 
 // 将数据拼接成xml格式
 func get_xml_text(cfg *generator.Cfg_t, xml_text *string) {
-	var get_xml_clock tool.Clock
-	get_xml_clock.Start_tick()
-	
 	*xml_text = "<" + cfg.En_name + " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
 	var row_text string
 
@@ -65,12 +62,10 @@ func get_xml_text(cfg *generator.Cfg_t, xml_text *string) {
 		for c := 0; c < n_field; c++ {
 			escape_xml(&row[c])
 			row_text += " " + cfg.Fields[c].En_name + "=\"" + row[c] + "\""
-		}	
+		}
 
 		*xml_text += row_text + "/>\n"
 	}
 
 	*xml_text += "</" + cfg.En_name + ">"
-	
-	tool.EchoWarn("拼接xml完毕, 共耗时<%f>秒", get_xml_clock.End_tick())
 }

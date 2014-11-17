@@ -2,7 +2,7 @@
 //< @文件名: parser.cpp
 //< @作　者: 洪坤安
 //< @日　期: 2014年11月12日 14:50:42
-//< @摘　要:
+//< @摘　要: excel解析器
 //< Copyright (c) 2014 Tokit. All rights reserved.
 ///<------------------------------------------------------------------------------
 
@@ -310,17 +310,12 @@ func parse_excel(excel *string, cfgbase *Cfgbase_t, errmsgs *tool.Errvec_t, pars
 		return false
 	}
 
-	var load_clock tool.Clock
-	load_clock.Start_tick()
-
 	// 1. 载入excel文件
 	xlFile, err := xlsx.OpenFile(*excel)
 	if err != nil {
 		*errmsgs = append(*errmsgs, tool.GetErrMsg("错误：解析<%s>文件失败，请确保该文件存在且未被打开!", *excel))
 		return false
 	}
-
-	tool.EchoWarn("打开完毕, 共耗时<%f>秒", load_clock.End_tick())
 
 	var succ bool = true
 

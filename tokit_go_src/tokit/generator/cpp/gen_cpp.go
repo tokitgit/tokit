@@ -1,8 +1,8 @@
 ///<------------------------------------------------------------------------------
-//< @文件名：main.cpp
+//< @文件名：gen_cpp.cpp
 //< @作　者：洪坤安
 //< @日　期: 2014年11月13日 16:43:42
-//< @摘　要:
+//< @摘　要: 生成c++的cpp文件
 //< Copyright (c) 2014 Tokit. All rights reserved.
 ///<------------------------------------------------------------------------------
 
@@ -534,7 +534,7 @@ func (c *Cpp_generator) gen_cpp_file(cpp_file *string) bool {
 	text = strings.Replace(text, "%clear_stmt%", splice(c.M_cfgbase, gen_call_clear_func_stmt, "\n"), -1)
 	text = strings.Replace(text, "%cfg_member%", get_member_comment_list(c.M_cfgbase), -1)
 
-	enc := mahonia.NewEncoder("UTF-16")
+	enc := mahonia.NewEncoder("GB18030")
     if ret, ok := enc.ConvertStringOK(text); ok {
         // fmt.Println("UTF-8 to GBK: ", ret, " bytes: ", []byte(ret))		
 		text = string(ret)
