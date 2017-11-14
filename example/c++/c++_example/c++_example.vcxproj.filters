@@ -13,28 +13,28 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="cfg\testcfg.cpp">
-      <Filter>cfg</Filter>
-    </ClCompile>
-    <ClCompile Include="cfg\dotaequipcfg.cpp">
-      <Filter>cfg</Filter>
-    </ClCompile>
     <ClCompile Include="tokit_tool.cpp">
       <Filter>tool</Filter>
+    </ClCompile>
+    <ClCompile Include="cfg\DotaModule.cpp">
+      <Filter>cfg</Filter>
+    </ClCompile>
+    <ClCompile Include="cfg\TestModule.cpp">
+      <Filter>cfg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="type.h">
       <Filter>def</Filter>
     </ClInclude>
-    <ClInclude Include="cfg\testcfg.h">
-      <Filter>cfg</Filter>
-    </ClInclude>
-    <ClInclude Include="cfg\dotaequipcfg.h">
-      <Filter>cfg</Filter>
-    </ClInclude>
     <ClInclude Include="tokit_tool.h">
       <Filter>tool</Filter>
+    </ClInclude>
+    <ClInclude Include="cfg\DotaModule.h">
+      <Filter>cfg</Filter>
+    </ClInclude>
+    <ClInclude Include="cfg\TestModule.h">
+      <Filter>cfg</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,52 +6,28 @@
 //< Copyright (c) 2014 Tokit. All rights reserved.
 ///<------------------------------------------------------------------------------
 
-#include "testcfg.h"
-#include "dotaequipcfg.h"
+#include "DotaModule.h"
+#include "TestModule.h"
+#include "tokit_tool.h"
 
 #include <stdio.h>
 
-void load()
-{
-    dotaequipcfgmgr::instance().load();
-    testcfgmgr::instance().load();
-}
-
 void test()
 {
-    const dotaequipcfg_t *dotaequipcfg = dotaequipcfgmgr::instance().get_dotaequipcfg_by_id(1);
-    if (NULL == dotaequipcfg){
-        return;
-    }
-
-    printf("%s\n", dotaequipcfg->print().c_str());
-
-    const dotaequipcfgmgr::id2dotaequipcfgmap &dotaequipcfgmap = dotaequipcfgmgr::instance().get_id2dotaequipcfgmap();
-    if (dotaequipcfgmap.empty()){
-        return;
-    }
-
-    const dotaequipcfgmgr::dotaequipcfgvec &vec = dotaequipcfgmgr::instance().get_dotaequipcfgvec();
-    for (size_t n = 0; n < vec.size(); n++){
-        printf("%s\n", vec[n].print().c_str());
-    }
-
-    const testcfgmgr::testcfgvec &test_vec = testcfgmgr::instance().get_testcfgvec();
-    for (size_t n = 0; n < test_vec.size(); n++){
-        // printf("%s\n", test_vec[n].print().c_str());
-    }
-}
-
-void hello()
-{
-    load();
-    test();
+	DotaModule::instance.Load("D:\\proj\\mine\\tokit\\example\\json\\");
+	DotaModule::instance.Load("D:\\proj\\mine\\tokit\\example\\json\\");
+	DotaModule::instance.Load("D:\\proj\\mine\\tokit\\example\\json\\");
+	DotaModule::instance.Load("D:\\proj\\mine\\tokit\\example\\json\\");
+	DotaModule::instance.Load("D:\\proj\\mine\\tokit\\example\\json\\");
+	DotaModule::instance.Load("D:\\proj\\mine\\tokit\\example\\json\\");
+	DotaModule::instance.Load("D:\\proj\\mine\\tokit\\example\\json\\");
+	TestModule::instance.Load("D:\\proj\\mine\\tokit\\example\\json\\");
 }
 
 int main(int argc, char *argv[])
 {
-    hello();
-
+	int64_t n = tool::str_to_int64("-9E+18");
+	test();
     // system("pause");
     return 0;
 }

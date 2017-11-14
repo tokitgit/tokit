@@ -1,9 +1,0 @@
-<dotamonstercfg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<row id="1" name="小黑" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
-	<row id="2" name="风行" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
-	<row id="3" name="凤凰" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
-	<row id="4" name="斧王" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
-	<row id="5" name="宙斯" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
-	<row id="6" name="虚空" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
-	<row id="7" name="猴子" strength="10.5" agile="20.00001" intelligense="301.11110000000002"/>
-</dotamonstercfg>

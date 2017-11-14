@@ -1,53 +1,31 @@
 @echo off
+rem 备注：excel_dir=excel文件的路径
 set excel_dir=./excel/
-set tool=tool
+
+rem 备注：tool=本工具的路径
+set tool=.\tool\tokit.exe
+
+rem 备注：gen_dir=生成的文件放在哪个文件夹
 set gen_dir=./
-set template=%tool%/template
-set cur_dir=%~dp0
 
-echo 0. 清除原有数据
+rem 备注：template=模板文件的路径
+set template=D:\proj\mine\tokit\example\tool
 
-rem del /Q /S *.h
-rem del /Q /S *.cpp
-rem del /Q /S *.xsd
-del /Q /S %gen_dir%\*.xml
-del /Q /S %gen_dir%\*.xlsx
+rem 这里解释一下windows下批处理的规则
+rem 	备注：%~dp0 =当前盘符+路径，如: d:\xxx\xxx
+rem
+rem 同时，在批处理的for循环中，部分符号的含义如下
+rem 	备注：%%s   =完全文件路径，  如: d:\abc.txt，其中的s可以是别的字母，如%%x
+rem 	备注：%%~nxs=文件名带扩展，  如: abc.txt
+rem 	备注：%%~ns =文件名不带扩展，如: abc
 
-rem %~dp0 =当前盘符+路径，如: d:\xxx\xxx
-rem 同时，在批处理的for循环中
-rem %%s   =完全文件路径，  如: d:\abc.txt，其中的s可以是别的字母，如%%x
-rem %%~nxs=文件名带扩展，  如: abc.txt
-rem %%~ns =文件名不带扩展，如: abc
-
-
-echo 1. 生成c++文件
+echo 1. 生成c#文件
     for /F %%x in ('dir /b /a-d /s "%excel_dir%\*.xlsx"') do (
         echo 正在处理[ %%x ]
-        %tool%\tokit.exe %%x -c++ %template%/c++_template.h %template%/c++_template.cpp %gen_dir%\c++\c++_example\cfg
-    )
-
-echo 2. 导出xml文件
-    for /F %%x in ('dir /b /a-d /s "%excel_dir%\*.xlsx"') do ( 
-        echo 正在处理[ %%x ]
-        %tool%\tokit.exe %%x -saveasxml %gen_dir%\xml
-    )
-
-echo 3. 导出json文件
-    for /F %%x in ('dir /b /a-d /s "%excel_dir%\*.xlsx"') do ( 
-        echo 正在处理[ %%x ]
-        %tool%\tokit.exe %%x -json %gen_dir%\json
-    )
-
-echo 4. 导出xsd文件
-    for /F %%x in ('dir /b /a-d /s "%excel_dir%\*.xlsx"') do ( 
-        echo 正在导出[ %%~nx.xsd ]
-        %tool%\tokit.exe %%x -xsd %gen_dir%\xsd
-    )
-
-echo 5. 一次性导出c++、xml、json、xsd文件
-    for /F %%x in ('dir /b /a-d /s "%excel_dir%\*.xlsx"') do (
-        echo 正在处理[ %%x ]
-        %tool%\tokit.exe %%x -c++ %template%/c++_template.h %template%/c++_template.cpp %gen_dir%\c++\c++_example\cfg -saveasxml %gen_dir%\xml -xsd %gen_dir%\xsd -json %gen_dir%\json 
+        %tool% %%x ^
+			-template %template%\C#Template.cs -out %gen_dir%\c#\CSharpExample\CSharpExample ^
+			-template %template%\JsonTemplate.json -split-out %gen_dir%\json\ ^
+			-template %template%\C++Template.cpp %template%\C++Template.h -out %gen_dir%\c++\c++_example\cfg
     )
 
 pause

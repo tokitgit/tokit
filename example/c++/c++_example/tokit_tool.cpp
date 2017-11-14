@@ -7,9 +7,13 @@
 ///<------------------------------------------------------------------------------
 
 #include "tokit_tool.h"
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 #ifdef WIN32
     #include <windows.h>
+	#include <io.h>
 #else
     #include <stdio.h>
     #define __STDC_FORMAT_MACROS  
@@ -19,50 +23,11 @@
 #include <string.h>
 #include <time.h>
 
-namespace keytool
-{
-    uint64 Get16161616Key(uint16 w, uint16 x, uint16 y, uint16 z)
-    {
-        uint64 key_w = w;
-        key_w <<= 32;
-
-        uint64 key_x = x;
-        key_x <<= 32;
-
-        uint64 key_y = y;
-        key_y <<= 32;
-
-        uint64 key = key_w + key_x + key_y + z;
-        return key;
-    }
-
-    uint64 Get161616Key(uint16 x, uint16 y, uint16 z)
-    {
-        uint64 key_x = x;
-        key_x <<= 32;
-
-        uint64 key_y = y;
-        key_y <<= 32;
-
-        uint64 key = key_x + key_y + z;
-        return key;
-    }
-
-    uint64 Get3232Key(uint32 x, uint32 y)
-    {
-        uint64 key_x = x;
-        key_x <<= 32;
-
-        uint64 key = key_x + y;
-        return key;
-    }
-}
-
-namespace ticktool
+namespace tool
 {
 #ifdef WIN32
     // 获取CPU每秒的滴答次数
-    Tick GetTickFrequency()
+	int64_t GetTickFrequency()
     {
         static LARGE_INTEGER static_perfFreq = {0};
         if(0 == static_perfFreq.QuadPart){
@@ -73,7 +38,7 @@ namespace ticktool
     }
 #endif
 
-    Tick get_tick()
+	int64_t get_tick()
     {
 #ifdef WIN32
         LARGE_INTEGER tick;
@@ -88,9 +53,9 @@ namespace ticktool
 #endif
     }
 
-    uint32 tick_diff(Tick old_tick)
+    uint32 tick_diff(int64_t old_tick)
     {
-        Tick tick_now = get_tick();
+		int64_t tick_now = get_tick();
 
 #ifdef WIN32
         uint32 ms = (uint32)((tick_now - old_tick) * 1000 / GetTickFrequency());
@@ -100,19 +65,7 @@ namespace ticktool
 
         return ms;
     }
-}
 
-// 返回秒
-double tick_t::end_tick()
-{
-    Tick pass_ms = tick_diff(m_tick);
-
-    double passed_sec = (double)pass_ms / 1000;
-    return passed_sec;
-}
-
-namespace strtool
-{
     // 替换字符串
     // 例如：replace("this is an expmple", "is", "") = "th  an expmple"
     string& replace(string &str, const char *old, const char* to)
@@ -129,99 +82,104 @@ namespace strtool
         return str;
     }
 
-    string& replace(string &str, const char *old, const string& to){
-        string::size_type pos = 0;
-        int len_old = strlen(old);
-        int len_new = to.size();
-
-        while((pos = str.find(old, pos)) != string::npos){   
-            str.replace(pos, len_old, to);   
-            pos += len_new;
-        }
-
-        return str;
-    }
-
-    // 循环替换，即每次字符串被替换后，再在替换过的字符串中进行替换
-    // 例如: replace("dbdb", "db", "bd") = "bbbd"
-    // 又如: replace("good", "o", "oo") = "将会导致死循环"
-    string& cycle_replace(string &str, const char *old, const char* to)
+	void split(const char* src, std::vector<std::string>& out, const char* cut)
     {
-        string::size_type pos = 0;
-        int len_old = strlen(old);
+        std::string str(src);
 
-        while((pos = str.find(to)) != string::npos){
-            str.replace(pos, len_old, to);   
-        }
+		int n = (int)str.size();
 
-        return str;  
+		std::string::size_type a = 0, b = 0;
+		while (b != std::string::npos) {
+			a = str.find_first_not_of(cut, b);
+			if (a == std::string::npos) {
+				break;
+			}
+
+			b = str.find_first_of(cut, a + 1);
+			if (b == std::string::npos) {
+				if (a != n) {
+					out.push_back(str.substr(a));
+				}
+
+				break;
+			}
+
+			out.push_back(str.substr(a, b - a));
+		}
     }
 
-    // 将无符号64位整数转换为字符串
-    // 例如：tostr(100123) = "100123"
-    string tostr(uint64 n)
+	void split_str_set(const char* src, std::set<std::string>& out, const char* cut)
     {
-        char buf[64] = {0};
+		std::vector<std::string> vec;
+        split(src, vec, cut);
 
-#ifdef WIN32
-        errno_t err = _ui64toa_s (n, buf, sizeof(buf), 10);
-        if(err){
-            return "";
+		for (int i = 0, n = (int)vec.size(); i < n; ++i) {
+            out.insert(vec[i]);
         }
-
-        return buf;
-#else
-        
-        snprintf(buf, sizeof(buf), "%" PRIu64 "", n);
-
-        // snprintf(buf, sizeof(buf), "%llu", n);
-        return buf;
-#endif
     }
 
-    stringvec_t split(const string &src, char cut /* = ',' */)
-    {
-        stringvec_t vec;
+	void split_int_vec(const char* src, std::vector<int>& out, const char* cut /*= ","*/)
+	{
+		std::vector<std::string> vec;
+		split(src, vec, cut);
 
-        std::string::size_type pos1 = 0, pos2 = 0;
-        while (pos2 != std::string::npos){
-            pos1 = src.find_first_not_of(cut, pos2);
-            if (pos1 == std::string::npos){
-                break;
-            }
+		for (int i = 0, n = (int)vec.size(); i < n; ++i) {
+			int num = str_to_int(vec[i].c_str());
+			out.push_back(num);
+		}
+	}
 
-            pos2 = src.find_first_of(cut, pos1 + 1);
-            if (pos2 == std::string::npos){
-                if (pos1 != src.size()){
-                    vec.push_back(src.substr(pos1));
-                }
+	void split_int_set(const char* src, std::set<int>& out, const char* cut /*= ","*/)
+	{
 
-                break;
-            
-            }
+	}
 
-            vec.push_back(src.substr(pos1, pos2 - pos1));
-        }
+}
 
-        return vec;
-    }
+bool exist(const char* path)
+{
+	return _access(path, 0) != -1;
+}
 
-    stringvec_t split(const char* src, char cut /* = ',' */)
-    {
-        string str(src);
-        return split(str, cut);
-    }
+bool tool::GetFileText(const char* path, std::string &text)
+{
+	if (false == exist(path)) {
+		text = "";
+		return false;
+	}
 
-    stringset_t split_str_set(const string &src, char cut /* = ',' */)
-    {
-        stringset_t str_set;
+	if (false == exist(path)) {
+		std::cout << "open <" << path << "> file failed: not found file!";
+		text = "";
+		return false;
+	}
 
-        stringvec_t strvec = split(src, cut);
-        for (size_t n = 0; n < strvec.size(); n++){
-            std::string &str = strvec[n];
-            str_set.insert(str);
-        }
+	/* 若要一个byte不漏地读入整个文件，只能采用二进制方式打开 */
+	FILE *file = NULL;
 
-        return str_set;
-    }
+	int err = fopen_s(&file, path, "rb");
+	if (NULL == file || err > 0) {
+		std::cout << "[error] open file <" << path << "> failed，error code = " << err << "\n";
+		return false;
+	}
+
+	/* 获取文件大小 */
+	fseek(file, 0, SEEK_END);
+	long size = ftell(file);
+	rewind(file);
+
+	/* 分配内存存储整个文件 */
+	text.resize(size );
+	
+	/* 将文件拷贝到buffer中 */
+	size_t n = fread((void*)text.c_str(), 1, size, file);
+	if (n != size) {
+		std::cout << "载入<" << path << ">文件失败，错误原因:文件读取大小不符" << n << " != " << size;
+		return false;
+	}
+
+	/* 现在整个文件已经在buffer中 */
+	/* 关闭文件并释放内存 */
+	fclose(file);
+	return true;
 }
