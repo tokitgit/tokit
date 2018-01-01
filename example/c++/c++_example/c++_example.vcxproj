@@ -10,10 +10,23 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ConfigModule.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="TestConfigModule.cpp" />
+    <ClCompile Include="tokit_tool.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ConfigModule.h" />
+    <ClInclude Include="TestConfigModule.h" />
+    <ClInclude Include="tokit_tool.h" />
+    <ClInclude Include="type.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C953798E-3122-43E8-8BFB-8384487AE4FE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>c_example</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -81,18 +94,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="cfg\DotaModule.cpp" />
-    <ClCompile Include="cfg\TestModule.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="tokit_tool.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="cfg\DotaModule.h" />
-    <ClInclude Include="cfg\TestModule.h" />
-    <ClInclude Include="tokit_tool.h" />
-    <ClInclude Include="type.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,40 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="def">
-      <UniqueIdentifier>{b21017f9-95a6-49a5-8252-6f00d0000189}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="cfg">
-      <UniqueIdentifier>{d69e7462-bae5-42c5-88c2-8c548225b164}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="tool">
-      <UniqueIdentifier>{19f18958-216a-459d-996d-cd3a25595047}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="ConfigModule.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="tokit_tool.cpp">
-      <Filter>tool</Filter>
-    </ClCompile>
-    <ClCompile Include="cfg\DotaModule.cpp">
-      <Filter>cfg</Filter>
-    </ClCompile>
-    <ClCompile Include="cfg\TestModule.cpp">
-      <Filter>cfg</Filter>
-    </ClCompile>
+    <ClCompile Include="TestConfigModule.cpp" />
+    <ClCompile Include="tokit_tool.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="type.h">
-      <Filter>def</Filter>
-    </ClInclude>
-    <ClInclude Include="tokit_tool.h">
-      <Filter>tool</Filter>
-    </ClInclude>
-    <ClInclude Include="cfg\DotaModule.h">
-      <Filter>cfg</Filter>
-    </ClInclude>
-    <ClInclude Include="cfg\TestModule.h">
-      <Filter>cfg</Filter>
-    </ClInclude>
+    <ClInclude Include="ConfigModule.h" />
+    <ClInclude Include="TestConfigModule.h" />
+    <ClInclude Include="tokit_tool.h" />
+    <ClInclude Include="type.h" />
   </ItemGroup>
 </Project>

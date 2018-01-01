@@ -1,4 +1,8 @@
+///<------------------------------------------------------------------------------
+//< @作　者：洪坤安
+//< @日　期: 2014年11月12日 14:21:42
 //< @摘　要: tokit主入口
+///<------------------------------------------------------------------------------
 
 // main
 package main
@@ -14,22 +18,18 @@ func main() {
 	argc := len(os.Args)
 
 	if argc < 2 {
-		tool.EchoErr("参数格式错误，格式应为：")
-		tool.EchoErr("   excel文件的路径  命令1  命令1的参数  命令2  命令2的参数...")
-		tool.EchoErr("   比如: e:/hello.xlsx  -xsd  ../xsd/  -xml ../xml/")
+		tool.EchoError("参数格式错误，格式应为：")
+		tool.EchoError("   excel文件的路径  命令1  命令1的参数  命令2  命令2的参数...")
+		tool.EchoError("   比如: e:/hello.xlsx  -xsd  ../xsd/  -xml ../xml/")
 
 		return
 	}
 
-	var excel string = os.Args[1]     // excel文件的路径
-	var excelInfo generator.ExcelInfo // excel文件信息
-
-	// 解析excel文件，结果存放在 excelInfo 中
-	if !generator.ParseExcel(&excel, &excelInfo) {
-		return
-	}
-
+	// 新建一个任务中心（一个excel文件对应一个任务中心）
 	var jobCenter generator.JobCenter
+
+	// excel文件的路径
+	jobCenter.ExcelPath = os.Args[1]
 
 	// 根据传入参数，开始执行命令，这里不打算用goroutine，因为不方便将错误提示打印到控制台
 	var index int = 2
@@ -40,8 +40,8 @@ func main() {
 		switch {
 		case cmd == "-template":
 			if index >= argc {
-				tool.EchoErr("参数错误：-template后应跟上至少一个模板文件，格式应为: ")
-				tool.EchoErr("   -template  模板文件1 模板文件2 ... -out 生成文件夹")
+				tool.EchoError("参数错误：-template后应跟上至少一个模板文件，格式应为: ")
+				tool.EchoError("   -template  模板文件1 模板文件2 ... -out 生成文件夹")
 				return
 			}
 
@@ -54,12 +54,12 @@ func main() {
 				if arg == "-out" {
 					// '-out'参数后跟一个文件夹路径
 					if index >= argc {
-						tool.EchoErr("参数错误：-out后应跟上文件夹路径")
+						tool.EchoError("参数错误：-out后应跟上文件夹路径")
 						return
 					}
 
 					if !tool.ExistDir(outDir) {
-						tool.EchoErr("参数错误：-out所指定的文件夹<%s>路径不存在", outDir)
+						tool.EchoError("参数错误：-out所指定的文件夹<%s>路径不存在", outDir)
 						return
 					}
 
@@ -70,12 +70,12 @@ func main() {
 				} else if arg == "-split-out" {
 					// '-split-out'参数后跟一个文件夹路径
 					if index >= argc {
-						tool.EchoErr("参数错误：-split-out后应跟上文件夹路径")
+						tool.EchoError("参数错误：-split-out后应跟上文件夹路径")
 						return
 					}
 
 					if !tool.ExistDir(outDir) {
-						tool.EchoErr("参数错误：-split-out所指定的文件夹<%s>路径不存在", outDir)
+						tool.EchoError("参数错误：-split-out所指定的文件夹<%s>路径不存在", outDir)
 						return
 					}
 
@@ -92,7 +92,7 @@ func main() {
 
 					// 检查：模板文件应存在
 					if !tool.ExistFile(templateFile) {
-						tool.EchoErr("参数错误：-template所指定的文件路径<%s>不存在", templateFile)
+						tool.EchoError("参数错误：-template所指定的文件路径<%s>不存在", templateFile)
 						return
 					}
 
@@ -102,11 +102,11 @@ func main() {
 			}
 
 			for _, templateFile := range templateList {
-				var job generator.Job
-				job.ExcelInfo = &excelInfo
+				var job *generator.Job = new(generator.Job)
 				job.TemplateFile = templateFile
 				job.OutDir = outDir
 				job.JobType = jobType
+				job.RelateJobCenter = &jobCenter
 				jobCenter.JobList = append(jobCenter.JobList, job)
 			}
 		}

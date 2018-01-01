@@ -1,4 +1,4 @@
 [{{$rowtail:= Tail .Rows}}
-{{range $row,$rowval := .Rows}}{{$coltail:= Tail .}}{ {{range $i,$v := .}}{{$field := $.GetFieldAtIndex $i}}{{if eq $field.FieldType 1}}"{{$field.EnName}}":"{{.}}"{{else if or $field.IsSet $field.IsArray}}"{{$field.EnName}}":"{{.}}"{{else}}"{{$field.EnName}}":{{.}}{{end}}{{if lt $i $coltail}},{{end}}{{end}} }{{if lt $row $rowtail}},{{end}}
+{{range $row,$rowval := .Rows}}{{$coltail:= Tail .}}{ {{range $i,$v := .}}{{$field := $.GetFieldAtIndex $i}}{{if $field.IsString}}"{{$field.EnName}}":"{{.}}"{{else if or ($field.HasAttribute "集合") ($field.HasAttribute "数组")}}"{{$field.EnName}}":"{{.}}"{{else if $field.IsProgram}}"{{$field.EnName}}":""{{else}}"{{$field.EnName}}":{{.}}{{end}}{{if lt $i $coltail}},{{end}}{{end}} }{{if lt $row $rowtail}},{{end}}
 {{end}}
 ]

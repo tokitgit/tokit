@@ -1,6 +1,7 @@
-// @摘　要: excel解析器
+//----------------------------------------------
+// 摘　要: 解析excel文件的内容
+//----------------------------------------------
 
-// parser
 package generator
 
 import (
@@ -10,45 +11,45 @@ import (
 )
 
 // 解析出各个区域的起始行
-func ParseEachRegionBeginRow(sheet *xlsx.Sheet, row_cnt int, cfg *SheetInfo, errvec *tool.Errvec_t) bool {
-	// 1. 从空行开始往下找到文件定义区的起始行
-	var is_find_file_cfg bool = false
-	for row := excel_row_cfg; row < row_cnt; row += 1 {
-		if !tool.IsCellEmpty(sheet, row, cfg_col_1) {
-			cfg.RowTopRegionBegin = row
-			is_find_file_cfg = true
+func (jobCenter *JobCenter) ParseEachRegionBeginRow(sheet *xlsx.Sheet, rowCount int, sheetInfo *SheetInfo) bool {
+	// 1. 找到文件定义区
+	var isFindFileDefinition bool = false
+	for row := ExcelRow_FileRegion; row < rowCount; row += 1 {
+		if !tool.IsCellEmpty(sheet, row, FirstCol) {
+			sheetInfo.RowTopRegionBegin = row
+			isFindFileDefinition = true
 			break
 		}
 	}
 
-	if !is_find_file_cfg {
-		*errvec = append(*errvec, tool.GetErrMsg("错误：未<%s>表定义文件英文名", cfg.CnName))
+	if !isFindFileDefinition {
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "错误：未<%s>表定义文件英文名", sheetInfo.CnName)
 		return false
 	}
 
-	// 2. 从文件定义区开始，跳过空行往下找到字段定义区的起始行
-	for row := cfg.RowTopRegionBegin + 2; row < row_cnt; row++ {
-		if !tool.IsCellEmpty(sheet, row, cfg_col_1) {
-			cfg.RowFieldRegionBegin = row
+	// 2. 找到字段定义区
+	for row := sheetInfo.RowTopRegionBegin + 2; row < rowCount; row++ {
+		if !tool.IsCellEmpty(sheet, row, FirstCol) {
+			sheetInfo.RowFieldRegionBegin = row
 			break
 		}
 	}
 
-	if 0 == cfg.RowFieldRegionBegin {
-		*errvec = append(*errvec, tool.GetErrMsg("错误：未在<%s>表中找到字段定义", cfg.CnName))
+	if 0 == sheetInfo.RowFieldRegionBegin {
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "错误：未在<%s>表中找到字段定义", sheetInfo.CnName)
 		return false
 	}
 
-	// 3. 从字段定义区开始，跳过空行找到数据区的起始行
-	for row := cfg.RowFieldRegionBegin + int(Field_row_max) + 1; row < row_cnt; row++ {
-		if !tool.IsCellEmpty(sheet, row, cfg_col_1) {
-			cfg.RowDataRegionBegin = row
+	// 3. 找到数据区
+	for row := sheetInfo.RowFieldRegionBegin + int(FieldRow_Max) + 1; row < rowCount; row++ {
+		if !tool.IsCellEmpty(sheet, row, FirstCol) {
+			sheetInfo.RowDataRegionBegin = row
 			break
 		}
 	}
 
-	if 0 == cfg.RowDataRegionBegin {
-		*errvec = append(*errvec, tool.GetErrMsg("错误：未在<%s>表中找到数据", cfg.CnName))
+	if 0 == sheetInfo.RowDataRegionBegin {
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "错误：未在<%s>表中找到数据", sheetInfo.CnName)
 		return false
 	}
 
@@ -56,40 +57,42 @@ func ParseEachRegionBeginRow(sheet *xlsx.Sheet, row_cnt int, cfg *SheetInfo, err
 }
 
 // 解析文件定义区
-func ParseTopRegion(sheet *xlsx.Sheet, row_cnt int, excelInfo *ExcelInfo, cfg *SheetInfo, errvec *tool.Errvec_t) bool {
-	cfg.VerticalType = VerticalType_Horizontal
+func (jobCenter *JobCenter) ParseTopRegion(sheet *xlsx.Sheet, rowCount int, sheetInfo *SheetInfo) bool {
+	sheetInfo.VerticalType = VerticalType_Horizontal
 
+	// 解析文件的主要定义
 	for col := 1; col <= 3; col++ {
-		var col_name string = tool.GetCellString(sheet, cfg.RowTopRegionBegin, col)
-		var col_value string = tool.GetCellString(sheet, cfg.RowTopRegionBegin+1, col)
+		var colName string = tool.GetCellString(sheet, sheetInfo.RowTopRegionBegin, col)
+		var colValue string = tool.GetCellString(sheet, sheetInfo.RowTopRegionBegin+1, col)
 
-		if col_name == "文件名" {
+		if colName == "文件名" {
+			// 结构体名
+			sheetInfo.EnName = colValue
+		} else if colName == "程序类名" {
 			// 文件名称
-			cfg.EnName = col_value
-		} else if col_name == "程序类名" {
-			// 文件名称
-			excelInfo.ClassName = col_value
-		} else if col_name == "表格类型" {
-			if col_value == "垂直" || col_value == "vertical" {
-				cfg.VerticalType = VerticalType_Vertical
+			jobCenter.TargetExcel.ClassName = colValue
+		} else if colName == "是否只有一行" {
+			if colValue == "是" || colValue == "yes" || colValue == "1" {
+				sheetInfo.IsOnlyOneLine = true
 			}
 		}
 	}
 
-	if cfg.EnName == "" {
-		*errvec = append(*errvec, tool.GetErrMsg("分析<%s>失败：必须给表填上英文名", cfg.CnName))
+	if sheetInfo.EnName == "" {
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "分析<%s>失败：必须给表填上英文名", sheetInfo.CnName)
 		return false
 	}
 
-	if excelInfo.ClassName == "" {
-		*errvec = append(*errvec, tool.GetErrMsg("分析<%s>失败：必须给表填上程序类名", cfg.CnName))
+	if jobCenter.TargetExcel.ClassName == "" {
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "分析<%s>失败：必须给表填上程序类名", sheetInfo.CnName)
 		return false
 	}
 
 	return true
 }
 
-func contain_1_of_n(str *string, substrs ...string) bool {
+// 指定字符串是否包含任意一个子串
+func Contain(str *string, substrs ...string) bool {
 	for _, v := range substrs {
 		if strings.Contains(*str, v) {
 			return true
@@ -99,57 +102,32 @@ func contain_1_of_n(str *string, substrs ...string) bool {
 	return false
 }
 
+// 字段的值是否不能重复
 func IsUniqueKeyByStr(str *string) bool {
-	var is_unique_key bool = contain_1_of_n(str, "unique", "唯一")
-	return is_unique_key
+	return Contain(str, "unique", "唯一")
 }
 
-func IsOneOfKeyByStr(str *string) bool {
-	var is_primary_key bool = contain_1_of_n(str, "primary", "主键")
-	return is_primary_key
-}
-
+// 是否是数组类型
 func IsArrayByStr(str *string) bool {
-	var is_array bool = contain_1_of_n(str, "vector", "vec", "array", "数组")
-	return is_array
+	return Contain(str, "vector", "vec", "array", "数组")
 }
 
 // 是否是集合类型
 func IsSetByStr(str *string) bool {
-	var is_set bool = contain_1_of_n(str, "set", "集合")
-	return is_set
+	return Contain(str, "set", "集合")
 }
 
 // 解析指定列的字段定义
-func ParseField(sheet *xlsx.Sheet, cfg *SheetInfo, col int, field *FieldInfo, errvec *tool.Errvec_t) bool {
+func (jobCenter *JobCenter) ParseField(sheet *xlsx.Sheet, sheetInfo *SheetInfo, col int, field *FieldInfo) bool {
 	// 取出字段英文名
-	field.EnName = strings.Trim(tool.GetCellString(sheet, cfg.RowFieldRegionBegin+int(field_row_EnName), col), " \t")
+	field.EnName = strings.Trim(tool.GetCellString(sheet, sheetInfo.RowFieldRegionBegin+int(FieldRow_EnName), col), " \t")
 	if field.EnName == "" {
 		// 碰到空字段则停止解析
 		return true
 	}
 
-	// 取出字段类型
-	var strCellFieldType string = strings.Trim(tool.GetCellString(sheet, cfg.RowFieldRegionBegin+int(field_row_data_type), col), " \t")
-	field.FieldType = GetInternalTypeByName(&strCellFieldType)
-
-	// 取出字段属性
-	var strCellFieldAttr string = strings.Trim(tool.GetCellString(sheet, cfg.RowFieldRegionBegin+int(field_row_attr), col), " \t")
-
-	field.FieldAttr = FieldAttr_none
-	switch {
-	case IsUniqueKeyByStr(&strCellFieldAttr):
-		field.FieldAttr = FieldAttr_Key
-	case IsOneOfKeyByStr(&strCellFieldAttr):
-		field.FieldAttr = FieldAttr_KeyN
-	case IsArrayByStr(&strCellFieldAttr):
-		field.FieldAttr = FieldAttr_Array
-	case IsSetByStr(&strCellFieldAttr):
-		field.FieldAttr = FieldAttr_Set
-	}
-
 	// 解析字段的中文注释
-	var cnName string = strings.Trim(tool.GetCellString(sheet, cfg.RowDataRegionBegin, col), " \t")
+	var cnName string = strings.Trim(tool.GetCellString(sheet, sheetInfo.RowDataRegionBegin, col), " \t")
 	cnName = strings.Replace(cnName, "\r\n", "", -1)
 	cnName = strings.Replace(cnName, "\n", "", -1)
 
@@ -157,39 +135,106 @@ func ParseField(sheet *xlsx.Sheet, cfg *SheetInfo, col int, field *FieldInfo, er
 	field.Comment = cnName
 
 	if field.CnName == "" {
-		*errvec = append(*errvec, tool.GetErrMsg("解析第<%d>行时发生错误：中文名不允许为空", col))
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "解析第<%d>行时发生错误：中文名不允许为空", col)
 		return false
 	}
 
+	// 取出字段类型文本
+	var strCellFieldType string = strings.Trim(tool.GetCellString(sheet, sheetInfo.RowFieldRegionBegin+int(FieldRow_FieldType), col), " \t")
 	if strCellFieldType == "" {
-		*errvec = append(*errvec, tool.GetErrMsg("解析<%s>字段时发生错误：该字段的类型为空", field.CnName))
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "解析<%s>字段时发生错误：该字段的类型为空", field.CnName)
 		return false
 	}
 
+	// 识别字段类型
+	field.FieldType = GetInternalTypeByName(&strCellFieldType)
 	if FieldType_none == field.FieldType {
-		*errvec = append(*errvec, tool.GetErrMsg("解析<%s>字段时发生错误：不支持<%s>类型的字段", field.CnName, strCellFieldType))
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "解析<%s>字段时发生错误：不支持<%s>类型的字段", field.CnName, strCellFieldType)
 		return false
+	}
+
+	// 如果是程序自定义的类型（格式program=具体的自定义类型），则取出参数
+	if field.FieldType == FieldType_program {
+		// 搜索=号
+		var programNameIndex int = strings.Index(strCellFieldType, "=")
+		if programNameIndex >= 0 {
+			// 取出=号后面的程序名
+			var length int = len(strCellFieldType)
+			var programName string = strCellFieldType[programNameIndex+1 : length]
+			field.FieldTypeArgument = programName
+		}
+
+		if field.FieldTypeArgument == "" {
+			jobCenter.Log.AddLog(tool.EnumLogType_Error, "解析<%s>字段时发生错误：该字段<%s>未指定program的参数", field.CnName, strCellFieldType)
+			return false
+		}
+	}
+
+	// 取出字段属性
+	var strCellFieldAttr string = strings.Trim(tool.GetCellString(sheet, sheetInfo.RowFieldRegionBegin+int(FieldRow_Attr), col), " \t")
+
+	field.AttributeMap = make(map[string]string)
+	field.AttributeText = strCellFieldAttr
+
+	// 解析自定义属性列表
+	if strCellFieldAttr != "" {
+		var strAttributeArray []string = strings.Split(strCellFieldAttr, "|")
+		for i := 0; i < len(strAttributeArray); i++ {
+			var strAttribute = strAttributeArray[i]
+			if strAttribute == "" {
+				jobCenter.Log.AddLog(tool.EnumLogType_Error, "解析<%s>字段的<%s>中的属性<%s>时发生错误：不支持空属性", field.CnName, strCellFieldAttr, strAttribute)
+				return false
+			}
+
+			var length int = len(strAttribute)
+
+			var delimIndex int = strings.Index(strAttribute, "=")
+
+			// 键
+			var key string
+
+			// 值
+			var value string = ""
+
+			// 搜索到=号
+			if delimIndex >= 0 {
+				// 取出=号前面的键
+				key = strAttribute[0:delimIndex]
+
+				// 取出=号后面的值
+				value = strAttribute[delimIndex+1 : length]
+
+				// jobCenter.Log.AddLog(tool.EnumLogType_Info, "自定义属性：<%s>字段%s=%s", field.CnName, key, value)
+			} else {
+				// 若未搜索到=号，取出=号前面的键
+				key = strAttribute
+			}
+
+			// 记录下键值对
+			field.AttributeMap[key] = value
+		}
 	}
 
 	return true
 }
 
 // 解析字段定义区
-func ParseFieldsRegion(sheet *xlsx.Sheet, row_cnt int, col_cnt int, cfg *SheetInfo, errvec *tool.Errvec_t) bool {
-	if 0 == cfg.RowFieldRegionBegin {
+func (jobCenter *JobCenter) ParseFieldsRegion(sheet *xlsx.Sheet, rowCount int, colCount int, sheetInfo *SheetInfo) bool {
+	if 0 == sheetInfo.RowFieldRegionBegin {
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "错误：未找到字段定义区<%d>", sheetInfo.RowFieldRegionBegin)
 		return false
 	}
 
-	var succ bool = true
+	var isSuccess bool = true
 
 	var field FieldInfo
 
 	// 从第一列开始，一列一列往右解析各字段，直到碰到空列
-	for col := 1; col <= col_cnt; col++ {
+	for col := 1; col <= colCount; col++ {
 		// 解析该字段
-		var ok bool = ParseField(sheet, cfg, col, &field, errvec)
+		var ok bool = jobCenter.ParseField(sheet, sheetInfo, col, &field)
 		if false == ok {
-			succ = false
+			isSuccess = false
 			continue
 		}
 
@@ -198,190 +243,177 @@ func ParseFieldsRegion(sheet *xlsx.Sheet, row_cnt int, col_cnt int, cfg *SheetIn
 			break
 		}
 
-		var oldField *FieldInfo = cfg.GetField(&field.EnName)
+		var oldField *FieldInfo = sheetInfo.GetField(&field.EnName)
 		if oldField != nil {
-			*errvec = append(*errvec, tool.GetErrMsg("错误：定义了两个同样地字段<%s>", field.EnName))
-			*errvec = append(*errvec, tool.GetErrMsg("       <%-6s = %s>", oldField.GetInternalTypeName(), oldField.EnName))
-			*errvec = append(*errvec, tool.GetErrMsg("       <%-6s = %s>", field.GetInternalTypeName(), field.EnName))
+			jobCenter.Log.AddLog(tool.EnumLogType_Error, "错误：定义了两个同样地字段<%s>", field.EnName)
+			jobCenter.Log.AddLog(tool.EnumLogType_Error, "       <%-6s = %s>", oldField.GetInternalTypeName(), oldField.EnName)
+			jobCenter.Log.AddLog(tool.EnumLogType_Error, "       <%-6s = %s>", field.GetInternalTypeName(), field.EnName)
 
-			succ = false
+			isSuccess = false
 			continue
 		}
 
-		// 如果该字段是主键之一，则将该字段的位置存入主键列表
-		if field.IsKeyN() {
-			cfg.Keys = append(cfg.Keys, uint8(len(cfg.Fields)))
-		}
-
-		cfg.Fields = append(cfg.Fields, field)
+		// 添加该字段
+		sheetInfo.Fields = append(sheetInfo.Fields, field)
 	}
 
-	if len(cfg.Fields) == 0 {
-		*errvec = append(*errvec, tool.GetErrMsg("错误：未给<%s>表定义字段", cfg.CnName))
+	// 检查：至少要有一个字段
+	if len(sheetInfo.Fields) == 0 {
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "错误：未给<%s>表定义字段", sheetInfo.CnName)
+		return false
 	}
 
-	// 如果主键仅由1个字段组成，则将主键字段的属性替换为<唯一>
-	n_key := len(cfg.Keys)
-	if 1 == n_key {
-		cfg.Fields[cfg.Keys[0]].FieldAttr = FieldAttr_Key
-		cfg.Keys = KeyArray{}
-	}
-
-	return succ
+	return isSuccess
 }
 
 // 解析数据区
-func ParseData(sheet *xlsx.Sheet, row_cnt int, col_cnt int, cfg *SheetInfo, errvec *tool.Errvec_t) bool {
-	var is_empty bool = (cfg.RowDataRegionBegin+1 > row_cnt)
-	if is_empty {
+func (jobCenter *JobCenter) ParseData(sheet *xlsx.Sheet, rowCount int, colCount int, sheetInfo *SheetInfo) bool {
+	// 文件是否为空
+	var isDataEmpty bool = (sheetInfo.RowDataRegionBegin+1 > rowCount)
+	if isDataEmpty {
 		return true
 	}
 
-	is_ok := true
+	var ok bool = true
 
-	var n_field int = len(cfg.Fields)
+	var fieldCount int = len(sheetInfo.Fields)
 
-	cfg.Rows = make(RowArray, row_cnt-cfg.RowDataRegionBegin)
+	sheetInfo.Rows = make(RowArray, rowCount-sheetInfo.RowDataRegionBegin)
 
 	// 将数据区的行和列存入对应的数组
-	for row := int(cfg.RowDataRegionBegin + 1); row <= row_cnt; row++ {
-		var is_empty_row bool = false
-		var r RowData = make(RowData, n_field)
+	for row := int(sheetInfo.RowDataRegionBegin + 1); row <= rowCount; row++ {
+		// 该行是否为空
+		var isRowEmpty bool = false
+		var r Row = make(Row, fieldCount)
 
-		for col := 1; col <= n_field; col++ {
+		for col := 1; col <= fieldCount; col++ {
 			var cell string = tool.GetCellString(sheet, row, col)
 			if cell == "" {
-				var field *FieldInfo = &cfg.Fields[col-1]
+				var field *FieldInfo = &sheetInfo.Fields[col-1]
 				if field.IsNumber() {
 					cell = "0"
 				}
 			}
 
+			cell = strings.Replace(cell, "\"", "\\\"", -1)
+			//cell = strings.Replace(cell, "{", "\\{", -1)
+			//cell = strings.Replace(cell, "}", "\\}", -1)
+
 			r[col-1] = cell
 
-			// 一旦出现某行的第一个单元格为空，则停止解析
+			// 一旦出现某行的第一个单元格为空、或该单元格以//开头，则认为该行是注释，跳过该行
 			if 1 == col {
 				if r[col-1] == "" {
-					is_empty_row = true
+					isRowEmpty = true
 					break
 				}
 			}
 		}
 
-		if is_empty_row {
+		if isRowEmpty {
 			break
 		}
 
-		cfg.Rows[row-cfg.RowDataRegionBegin-1] = r
+		sheetInfo.Rows[row-sheetInfo.RowDataRegionBegin-1] = r
 	}
 
-	return is_ok
+	return ok
 }
 
-// 解析出单个工作表
-func ParseSheet(sheet *xlsx.Sheet, excelInfo *ExcelInfo, cfg *SheetInfo, errvec *tool.Errvec_t) bool {
+// 解析单个工作表
+func (jobCenter *JobCenter) ParseSheet(sheet *xlsx.Sheet) bool {
+	var sheetInfo SheetInfo
+
 	// 1. 获取excel表的行数和列数
-	var row_cnt int = tool.GetRowCount(sheet)
-	var col_cnt int = tool.GetColumCount(sheet)
+	var rowCount int = tool.GetRowCount(sheet)
+	var colCount int = tool.GetColumCount(sheet)
 
-	if 0 == row_cnt || 0 == col_cnt {
-		*errvec = append(*errvec, tool.GetErrMsg("跳过解析<%s>表，该表内容为空", sheet.Name))
+	if 0 == rowCount || 0 == colCount {
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "跳过解析<%s>表，该表内容为空", sheet.Name)
 		return false
 	}
 
-	if row_cnt < excel_row_min {
-		*errvec = append(*errvec, tool.GetErrMsg("分析<%s>失败：表格中当前只有<%u>行，至少应有<%u>行", sheet.Name, row_cnt, excel_row_min))
+	if rowCount < ExcelRow_Min {
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "分析<%s>失败：表格中当前只有<%u>行，至少应有<%u>行", sheet.Name, rowCount, ExcelRow_Min)
 		return false
 	}
 
-	if col_cnt < 1 {
-		*errvec = append(*errvec, tool.GetErrMsg("分析<%s>失败：表格中当前只有<%u>列，至少应有<%u>列", sheet.Name, col_cnt, 1))
+	if colCount < 1 {
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "分析<%s>失败：表格中当前只有<%u>列，至少应有<%u>列", sheet.Name, colCount, 1)
 		return false
 	}
 
 	// 2. 取出工作表的名称
-	cfg.CnName = sheet.Name
+	sheetInfo.CnName = sheet.Name
 
-	succ := true
+	var ok bool = true
 
 	// 3. 解析各个区域的起始行，共有3个区域：文件定义区、字段定义区、数据区
-	succ = succ && ParseEachRegionBeginRow(sheet, row_cnt, cfg, errvec)
+	ok = ok && jobCenter.ParseEachRegionBeginRow(sheet, rowCount, &sheetInfo)
 
 	// 4. 解析文件定义区
-	succ = succ && ParseTopRegion(sheet, row_cnt, excelInfo, cfg, errvec)
+	ok = ok && jobCenter.ParseTopRegion(sheet, rowCount, &sheetInfo)
 
 	// 5. 解析字段定义区
-	succ = succ && ParseFieldsRegion(sheet, row_cnt, col_cnt, cfg, errvec)
+	ok = ok && jobCenter.ParseFieldsRegion(sheet, rowCount, colCount, &sheetInfo)
 
 	// 6. 载入数据区
-	succ = succ && ParseData(sheet, row_cnt, col_cnt, cfg, errvec)
+	ok = ok && jobCenter.ParseData(sheet, rowCount, colCount, &sheetInfo)
 
-	return succ
-}
-
-// 解析出excel中的各个工作表，将解析结果存入结构体
-func ParseSheets(excel *string, excelInfo *ExcelInfo, errmsgs *tool.Errvec_t) bool {
-	var parse_clock tool.Clock
-	parse_clock.StartTick()
-
-	if false == tool.Exist(excel) {
-		*errmsgs = append(*errmsgs, *excel+"文件不存在!")
+	if !ok {
 		return false
 	}
 
-	// 1. 载入excel文件
-	xlFile, err := xlsx.OpenFile(*excel)
-	if err != nil {
-		*errmsgs = append(*errmsgs, tool.GetErrMsg("错误：解析<%s>文件失败，请确保该文件存在且未被打开!", *excel))
+	// 检查：工作表的表名不能冲突
+	var conflict *SheetInfo = jobCenter.TargetExcel.FindByEnName(&sheetInfo.EnName)
+	if nil != conflict {
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "错误：定义了两个同样地文件<%s>", sheetInfo.CnName)
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "       <%s = %s>", conflict.CnName, conflict.EnName)
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "       <%s = %s>", sheetInfo.CnName, sheetInfo.EnName)
+
 		return false
 	}
 
-	var succ bool = true
-
-	// 2. 依次解析各个工作表
-	for _, sheet := range xlFile.Sheets {
-		var sheetInfo SheetInfo
-
-		// 2.1 解析出工作表的内容，并将结果存放到cfg中
-		var ok bool = ParseSheet(sheet, excelInfo, &sheetInfo, errmsgs)
-		if false == ok {
-			succ = false
-			continue
-		}
-
-		var conflict *SheetInfo = excelInfo.FindByEnName(&sheetInfo.EnName)
-		if nil != conflict {
-			*errmsgs = append(*errmsgs, tool.GetErrMsg("错误：定义了两个同样地文件<%s>", sheetInfo.CnName))
-			*errmsgs = append(*errmsgs, tool.GetErrMsg("       <%s = %s>", conflict.CnName, conflict.EnName))
-			*errmsgs = append(*errmsgs, tool.GetErrMsg("       <%s = %s>", sheetInfo.CnName, sheetInfo.EnName))
-
-			succ = false
-			continue
-		}
-
-		excelInfo.Sheets = append(excelInfo.Sheets, sheetInfo)
-	}
-
-	var excelFileName string = tool.StripDir(*excel)
-	tool.EchoWarn("解析<%s>完毕, 共耗时<%f>秒", excelFileName, parse_clock.EndTick())
-	return succ
+	// 将工作表信息加到数组
+	jobCenter.TargetExcel.Sheets = append(jobCenter.TargetExcel.Sheets, sheetInfo)
+	return ok
 }
 
 // 解析excel文件
-func ParseExcel(excel *string, excelInfo *ExcelInfo) bool {
-	if false == tool.Exist(excel) {
-		tool.EchoErr("错误: 找不到excel文件<%s>", *excel)
+func (jobCenter *JobCenter) ParseExcel() bool {
+	// 检查：excel文件必须存在
+	if false == tool.Exist(jobCenter.ExcelPath) {
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "错误: 找不到excel文件<%s>", jobCenter.ExcelPath)
 		return false
 	}
 
-	var errvec tool.Errvec_t
-	if false == ParseSheets(excel, excelInfo, &errvec) {
-		// tool.EchoErr("错误：解析<%s>文件失败，请确保该文件存在且未被打开", *excel)
-		tool.EchoErrorArray(&errvec)
+	// 开始计时
+	var parseClock tool.Clock
+	parseClock.StartTick()
+
+	// 1. 载入excel文件
+	xlFile, err := xlsx.OpenFile(jobCenter.ExcelPath)
+	if err != nil {
+		jobCenter.Log.AddLog(tool.EnumLogType_Error, "错误：解析<%s>文件失败，请确保该文件存在且未被打开! 错误信息 = %s", jobCenter.ExcelPath, err.Error())
 		return false
 	}
 
-	return true
+	// 2. 依次解析各个工作表
+	var ok bool = true
+
+	for _, sheet := range xlFile.Sheets {
+		if !jobCenter.ParseSheet(sheet) {
+			ok = false
+		}
+	}
+
+	// 结束计时
+	var cost float64 = parseClock.EndTick()
+
+	var excelFileName string = tool.StripDir(jobCenter.ExcelPath)
+
+	jobCenter.Log.AddLog(tool.EnumLogType_Warn, "解析<%s>完毕, 共耗时<%f>秒", excelFileName, cost)
+	return ok
 }
 
 // 内部字段类型
@@ -393,15 +425,21 @@ func (f *FieldInfo) GetInternalTypeName() string {
 }
 
 // 根据名称找到相应的内部字段类型
-func GetInternalTypeByName(fieldType *string) enum_tokit_field_type {
-	if "" == *fieldType {
+func GetInternalTypeByName(fieldTypeName *string) EnumFieldType {
+	if "" == *fieldTypeName {
 		return FieldType_none
 	}
 
+	// 基本类型，例如int、string
 	for i := FieldType_none + 1; i < FieldType_max; i++ {
-		if g_InternalTypeNames[i] == *fieldType {
-			return enum_tokit_field_type(i)
+		if g_InternalTypeNames[i] == *fieldTypeName {
+			return EnumFieldType(i)
 		}
+	}
+
+	// 程序自定义，例如program=c++
+	if strings.HasPrefix(*fieldTypeName, "program=") {
+		return FieldType_program
 	}
 
 	return FieldType_none

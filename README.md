@@ -7,17 +7,16 @@ tokit是一个用于方便网游研发人员配置数据的工具。可以根据
 
 - [x] c++
 - [x] c#
-- [x] json
 
-其中c++、c#文件中含有自动读取json数据的接口以及查找接口
+数据以二进制方式进行存储，其中c++、c#文件中含有读取二进制数据的接口以及查找接口
 
-如果你对生成的c++、c#、json文件不满意的话，你可以试着在已有的模板文件基础上修改，然后运行《一键生成.bat》看看效果，不需要重新编译
+虽然目前支持c++、c#语言，你也随时可以新增支持其他语言，你可以试着在tool文件夹下已有的模板文件基础上修改，然后运行《一键生成.bat》看看效果，不需要重新编译
 
 备注：
-	模板文件放在tool文件夹下，目前有C#Template.cs、C++Template.cpp、C++Template.h、JsonTemplate.json
+	模板文件放在tool文件夹下，目前有C#Template.cs、C++Template.cpp、C++Template.h等
 	
 	这些文件的语法格式请搜索《golang模板语法》花5分钟学习一下，这些模板可以取到的数据请参考src\tokit\generator\excel_info.go
 
 ## 下载之后
 
-下载tokit整个项目之后，双击运行《example\一键生成.bat》脚本。
+下载tokit整个项目之后，双击运行《example\一键生成 - 导出到项目.bat》脚本。

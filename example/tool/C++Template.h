@@ -1,6 +1,5 @@
 //------------------------------------------------------------------------------
-// 本头文件由工具自动生成，请勿在本文件内做改动
-// 日期：
+// 本文件由工具自动生成
 //------------------------------------------------------------------------------
 
 #pragma once
@@ -9,17 +8,17 @@
 #include <map>
 #include <vector>
 #include <set>
+#include "ConfigModule.h"
 
 {{template "RegisterC++Type" .}}
-{{define "RegisterC++Type"}}{{RegisterFieldTypeName 1 "std::string"}}{{RegisterFieldTypeName 2 "bool"}}{{RegisterFieldTypeName 3 "char"}}{{RegisterFieldTypeName 4 "int"}}{{RegisterFieldTypeName 5 "int"}}{{RegisterFieldTypeName 6 "long"}}{{RegisterFieldTypeName 7 "int"}}{{RegisterFieldTypeName 8 "int"}}{{RegisterFieldTypeName 9 "int"}}{{RegisterFieldTypeName 10 "int64_t"}}{{RegisterFieldTypeName 11 "float"}}{{RegisterFieldTypeName 12 "double"}}{{end}}
+{{define "RegisterC++Type"}}{{RegisterString "std::string"}}{{RegisterBool "bool"}}{{RegisterChar "char"}}{{RegisterInt16 "int16"}}{{RegisterInt32 "int"}}{{RegisterInt64 "int64"}}{{RegisterFloat "float"}}{{RegisterDouble "double"}}{{end}}
 
 {{range .Sheets}}
 {{template "DeclareStruct" .}}
 {{end}}
 
-{{define "GetFieldTypeName"}}{{if .IsArray}}std::vector<{{.GetFieldTypeName}}>{{else if .IsSet}}std::set<{{.GetFieldTypeName}}>{{else}}{{.GetFieldTypeName}}{{end}}{{end}}
-{{define "GetFieldName"}}{{if .IsArray}}vec{{.EnName}}{{else if .IsSet}}set{{.EnName}}{{else}}{{.EnName}}{{end}}{{end}}
-{{define "GetAttrDescribe"}}{{if gt .FieldAttr 0}}<{{.GetFieldAttrDescribe}}>{{end}}{{end}}
+{{define "GetFieldTypeName"}}{{if .HasAttribute "数组"}}std::vector<{{.GetFieldTypeName}}>{{else if .HasAttribute "集合"}}std::set<{{.GetFieldTypeName}}>{{else}}{{.GetFieldTypeName}}{{end}}{{end}}
+{{define "GetFieldName"}}{{if .HasAttribute "数组"}}vec{{.EnName}}{{else if .HasAttribute "集合"}}set{{.EnName}}{{else}}{{.EnName}}{{end}}{{end}}
 
 {{define "DeclareStruct"}}
 // {{.CnName}}
@@ -33,73 +32,97 @@ struct {{.EnName}}
 	inline void Clear()
 	{
 	{{range .Fields}}
-		{{if .IsArray}}vec{{.EnName}}.clear();
-		{{else if .IsSet}}set{{.EnName}}.clear();
-		{{else if eq .FieldType 1}}{{.EnName}} = "";
-		{{else if eq .FieldType 2}}{{.EnName}} = false;
-		{{else if eq .FieldType 3}}{{.EnName}} = 0;
-		{{else if eq .FieldType 4}}{{.EnName}} = 0;
-		{{else if eq .FieldType 5}}{{.EnName}} = 0;
-		{{else if eq .FieldType 6}}{{.EnName}} = 0;
-		{{else if eq .FieldType 7}}{{.EnName}} = 0;
-		{{else if eq .FieldType 8}}{{.EnName}} = 0;
-		{{else if eq .FieldType 9}}{{.EnName}} = 0;
-		{{else if eq .FieldType 10}}{{.EnName}} = 0;
-		{{else if eq .FieldType 11}}{{.EnName}} = 0.0f;
-		{{else if eq .FieldType 12}}{{.EnName}} = 0.0f;
+	{{if .IsAttributeSpecifyValue "导出" "c++"}}
+		{{if .HasAttribute "数组"}}vec{{.EnName}}.clear();
+		{{else if .HasAttribute "集合"}}set{{.EnName}}.clear();
+		{{else if .IsString}}{{.EnName}} = "";
+		{{else if .IsBool}}{{.EnName}} = false;
+		{{else if .IsChar}}{{.EnName}} = 0;
+		{{else if .IsInt16}}{{.EnName}} = 0;
+		{{else if .IsInt}}{{.EnName}} = 0;
+		{{else if .IsInt64}}{{.EnName}} = 0;
+		{{else if .IsFloat}}{{.EnName}} = 0.0f;
+		{{else if .IsDouble}}{{.EnName}} = 0.0f;
 		{{end}}
+	{{end}}
 	{{end}}
 	}
 	
-	{{range .Fields}}{{template "GetFieldTypeName" .}} {{template "GetFieldName" .}}; // {{.CnName}}{{template "GetAttrDescribe" .}}
+	{{range .Fields}}
+	{{if .IsProgram}}
+	{{if .IsProgramByName "c++"}}
+	// {{.CnName}}
+	{{template "GetFieldName" .}};
 	{{end}}
+	{{else if .IsAttributeSpecifyValue "导出" "c++"}}
+	{{template "GetFieldTypeName" .}} {{template "GetFieldName" .}}; // {{.CnName}}{{if ne .AttributeText ""}}<{{.AttributeText}}>{{end}}
+	{{end}}
+{{end}}
 };
 {{end}}
 
-{{define "DeclareLoadFunc"}}
-	// 载入配置
-	bool Load(std::string basePath);
+{{define "DeclareLoadJsonFunc"}}
+	// 载入json配置
+	bool LoadJson(const std::string& basePath) override;
 {{range .Sheets}}
-{{$cfg:= .}}
-	bool Load{{.EnName}}(std::string basePath);
+{{$sheet:= .}}
+	bool LoadJson{{.EnName}}(const std::string& basePath);
+{{end}}
+{{end}}
+
+{{define "DeclareLoadBinaryFunc"}}
+	// 载入二进制配置
+	bool LoadBinary(const std::string& basePath) override;
+{{range .Sheets}}
+{{$sheet:= .}}
+	bool LoadBinary{{.EnName}}(const std::string& basePath);
 {{end}}
 {{end}}
 
 {{define "DeclareFindFunc"}}
 {{range .Sheets}}
-{{$cfg:=.}}
-{{range .Fields}}{{if .IsKey}}
+{{$sheet:=.}}
+{{range .Fields}}{{if .HasAttribute "唯一"}}
 	// {{.CnName}}
-	const {{$cfg.EnName}}* Find{{$cfg.EnName}}By{{.EnName}}({{.GetFieldTypeName}} {{.EnName}});
-{{else}}{{end}}{{end}}
+	const {{$sheet.EnName}}* Find{{$sheet.EnName}}By{{.EnName}}({{.GetFieldTypeName}} {{.EnName}});
+{{end}}
+{{end}}
 {{end}}
 {{end}}
 
 {{define "DeclareFields"}}
 {{range .Sheets}}
+{{if .IsOnlyOneLine}}
+	// {{.CnName}}
+	{{.EnName}} m_{{.EnName}};
+{{else}}
 	// {{.CnName}}
 	std::vector<{{.EnName}}> m_vec{{.EnName}};
 {{end}}
+{{end}}
+
 {{range .Sheets}}
-{{$cfg:=.}}
-{{range .Fields}}{{if .IsKey}}
+{{$sheet:=.}}
+{{range .Fields}}
+{{if .HasAttribute "唯一"}}
 	// {{.CnName}}
-	std::map<{{.GetFieldTypeName}}, {{$cfg.EnName}}*> m_map{{$cfg.EnName}}By{{.EnName}};
-{{else}}{{end}}{{end}}
+	std::map<{{.GetFieldTypeName}}, {{$sheet.EnName}}*> m_map{{$sheet.EnName}}By{{.EnName}};
+{{end}}
+{{end}}
 {{end}}
 {{end}}
 
-class {{.ClassName}}
+class {{.ClassName}} : public IConfigModule
 {
 public:
 	static {{.ClassName}} instance;
 
 public:
 	// 获取本配置类名称
-	const char* Name(){ return "{{.ClassName}}"; }
+	const char* Name() override{ return "{{.ClassName}}"; }
 
 public:
-	{{template "DeclareLoadFunc" .}}
+	{{template "DeclareLoadBinaryFunc" .}}	
 
     // 清空配置
     void Clear();
