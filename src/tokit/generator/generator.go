@@ -47,6 +47,7 @@ type JobCenter struct {
 func (jobCenter *JobCenter) Work() bool {
 	// 解析excel文件
 	if !jobCenter.ParseExcel() {
+		jobCenter.Log.EchoLog()
 		return false
 	}
 
